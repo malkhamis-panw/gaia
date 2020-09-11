@@ -174,8 +174,8 @@ Imports an export of policies and related objects into the namespace.
           "0.0.0.0/0"
         ],
         "name": "all-tcp",
-        "protocols": [
-          "tcp"
+        "servicePorts": [
+          "tcp/1:65535"
         ]
       },
       {
@@ -187,8 +187,8 @@ Imports an export of policies and related objects into the namespace.
           "0.0.0.0/0"
         ],
         "name": "all-udp",
-        "protocols": [
-          "udp"
+        "servicePorts": [
+          "udp/1:65535"
         ]
       }
     ],
@@ -268,8 +268,8 @@ Allows you to import and keep a reference.
           "0.0.0.0/0"
         ],
         "name": "all-tcp",
-        "protocols": [
-          "tcp"
+        "servicePorts": [
+          "tcp/1:65535"
         ]
       },
       {
@@ -281,8 +281,8 @@ Allows you to import and keep a reference.
           "0.0.0.0/0"
         ],
         "name": "all-udp",
-        "protocols": [
-          "udp"
+        "servicePorts": [
+          "udp/1:65535"
         ]
       }
     ],
@@ -11218,6 +11218,10 @@ reference the external network from your network policies.
   "name": "the name",
   "propagate": false,
   "protected": false,
+  "servicePorts": [
+    "tcp/80",
+    "udp/80:100"
+  ],
   "type": "Subnet"
 }
 ```
@@ -11338,14 +11342,6 @@ Type: `[]string`
 
 Contains the list of normalized tags of the entities.
 
-##### `ports`
-
-_This attribute is deprecated_.
-
-Type: `[]string`
-
-List of single ports or range (xx:yy).
-
 ##### `propagate`
 
 Type: `boolean`
@@ -11358,15 +11354,7 @@ Type: `boolean`
 
 Defines if the object is protected.
 
-##### `protocols`
-
-_This attribute is deprecated_.
-
-Type: `[]string`
-
-List of protocols (`tcp`, `udp`, or protocol number).
-
-##### `servicePorts`
+##### `servicePorts` [`required`]
 
 Type: `[]string`
 
