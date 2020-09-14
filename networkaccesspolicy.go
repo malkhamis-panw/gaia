@@ -190,12 +190,8 @@ type NetworkAccessPolicy struct {
 	// propagated it will become a fallback for children namespaces.
 	Fallback bool `json:"fallback" msgpack:"fallback" bson:"fallback" mapstructure:"fallback,omitempty"`
 
-<<<<<<< HEAD
-	// If `true`, the relevant flows are logged and available from Microsegmentation Console.
-=======
 	// If `true`, the relevant flows are logged and available from Microsegmentation
 	// Console.
->>>>>>> origin/master
 	// Under some advanced scenarios you may wish to set this to `false`, such as to
 	// save space or
 	// improve performance.
@@ -1211,12 +1207,8 @@ propagated it will become a fallback for children namespaces.`,
 	"LogsEnabled": {
 		AllowedChoices: []string{},
 		ConvertedName:  "LogsEnabled",
-<<<<<<< HEAD
-		Description: `If ` + "`" + `true` + "`" + `, the relevant flows are logged and available from Microsegmentation Console.
-=======
 		Description: `If ` + "`" + `true` + "`" + `, the relevant flows are logged and available from Microsegmentation
 Console.
->>>>>>> origin/master
 Under some advanced scenarios you may wish to set this to ` + "`" + `false` + "`" + `, such as to
 save space or
 improve performance.`,
@@ -1604,12 +1596,8 @@ propagated it will become a fallback for children namespaces.`,
 	"logsenabled": {
 		AllowedChoices: []string{},
 		ConvertedName:  "LogsEnabled",
-<<<<<<< HEAD
-		Description: `If ` + "`" + `true` + "`" + `, the relevant flows are logged and available from Microsegmentation Console.
-=======
 		Description: `If ` + "`" + `true` + "`" + `, the relevant flows are logged and available from Microsegmentation
 Console.
->>>>>>> origin/master
 Under some advanced scenarios you may wish to set this to ` + "`" + `false` + "`" + `, such as to
 save space or
 improve performance.`,
@@ -1935,12 +1923,8 @@ type SparseNetworkAccessPolicy struct {
 	// propagated it will become a fallback for children namespaces.
 	Fallback *bool `json:"fallback,omitempty" msgpack:"fallback,omitempty" bson:"fallback,omitempty" mapstructure:"fallback,omitempty"`
 
-<<<<<<< HEAD
-	// If `true`, the relevant flows are logged and available from Microsegmentation Console.
-=======
 	// If `true`, the relevant flows are logged and available from Microsegmentation
 	// Console.
->>>>>>> origin/master
 	// Under some advanced scenarios you may wish to set this to `false`, such as to
 	// save space or
 	// improve performance.

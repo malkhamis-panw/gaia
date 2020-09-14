@@ -3591,15 +3591,12 @@ Total CPU utilization of the Defender as a percentage of vCPUs.
 
 Type: `string`
 
-<<<<<<< HEAD
-=======
 Identifier of the object.
 
 ##### `enforcerID`
 
 Type: `string`
 
->>>>>>> origin/master
 ID of the Defender.
 
 ##### `memory`
@@ -11879,12 +11876,8 @@ Namespace tag attached to an entity.
 ### ExternalNetwork
 
 An external network represents a random network or IP address that is not
-<<<<<<< HEAD
-managed by Microsegmentation. External networks can be used in network policies to
-=======
 managed by Microsegmentation. External networks can be used in network policies
 to
->>>>>>> origin/master
 allow traffic from or to the declared network or IP, using the provided
 protocol and port (or range of ports). If you want to describe the internet
 (i.e., anywhere), use `0.0.0.0/0` as the address and `1-65000` for the ports.
@@ -12728,12 +12721,8 @@ propagated it will become a fallback for children namespaces.
 
 Type: `boolean`
 
-<<<<<<< HEAD
-If `true`, the relevant flows are logged and available from Microsegmentation Console.
-=======
 If `true`, the relevant flows are logged and available from Microsegmentation
 Console.
->>>>>>> origin/master
 Under some advanced scenarios you may wish to set this to `false`, such as to
 save space or
 improve performance.
@@ -14026,15 +14015,12 @@ Type: `integer`
 The port that the implementation of the service is listening to. It can be
 different than `exposedPort`. This is needed for port mapping use cases
 where there are private and public ports.
-<<<<<<< HEAD
-=======
 
 ##### `propagate`
 
 Type: `boolean`
 
 Propagates the policy to all of its children.
->>>>>>> origin/master
 
 ##### `protected`
 
