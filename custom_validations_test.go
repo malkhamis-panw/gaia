@@ -213,6 +213,7 @@ func TestValidateServicePorts(t *testing.T) {
 		args    args
 		wantErr bool
 	}{
+		// Service Ports
 		{
 			"valid serviceports",
 			args{
@@ -321,6 +322,126 @@ func TestValidateServicePorts(t *testing.T) {
 			"nil serviceports",
 			args{
 				nil,
+			},
+			false,
+		},
+		// ICMP Type/codes
+		{
+			"icmp alone is valid",
+			args{
+				[]string{"icmp"},
+			},
+			false,
+		},
+		{
+			"icmp6 alone is valid",
+			args{
+				[]string{"icmp6"},
+			},
+			false,
+		},
+		{
+			"icmp/ is an error",
+			args{
+				[]string{"icmp/"},
+			},
+			true,
+		},
+		{
+			"icmp6/ is an error",
+			args{
+				[]string{"icmp6/"},
+			},
+			true,
+		},
+		{
+			"icmp/0 is valid",
+			args{
+				[]string{"icmp/0"},
+			},
+			false,
+		},
+		{
+			"icmp/255 is valid",
+			args{
+				[]string{"icmp/255"},
+			},
+			false,
+		},
+		{
+			"icmp/256 is not valid",
+			args{
+				[]string{"icmp/256"},
+			},
+			true,
+		},
+		{
+			"icmp/2,3 is not valid",
+			args{
+				[]string{"icmp/2,3"},
+			},
+			true,
+		},
+		{
+			"icmp/2/3:10 is valid",
+			args{
+				[]string{"icmp/2/3:10"},
+			},
+			false,
+		},
+		{
+			"icmp/2/3: is not valid",
+			args{
+				[]string{"icmp/2/3:"},
+			},
+			true,
+		},
+		{
+			"icmp/2/3/5: is not valid",
+			args{
+				[]string{"icmp/2/3/5"},
+			},
+			true,
+		},
+		{
+			"icmp/2/3:1 is not valid",
+			args{
+				[]string{"icmp/2/3:1"},
+			},
+			true,
+		},
+		{
+			"icmp/2/3:10:20 is not valid",
+			args{
+				[]string{"icmp/2/3:10:20"},
+			},
+			true,
+		},
+		{
+			"icmp/2/3:256 is not valid",
+			args{
+				[]string{"icmp/2/3:256"},
+			},
+			true,
+		},
+		{
+			"icmp/2/256:256 is not valid",
+			args{
+				[]string{"icmp/2/256:256"},
+			},
+			true,
+		},
+		{
+			"icmp/2/2,3:10 is valid",
+			args{
+				[]string{"icmp/2/2,3:10"},
+			},
+			false,
+		},
+		{
+			"icmp/2/3,5,20,40 is valid",
+			args{
+				[]string{"icmp/2/3,5,20,40"},
 			},
 			false,
 		},
@@ -487,71 +608,6 @@ func TestValidatePortStringList(t *testing.T) {
 	}
 }
 
-func TestValidateNetwork(t *testing.T) {
-	type args struct {
-		attribute string
-		cidr      string
-	}
-	tests := []struct {
-		name    string
-		args    args
-		wantErr bool
-	}{
-		// valid
-		{
-			"valid CIDR",
-			args{
-				"cidr",
-				"10.0.0.0/8",
-			},
-			false,
-		},
-		{
-			"valid DNS name",
-			args{
-				"cidr",
-				"google.com",
-			},
-			false,
-		},
-		{
-			"valid DNS name",
-			args{
-				"cidr",
-				"*.google.com",
-			},
-			false,
-		},
-
-		// invalid CIDR
-		{
-			"invalid CIDR",
-			args{
-				"cidr",
-				"",
-			},
-			true,
-		},
-
-		// invalid DNn
-		{
-			"invalid DNS Name",
-			args{
-				"cidr",
-				"google@com",
-			},
-			true,
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := ValidateNetworkOrHostname(tt.args.attribute, tt.args.cidr); (err != nil) != tt.wantErr {
-				t.Errorf("ValidateNetworkOrHostname() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
 func TestValidateNetworkOrHostnameList(t *testing.T) {
 	type args struct {
 		attribute string
@@ -583,6 +639,46 @@ func TestValidateNetworkOrHostnameList(t *testing.T) {
 			args{
 				"nets",
 				[]string{},
+			},
+			true,
+		},
+		{
+			"valid entries with just CIDRs",
+			args{
+				"nets",
+				[]string{"0.0.0.0/0", "!10.0.0.0/8"},
+			},
+			false,
+		},
+		{
+			"valid entries with except condition operator",
+			args{
+				"nets",
+				[]string{"google.com", "0.0.0.0/0", "!10.0.0.0/8"},
+			},
+			false,
+		},
+		{
+			"invalid entry with only valid NOT operator",
+			args{
+				"nets",
+				[]string{"!10.0.0.0/8"},
+			},
+			true,
+		},
+		{
+			"invalid entries with without valid CIDR pairing",
+			args{
+				"nets",
+				[]string{"google.com", "!10.0.0.0/8"},
+			},
+			true,
+		},
+		{
+			"invalid entry with multiple NOT operators",
+			args{
+				"nets",
+				[]string{"!!10.0.0.0/8"},
 			},
 			true,
 		},
@@ -1042,6 +1138,62 @@ AiEA0epxATHNzheAa8ZuiPeNQL6DhoKYz3B+41J2vgVlGZY=
 		t.Run(tt.name, func(t *testing.T) {
 			if err := ValidateEnforcerProfile(tt.enforcerprofile); (err != nil) != tt.wantErr {
 				t.Errorf("TestVValidateEnforcerProfile() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestValidateEnforcerReport_IDFieldCompatibility(t *testing.T) {
+
+	tests := map[string]struct {
+		report  *EnforcerReport
+		wantErr bool
+	}{
+		"only the 'ID' field is specified": {
+			report: &EnforcerReport{
+				ID: "xxx-xxx-xxx-xxx",
+			},
+			wantErr: false,
+		},
+		"only the 'enforcerID' field is specified": {
+			report: &EnforcerReport{
+				EnforcerID: "xxx-xxx-xxx-xxx",
+			},
+			wantErr: false,
+		},
+		"both the 'enforcerID' and 'ID' fields have been left omitted": {
+			report: &EnforcerReport{
+				EnforcerID: "",
+				ID:         "",
+			},
+			wantErr: true,
+		},
+		"both the 'enforcerID' and 'ID' fields have been provided": {
+			report: &EnforcerReport{
+				EnforcerID: "xxx-xxx-xxx-xxx",
+				ID:         "xxx-xxx-xxx-xxx",
+			},
+			wantErr: true,
+		},
+	}
+
+	for description, scenario := range tests {
+		t.Run(description, func(t *testing.T) {
+			var err error
+			if err = ValidateEnforcerReport(scenario.report); (err != nil) != scenario.wantErr {
+				t.Errorf("TestValidateEnforcerReport_IDFieldCompatibility() error = %s, expected an error? %t", err, scenario.wantErr)
+			}
+
+			// verify that ONLY the `EnforcerID` field is populated so the backend processors do not need to worry about
+			// dealing with the 'ID' field being set
+			if err == nil {
+				if scenario.report.ID != "" {
+					t.Errorf("Validation passed, but the report's 'ID' field was NOT reset. It contained the value: %s", scenario.report.ID)
+				}
+
+				if scenario.report.EnforcerID == "" {
+					t.Error("Validation passed, but the report's 'enforcerID' field was empty")
+				}
 			}
 		})
 	}
@@ -1780,53 +1932,6 @@ func TestValidateHostService(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := ValidateHostServices(tt.hs); (err != nil) != tt.wantErr {
 				t.Errorf("TestValidateHostServicesList() error = %v, wantErr %v", err, tt.wantErr)
-			}
-		})
-	}
-}
-
-func TestValidateProtoPorts(t *testing.T) {
-	tests := []struct {
-		name     string
-		services []string
-		wantErr  bool
-	}{
-		{
-			"valid services",
-			[]string{"tcp/80", "udp/80"},
-			false,
-		},
-		{
-			"invalid protocol",
-			[]string{"tcp/80", "bro/80"},
-			true,
-		},
-		{
-			"invalid port format",
-			[]string{"tcp/80", "bro/code"},
-			true,
-		},
-		{
-			"invalid port number",
-			[]string{"tcp/80", "bro/10000"},
-			true,
-		},
-		{
-			"nil services",
-			nil,
-			false,
-		},
-		{
-			"empty services",
-			[]string{},
-			false,
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if err := ValidateProtoPorts("ports", tt.services); (err != nil) != tt.wantErr {
-				t.Errorf("TestValidateProtoPorts() error = %v, wantErr %v", err, tt.wantErr)
 			}
 		})
 	}

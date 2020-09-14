@@ -4051,6 +4051,10 @@ func init() {
 						Name: "archived",
 						Type: "boolean",
 					},
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
 				},
 			},
 		},
@@ -4091,6 +4095,10 @@ func init() {
 					},
 					{
 						Name: "archived",
+						Type: "boolean",
+					},
+					{
+						Name: "propagated",
 						Type: "boolean",
 					},
 				},
@@ -4134,6 +4142,10 @@ func init() {
 					},
 					{
 						Name: "archived",
+						Type: "boolean",
+					},
+					{
+						Name: "propagated",
 						Type: "boolean",
 					},
 				},
@@ -4501,6 +4513,12 @@ func init() {
 					},
 				},
 			},
+		},
+	}
+
+	relationshipsRegistry[TenantIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
 		},
 	}
 

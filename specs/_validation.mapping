@@ -30,6 +30,10 @@ $enforcerprofile:
   elemental:
     name: ValidateEnforcerProfile
 
+$enforcerreport:
+  elemental:
+    name: ValidateEnforcerReport
+
 $hookpolicy:
   elemental:
     name: ValidateHookPolicy
@@ -53,10 +57,6 @@ $identity:
 $metadata:
   elemental:
     name: ValidateMetadata
-
-$networkorhostname:
-  elemental:
-    name: ValidateNetworkOrHostname
 
 $networksorhostnames:
   elemental:
@@ -105,10 +105,6 @@ $protocol:
 $protocols:
   elemental:
     name: ValidateProtocolList
-
-$protoports:
-  elemental:
-    name: ValidateProtoPorts
 
 $samlprovider:
   elemental:

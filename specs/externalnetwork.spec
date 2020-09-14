@@ -7,7 +7,12 @@ model:
   group: policy/networking
   description: |-
     An external network represents a random network or IP address that is not
+<<<<<<< HEAD
     managed by Microsegmentation. External networks can be used in network policies to
+=======
+    managed by Microsegmentation. External networks can be used in network policies
+    to
+>>>>>>> origin/master
     allow traffic from or to the declared network or IP, using the provided
     protocol and port (or range of ports). If you want to describe the internet
     (i.e., anywhere), use `0.0.0.0/0` as the address and `1-65000` for the ports.
@@ -58,32 +63,16 @@ attributes:
     validations:
     - $networksorhostnames
 
-  - name: ports
-    description: List of single ports or range (xx:yy).
-    type: list
-    exposed: true
-    subtype: string
-    stored: true
-    deprecated: true
-    validations:
-    - $ports
-
-  - name: protocols
-    description: List of protocols (`tcp`, `udp`, or protocol number).
-    type: list
-    exposed: true
-    subtype: string
-    stored: true
-    deprecated: true
-    validations:
-    - $protocols
-
   - name: servicePorts
     description: List of protocol/ports `(tcp/80)` or `(udp/80:100)`.
     type: list
     exposed: true
     subtype: string
     stored: true
+    required: true
+    example_value:
+    - tcp/80
+    - udp/80:100
     validations:
     - $serviceports
 

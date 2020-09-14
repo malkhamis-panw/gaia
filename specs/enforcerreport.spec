@@ -6,6 +6,13 @@ model:
   package: zack
   group: core/enforcer
   description: Post a new Defender statistics report.
+<<<<<<< HEAD
+=======
+  extends:
+  - '@identifiable-stored'
+  validations:
+  - $enforcerreport
+>>>>>>> origin/master
 
 # Attributes
 attributes:
@@ -16,11 +23,14 @@ attributes:
     exposed: true
     example_value: 10
 
+<<<<<<< HEAD
   - name: ID
+=======
+  - name: enforcerID
+>>>>>>> origin/master
     description: ID of the Defender.
     type: string
     exposed: true
-    required: true
     example_value: xxx-xxx-xxx-xxx
 
   - name: memory

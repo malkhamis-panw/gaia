@@ -783,6 +783,7 @@ relations:
     global_parameters:
     - $filtering
     - $archivable
+    - $propagatable
   create:
     description: Creates a new service.
 
@@ -886,6 +887,10 @@ relations:
         type: string
         multiple: true
         example_value: $name
+
+- rest_name: tenant
+  create:
+    description: Creates the tenant's namespace and API authorization policy.
 
 - rest_name: token
   create:

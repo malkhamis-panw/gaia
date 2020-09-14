@@ -78,9 +78,8 @@ attributes:
     - AzureIdentityToken
     - OIDC
     - SAML
-    - PCC
-    - PCCIdentityToken
     - AporetoIdentityToken
+    - PCIdentityToken
     example_value: Vince
 
   - name: restrictedNamespace
