@@ -114,10 +114,10 @@ type PacketReport struct {
 	// Set to `true` if the packet was encrypted.
 	Encrypt bool `json:"encrypt" msgpack:"encrypt" bson:"encrypt" mapstructure:"encrypt,omitempty"`
 
-	// Identifier of the Defender sending the report.
+	// Identifier of the enforcer sending the report.
 	EnforcerID string `json:"enforcerID" msgpack:"enforcerID" bson:"enforcerid" mapstructure:"enforcerID,omitempty"`
 
-	// Namespace of the Defender sending the report.
+	// Namespace of the enforcer sending the report.
 	EnforcerNamespace string `json:"enforcerNamespace" msgpack:"enforcerNamespace" bson:"enforcernamespace" mapstructure:"enforcerNamespace,omitempty"`
 
 	// The event that triggered the report.
@@ -640,7 +640,7 @@ Otherwise empty.`,
 	"EnforcerID": {
 		AllowedChoices: []string{},
 		ConvertedName:  "EnforcerID",
-		Description:    `Identifier of the Defender sending the report.`,
+		Description:    `Identifier of the enforcer sending the report.`,
 		Exposed:        true,
 		Name:           "enforcerID",
 		Required:       true,
@@ -650,7 +650,7 @@ Otherwise empty.`,
 	"EnforcerNamespace": {
 		AllowedChoices: []string{},
 		ConvertedName:  "EnforcerNamespace",
-		Description:    `Namespace of the Defender sending the report.`,
+		Description:    `Namespace of the enforcer sending the report.`,
 		Exposed:        true,
 		Name:           "enforcerNamespace",
 		Required:       true,
@@ -779,6 +779,7 @@ Otherwise empty.`,
 var PacketReportLowerCaseAttributesMap = map[string]elemental.AttributeSpecification{
 	"tcpflags": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "tcpflags",
 		ConvertedName:  "TCPFlags",
 		Description:    `Flags are the TCP flags of the packet.`,
 		Exposed:        true,
@@ -788,6 +789,7 @@ var PacketReportLowerCaseAttributesMap = map[string]elemental.AttributeSpecifica
 	},
 	"claims": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "claims",
 		ConvertedName:  "Claims",
 		Description:    `Claims is the list of claims detected for the packet.`,
 		Exposed:        true,
@@ -798,6 +800,7 @@ var PacketReportLowerCaseAttributesMap = map[string]elemental.AttributeSpecifica
 	},
 	"destinationip": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "destinationip",
 		ConvertedName:  "DestinationIP",
 		Description:    `The destination IP address of the packet.`,
 		Exposed:        true,
@@ -807,6 +810,7 @@ var PacketReportLowerCaseAttributesMap = map[string]elemental.AttributeSpecifica
 	},
 	"destinationport": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "destinationport",
 		ConvertedName:  "DestinationPort",
 		Description:    `The destination port of a TCP or UDP packet.`,
 		Exposed:        true,
@@ -817,6 +821,7 @@ var PacketReportLowerCaseAttributesMap = map[string]elemental.AttributeSpecifica
 	},
 	"dropreason": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "dropreason",
 		ConvertedName:  "DropReason",
 		Description: `If ` + "`" + `event` + "`" + ` is set to ` + "`" + `Dropped` + "`" + `, contains the reason that the packet was dropped.
 Otherwise empty.`,
@@ -827,6 +832,7 @@ Otherwise empty.`,
 	},
 	"encrypt": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "encrypt",
 		ConvertedName:  "Encrypt",
 		Description:    `Set to ` + "`" + `true` + "`" + ` if the packet was encrypted.`,
 		Exposed:        true,
@@ -836,8 +842,9 @@ Otherwise empty.`,
 	},
 	"enforcerid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "enforcerid",
 		ConvertedName:  "EnforcerID",
-		Description:    `Identifier of the Defender sending the report.`,
+		Description:    `Identifier of the enforcer sending the report.`,
 		Exposed:        true,
 		Name:           "enforcerID",
 		Required:       true,
@@ -846,8 +853,9 @@ Otherwise empty.`,
 	},
 	"enforcernamespace": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "enforcernamespace",
 		ConvertedName:  "EnforcerNamespace",
-		Description:    `Namespace of the Defender sending the report.`,
+		Description:    `Namespace of the enforcer sending the report.`,
 		Exposed:        true,
 		Name:           "enforcerNamespace",
 		Required:       true,
@@ -865,6 +873,7 @@ Otherwise empty.`,
 	},
 	"length": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "length",
 		ConvertedName:  "Length",
 		Description:    `Length is the length of the packet.`,
 		MaxValue:       65536,
@@ -874,6 +883,7 @@ Otherwise empty.`,
 	},
 	"mark": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "mark",
 		ConvertedName:  "Mark",
 		Description:    `Mark is the mark value of the packet.`,
 		Exposed:        true,
@@ -883,6 +893,7 @@ Otherwise empty.`,
 	},
 	"namespace": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "namespace",
 		ConvertedName:  "Namespace",
 		Description:    `Namespace of the processing unit reporting the packet.`,
 		Exposed:        true,
@@ -894,6 +905,7 @@ Otherwise empty.`,
 	},
 	"packetid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "packetid",
 		ConvertedName:  "PacketID",
 		Description:    `The ID of the IP header of the reported packet.`,
 		Exposed:        true,
@@ -903,6 +915,7 @@ Otherwise empty.`,
 	},
 	"protocol": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "protocol",
 		ConvertedName:  "Protocol",
 		Description:    `Protocol number.`,
 		Exposed:        true,
@@ -913,6 +926,7 @@ Otherwise empty.`,
 	},
 	"puid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "puid",
 		ConvertedName:  "PuID",
 		Description:    `The ID of the processing unit reporting the packet.`,
 		Exposed:        true,
@@ -923,6 +937,7 @@ Otherwise empty.`,
 	},
 	"rawpacket": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "rawpacket",
 		ConvertedName:  "RawPacket",
 		DefaultValue:   "abcd",
 		Description:    `The first 64 bytes of the packet.`,
@@ -933,6 +948,7 @@ Otherwise empty.`,
 	},
 	"sourceip": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "sourceip",
 		ConvertedName:  "SourceIP",
 		Description:    `The source IP address of the packet.`,
 		Exposed:        true,
@@ -942,6 +958,7 @@ Otherwise empty.`,
 	},
 	"sourceport": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "sourceport",
 		ConvertedName:  "SourcePort",
 		Description:    `The source port of the packet.`,
 		Exposed:        true,
@@ -952,6 +969,7 @@ Otherwise empty.`,
 	},
 	"timestamp": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "timestamp",
 		ConvertedName:  "Timestamp",
 		Description:    `The time-date stamp of the report.`,
 		Exposed:        true,
@@ -962,6 +980,7 @@ Otherwise empty.`,
 	},
 	"triremepacket": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "triremepacket",
 		ConvertedName:  "TriremePacket",
 		DefaultValue:   true,
 		Description:    `Set to ` + "`" + `true` + "`" + ` if the packet arrived with the Trireme options (default).`,
@@ -1054,10 +1073,10 @@ type SparsePacketReport struct {
 	// Set to `true` if the packet was encrypted.
 	Encrypt *bool `json:"encrypt,omitempty" msgpack:"encrypt,omitempty" bson:"encrypt,omitempty" mapstructure:"encrypt,omitempty"`
 
-	// Identifier of the Defender sending the report.
+	// Identifier of the enforcer sending the report.
 	EnforcerID *string `json:"enforcerID,omitempty" msgpack:"enforcerID,omitempty" bson:"enforcerid,omitempty" mapstructure:"enforcerID,omitempty"`
 
-	// Namespace of the Defender sending the report.
+	// Namespace of the enforcer sending the report.
 	EnforcerNamespace *string `json:"enforcerNamespace,omitempty" msgpack:"enforcerNamespace,omitempty" bson:"enforcernamespace,omitempty" mapstructure:"enforcerNamespace,omitempty"`
 
 	// The event that triggered the report.

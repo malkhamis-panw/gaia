@@ -169,11 +169,11 @@ type ProcessingUnit struct {
 	// List of tags attached to an entity.
 	AssociatedTags []string `json:"associatedTags" msgpack:"associatedTags" bson:"associatedtags" mapstructure:"associatedTags,omitempty"`
 
-	// A value of `true` indicates to the Defender that it needs to collect information
+	// A value of `true` indicates to the enforcer that it needs to collect information
 	// for this processing unit.
 	CollectInfo bool `json:"collectInfo" msgpack:"collectInfo" bson:"collectinfo" mapstructure:"collectInfo,omitempty"`
 
-	// Represents the latest information collected by the Defender for this processing
+	// Represents the latest information collected by the enforcer for this processing
 	// unit.
 	CollectedInfo map[string]string `json:"collectedInfo" msgpack:"collectedInfo" bson:"collectedinfo" mapstructure:"collectedInfo,omitempty"`
 
@@ -188,25 +188,25 @@ type ProcessingUnit struct {
 	CreateTime time.Time `json:"createTime" msgpack:"createTime" bson:"createtime" mapstructure:"createTime,omitempty"`
 
 	// The datapath type that processing units are implementing:
-	// - `Aporeto`: The Defender is managing and handling the datapath.
-	// - `EnvoyAuthorizer`: The Defender is serving Envoy-compatible gRPC APIs
+	// - `Aporeto`: The enforcer is managing and handling the datapath.
+	// - `EnvoyAuthorizer`: The enforcer is serving Envoy-compatible gRPC APIs
 	// that for example can be used by an Envoy proxy to use the Microsegmentation PKI
-	// and implement Microsegmentation network policies. NOTE: The Defender is not
+	// and implement Microsegmentation network policies. NOTE: The enforcer is not
 	// owning the datapath in this case. It is merely providing an authorizer API.
 	DatapathType ProcessingUnitDatapathTypeValue `json:"datapathType" msgpack:"datapathType" bson:"datapathtype" mapstructure:"datapathType,omitempty"`
 
 	// Description of the object.
 	Description string `json:"description" msgpack:"description" bson:"description" mapstructure:"description,omitempty"`
 
-	// Contains the state of the Defender for the processing unit. `Inactive`
-	// (default): the Defender is not enforcing any host service. `Active`: the
-	// Defender is enforcing a host service. `Failed`.
+	// Contains the state of the enforcer for the processing unit. `Inactive`
+	// (default): the enforcer is not enforcing any host service. `Active`: the
+	// enforcer is enforcing a host service. `Failed`.
 	EnforcementStatus ProcessingUnitEnforcementStatusValue `json:"enforcementStatus" msgpack:"enforcementStatus" bson:"enforcementstatus" mapstructure:"enforcementStatus,omitempty"`
 
-	// The ID of the Defender associated with the processing unit.
+	// The ID of the enforcer associated with the processing unit.
 	EnforcerID string `json:"enforcerID" msgpack:"enforcerID" bson:"enforcerid" mapstructure:"enforcerID,omitempty"`
 
-	// The namespace of the Defender associated with the processing unit.
+	// The namespace of the enforcer associated with the processing unit.
 	EnforcerNamespace string `json:"enforcerNamespace" msgpack:"enforcerNamespace" bson:"enforcernamespace" mapstructure:"enforcerNamespace,omitempty"`
 
 	// This field is deprecated and it is there for backward compatibility. Use
@@ -227,7 +227,7 @@ type ProcessingUnit struct {
 	Metadata []string `json:"metadata" msgpack:"metadata" bson:"metadata" mapstructure:"metadata,omitempty"`
 
 	// Internal property maintaining migrations information.
-	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog" mapstructure:"-,omitempty"`
+	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
 	// Name of the entity.
 	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
@@ -1151,7 +1151,7 @@ var ProcessingUnitAttributesMap = map[string]elemental.AttributeSpecification{
 	"CollectInfo": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CollectInfo",
-		Description: `A value of ` + "`" + `true` + "`" + ` indicates to the Defender that it needs to collect information
+		Description: `A value of ` + "`" + `true` + "`" + ` indicates to the enforcer that it needs to collect information
 for this processing unit.`,
 		Exposed: true,
 		Name:    "collectInfo",
@@ -1161,7 +1161,7 @@ for this processing unit.`,
 	"CollectedInfo": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CollectedInfo",
-		Description: `Represents the latest information collected by the Defender for this processing
+		Description: `Represents the latest information collected by the enforcer for this processing
 unit.`,
 		Exposed: true,
 		Name:    "collectedInfo",
@@ -1217,10 +1217,10 @@ useful when federating multiple Microsegmentation Consoles.`,
 		ConvertedName:  "DatapathType",
 		DefaultValue:   ProcessingUnitDatapathTypeAporeto,
 		Description: `The datapath type that processing units are implementing:
-- ` + "`" + `Aporeto` + "`" + `: The Defender is managing and handling the datapath.
-- ` + "`" + `EnvoyAuthorizer` + "`" + `: The Defender is serving Envoy-compatible gRPC APIs
+- ` + "`" + `Aporeto` + "`" + `: The enforcer is managing and handling the datapath.
+- ` + "`" + `EnvoyAuthorizer` + "`" + `: The enforcer is serving Envoy-compatible gRPC APIs
 that for example can be used by an Envoy proxy to use the Microsegmentation PKI
-and implement Microsegmentation network policies. NOTE: The Defender is not
+and implement Microsegmentation network policies. NOTE: The enforcer is not
 owning the datapath in this case. It is merely providing an authorizer API.`,
 		Exposed:    true,
 		Filterable: true,
@@ -1245,9 +1245,9 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		AllowedChoices: []string{"Active", "Failed", "Inactive"},
 		ConvertedName:  "EnforcementStatus",
 		DefaultValue:   ProcessingUnitEnforcementStatusInactive,
-		Description: `Contains the state of the Defender for the processing unit. ` + "`" + `Inactive` + "`" + `
-(default): the Defender is not enforcing any host service. ` + "`" + `Active` + "`" + `: the 
-Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
+		Description: `Contains the state of the enforcer for the processing unit. ` + "`" + `Inactive` + "`" + `
+(default): the enforcer is not enforcing any host service. ` + "`" + `Active` + "`" + `: the 
+enforcer is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 		Exposed:    true,
 		Filterable: true,
 		Name:       "enforcementStatus",
@@ -1257,7 +1257,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	"EnforcerID": {
 		AllowedChoices: []string{},
 		ConvertedName:  "EnforcerID",
-		Description:    `The ID of the Defender associated with the processing unit.`,
+		Description:    `The ID of the enforcer associated with the processing unit.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "enforcerID",
@@ -1267,7 +1267,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	"EnforcerNamespace": {
 		AllowedChoices: []string{},
 		ConvertedName:  "EnforcerNamespace",
-		Description:    `The namespace of the Defender associated with the processing unit.`,
+		Description:    `The namespace of the enforcer associated with the processing unit.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "enforcerNamespace",
@@ -1539,6 +1539,7 @@ var ProcessingUnitLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 	"id": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "_id",
 		ConvertedName:  "ID",
 		Description:    `Identifier of the object.`,
 		Exposed:        true,
@@ -1552,6 +1553,7 @@ var ProcessingUnitLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 	},
 	"annotations": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "annotations",
 		ConvertedName:  "Annotations",
 		Description:    `Stores additional information about an entity.`,
 		Exposed:        true,
@@ -1564,6 +1566,7 @@ var ProcessingUnitLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 	},
 	"archived": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "archived",
 		ConvertedName:  "Archived",
 		Description:    `Defines if the object is archived.`,
 		Getter:         true,
@@ -1574,6 +1577,7 @@ var ProcessingUnitLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 	},
 	"associatedtags": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "associatedtags",
 		ConvertedName:  "AssociatedTags",
 		Description:    `List of tags attached to an entity.`,
 		Exposed:        true,
@@ -1586,8 +1590,9 @@ var ProcessingUnitLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 	},
 	"collectinfo": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "collectinfo",
 		ConvertedName:  "CollectInfo",
-		Description: `A value of ` + "`" + `true` + "`" + ` indicates to the Defender that it needs to collect information
+		Description: `A value of ` + "`" + `true` + "`" + ` indicates to the enforcer that it needs to collect information
 for this processing unit.`,
 		Exposed: true,
 		Name:    "collectInfo",
@@ -1596,8 +1601,9 @@ for this processing unit.`,
 	},
 	"collectedinfo": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "collectedinfo",
 		ConvertedName:  "CollectedInfo",
-		Description: `Represents the latest information collected by the Defender for this processing
+		Description: `Represents the latest information collected by the enforcer for this processing
 unit.`,
 		Exposed: true,
 		Name:    "collectedInfo",
@@ -1608,6 +1614,7 @@ unit.`,
 	"controller": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "controller",
 		ConvertedName:  "Controller",
 		Description: `The Microsegmentation Console identifier managing this object. This property is mostly
 useful when federating multiple Microsegmentation Consoles.`,
@@ -1625,6 +1632,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"createidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createidempotencykey",
 		ConvertedName:  "CreateIdempotencyKey",
 		Description:    `internal idempotency key for a create operation.`,
 		Getter:         true,
@@ -1637,6 +1645,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"createtime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createtime",
 		ConvertedName:  "CreateTime",
 		Description:    `Creation date of the object.`,
 		Exposed:        true,
@@ -1650,13 +1659,14 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"datapathtype": {
 		AllowedChoices: []string{"Aporeto", "EnvoyAuthorizer"},
+		BSONFieldName:  "datapathtype",
 		ConvertedName:  "DatapathType",
 		DefaultValue:   ProcessingUnitDatapathTypeAporeto,
 		Description: `The datapath type that processing units are implementing:
-- ` + "`" + `Aporeto` + "`" + `: The Defender is managing and handling the datapath.
-- ` + "`" + `EnvoyAuthorizer` + "`" + `: The Defender is serving Envoy-compatible gRPC APIs
+- ` + "`" + `Aporeto` + "`" + `: The enforcer is managing and handling the datapath.
+- ` + "`" + `EnvoyAuthorizer` + "`" + `: The enforcer is serving Envoy-compatible gRPC APIs
 that for example can be used by an Envoy proxy to use the Microsegmentation PKI
-and implement Microsegmentation network policies. NOTE: The Defender is not
+and implement Microsegmentation network policies. NOTE: The enforcer is not
 owning the datapath in this case. It is merely providing an authorizer API.`,
 		Exposed:    true,
 		Filterable: true,
@@ -1666,6 +1676,7 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 	},
 	"description": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "description",
 		ConvertedName:  "Description",
 		Description:    `Description of the object.`,
 		Exposed:        true,
@@ -1679,11 +1690,12 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 	},
 	"enforcementstatus": {
 		AllowedChoices: []string{"Active", "Failed", "Inactive"},
+		BSONFieldName:  "enforcementstatus",
 		ConvertedName:  "EnforcementStatus",
 		DefaultValue:   ProcessingUnitEnforcementStatusInactive,
-		Description: `Contains the state of the Defender for the processing unit. ` + "`" + `Inactive` + "`" + `
-(default): the Defender is not enforcing any host service. ` + "`" + `Active` + "`" + `: the 
-Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
+		Description: `Contains the state of the enforcer for the processing unit. ` + "`" + `Inactive` + "`" + `
+(default): the enforcer is not enforcing any host service. ` + "`" + `Active` + "`" + `: the 
+enforcer is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 		Exposed:    true,
 		Filterable: true,
 		Name:       "enforcementStatus",
@@ -1692,8 +1704,9 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	},
 	"enforcerid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "enforcerid",
 		ConvertedName:  "EnforcerID",
-		Description:    `The ID of the Defender associated with the processing unit.`,
+		Description:    `The ID of the enforcer associated with the processing unit.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "enforcerID",
@@ -1702,8 +1715,9 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	},
 	"enforcernamespace": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "enforcernamespace",
 		ConvertedName:  "EnforcerNamespace",
-		Description:    `The namespace of the Defender associated with the processing unit.`,
+		Description:    `The namespace of the enforcer associated with the processing unit.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "enforcerNamespace",
@@ -1722,6 +1736,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	},
 	"images": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "images",
 		ConvertedName:  "Images",
 		CreationOnly:   true,
 		Description:    `List of images or executable paths used by the processing unit.`,
@@ -1734,6 +1749,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	},
 	"lastcollectiontime": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "lastcollectiontime",
 		ConvertedName:  "LastCollectionTime",
 		Description:    `The date and time when the information was collected.`,
 		Exposed:        true,
@@ -1744,6 +1760,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	"lastsynctime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "lastsynctime",
 		ConvertedName:  "LastSyncTime",
 		Description:    `The date and time of the last policy resolution.`,
 		Exposed:        true,
@@ -1754,6 +1771,7 @@ Defender is enforcing a host service. ` + "`" + `Failed` + "`" + `.`,
 	},
 	"metadata": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "metadata",
 		ConvertedName:  "Metadata",
 		CreationOnly:   true,
 		Description: `Contains tags that can only be set during creation, must all start
@@ -1769,6 +1787,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"migrationslog": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "migrationslog",
 		ConvertedName:  "MigrationsLog",
 		Description:    `Internal property maintaining migrations information.`,
 		Getter:         true,
@@ -1780,6 +1799,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"name": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "name",
 		ConvertedName:  "Name",
 		Description:    `Name of the entity.`,
 		Exposed:        true,
@@ -1796,6 +1816,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"namespace": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "namespace",
 		ConvertedName:  "Namespace",
 		Description:    `Namespace tag attached to an entity.`,
 		Exposed:        true,
@@ -1810,6 +1831,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"nativecontextid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "nativecontextid",
 		ConvertedName:  "NativeContextID",
 		Description:    `The Docker UUID or service PID.`,
 		Exposed:        true,
@@ -1819,6 +1841,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"networkservices": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "networkservices",
 		ConvertedName:  "NetworkServices",
 		Description: `The list of services that this processing unit has declared that it will be
 listening to,
@@ -1834,6 +1857,7 @@ manifest.`,
 	"normalizedtags": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "normalizedtags",
 		ConvertedName:  "NormalizedTags",
 		Description:    `Contains the list of normalized tags of the entities.`,
 		Exposed:        true,
@@ -1848,6 +1872,7 @@ manifest.`,
 	},
 	"operationalstatus": {
 		AllowedChoices: []string{"Initialized", "Paused", "Running", "Stopped", "Terminated"},
+		BSONFieldName:  "operationalstatus",
 		ConvertedName:  "OperationalStatus",
 		DefaultValue:   ProcessingUnitOperationalStatusInitialized,
 		Description: `Operational status of the processing unit: ` + "`" + `Initialized` + "`" + ` (default), ` + "`" + `Paused` + "`" + `,
@@ -1861,6 +1886,7 @@ manifest.`,
 	},
 	"protected": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "protected",
 		ConvertedName:  "Protected",
 		Description:    `Defines if the object is protected.`,
 		Exposed:        true,
@@ -1882,6 +1908,7 @@ manifest.`,
 	},
 	"type": {
 		AllowedChoices: []string{"APIGateway", "Docker", "Host", "HostService", "LinuxService", "RKT", "User", "SSHSession"},
+		BSONFieldName:  "type",
 		ConvertedName:  "Type",
 		CreationOnly:   true,
 		Description: `Type of processing unit: ` + "`" + `APIGateway` + "`" + `, ` + "`" + `Docker` + "`" + `, ` + "`" + `Host` + "`" + `, ` + "`" + `HostService` + "`" + `,
@@ -1896,6 +1923,7 @@ manifest.`,
 	"updateidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updateidempotencykey",
 		ConvertedName:  "UpdateIdempotencyKey",
 		Description:    `internal idempotency key for a update operation.`,
 		Getter:         true,
@@ -1908,6 +1936,7 @@ manifest.`,
 	"updatetime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updatetime",
 		ConvertedName:  "UpdateTime",
 		Description:    `Last update date of the object.`,
 		Exposed:        true,
@@ -1921,6 +1950,7 @@ manifest.`,
 	},
 	"vulnerabilities": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "vulnerabilities",
 		ConvertedName:  "Vulnerabilities",
 		Description:    `List of vulnerabilities affecting this processing unit.`,
 		Filterable:     true,
@@ -1932,6 +1962,7 @@ manifest.`,
 	"vulnerabilitylevel": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "vulnerabilitylevel",
 		ConvertedName:  "VulnerabilityLevel",
 		Description:    `List of vulnerabilities affecting this processing unit.`,
 		Exposed:        true,
@@ -1945,6 +1976,7 @@ manifest.`,
 	"zhash": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zhash",
 		ConvertedName:  "ZHash",
 		Description: `geographical hash of the data. This is used for sharding and
 georedundancy.`,
@@ -1958,6 +1990,7 @@ georedundancy.`,
 	"zone": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zone",
 		ConvertedName:  "Zone",
 		Description:    `Logical storage zone. Used for sharding.`,
 		Getter:         true,
@@ -2047,11 +2080,11 @@ type SparseProcessingUnit struct {
 	// List of tags attached to an entity.
 	AssociatedTags *[]string `json:"associatedTags,omitempty" msgpack:"associatedTags,omitempty" bson:"associatedtags,omitempty" mapstructure:"associatedTags,omitempty"`
 
-	// A value of `true` indicates to the Defender that it needs to collect information
+	// A value of `true` indicates to the enforcer that it needs to collect information
 	// for this processing unit.
 	CollectInfo *bool `json:"collectInfo,omitempty" msgpack:"collectInfo,omitempty" bson:"collectinfo,omitempty" mapstructure:"collectInfo,omitempty"`
 
-	// Represents the latest information collected by the Defender for this processing
+	// Represents the latest information collected by the enforcer for this processing
 	// unit.
 	CollectedInfo *map[string]string `json:"collectedInfo,omitempty" msgpack:"collectedInfo,omitempty" bson:"collectedinfo,omitempty" mapstructure:"collectedInfo,omitempty"`
 
@@ -2066,25 +2099,25 @@ type SparseProcessingUnit struct {
 	CreateTime *time.Time `json:"createTime,omitempty" msgpack:"createTime,omitempty" bson:"createtime,omitempty" mapstructure:"createTime,omitempty"`
 
 	// The datapath type that processing units are implementing:
-	// - `Aporeto`: The Defender is managing and handling the datapath.
-	// - `EnvoyAuthorizer`: The Defender is serving Envoy-compatible gRPC APIs
+	// - `Aporeto`: The enforcer is managing and handling the datapath.
+	// - `EnvoyAuthorizer`: The enforcer is serving Envoy-compatible gRPC APIs
 	// that for example can be used by an Envoy proxy to use the Microsegmentation PKI
-	// and implement Microsegmentation network policies. NOTE: The Defender is not
+	// and implement Microsegmentation network policies. NOTE: The enforcer is not
 	// owning the datapath in this case. It is merely providing an authorizer API.
 	DatapathType *ProcessingUnitDatapathTypeValue `json:"datapathType,omitempty" msgpack:"datapathType,omitempty" bson:"datapathtype,omitempty" mapstructure:"datapathType,omitempty"`
 
 	// Description of the object.
 	Description *string `json:"description,omitempty" msgpack:"description,omitempty" bson:"description,omitempty" mapstructure:"description,omitempty"`
 
-	// Contains the state of the Defender for the processing unit. `Inactive`
-	// (default): the Defender is not enforcing any host service. `Active`: the
-	// Defender is enforcing a host service. `Failed`.
+	// Contains the state of the enforcer for the processing unit. `Inactive`
+	// (default): the enforcer is not enforcing any host service. `Active`: the
+	// enforcer is enforcing a host service. `Failed`.
 	EnforcementStatus *ProcessingUnitEnforcementStatusValue `json:"enforcementStatus,omitempty" msgpack:"enforcementStatus,omitempty" bson:"enforcementstatus,omitempty" mapstructure:"enforcementStatus,omitempty"`
 
-	// The ID of the Defender associated with the processing unit.
+	// The ID of the enforcer associated with the processing unit.
 	EnforcerID *string `json:"enforcerID,omitempty" msgpack:"enforcerID,omitempty" bson:"enforcerid,omitempty" mapstructure:"enforcerID,omitempty"`
 
-	// The namespace of the Defender associated with the processing unit.
+	// The namespace of the enforcer associated with the processing unit.
 	EnforcerNamespace *string `json:"enforcerNamespace,omitempty" msgpack:"enforcerNamespace,omitempty" bson:"enforcernamespace,omitempty" mapstructure:"enforcerNamespace,omitempty"`
 
 	// This field is deprecated and it is there for backward compatibility. Use

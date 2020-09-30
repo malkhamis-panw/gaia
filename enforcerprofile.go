@@ -143,21 +143,21 @@ type EnforcerProfile struct {
 	// agents.
 	IgnoreExpression [][]string `json:"ignoreExpression" msgpack:"ignoreExpression" bson:"ignoreexpression" mapstructure:"ignoreExpression,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	KubernetesMetadataExtractor EnforcerProfileKubernetesMetadataExtractorValue `json:"kubernetesMetadataExtractor" msgpack:"kubernetesMetadataExtractor" bson:"kubernetesmetadataextractor" mapstructure:"kubernetesMetadataExtractor,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	KubernetesSupportEnabled bool `json:"kubernetesSupportEnabled" msgpack:"kubernetesSupportEnabled" bson:"kubernetessupportenabled" mapstructure:"kubernetesSupportEnabled,omitempty"`
 
 	// Contains tags that can only be set during creation, must all start
 	// with the '@' prefix, and should only be used by external systems.
 	Metadata []string `json:"metadata" msgpack:"metadata" bson:"metadata" mapstructure:"metadata,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	MetadataExtractor EnforcerProfileMetadataExtractorValue `json:"metadataExtractor" msgpack:"metadataExtractor" bson:"metadataextractor" mapstructure:"metadataExtractor,omitempty"`
 
 	// Internal property maintaining migrations information.
-	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog" mapstructure:"-,omitempty"`
+	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
 	// Name of the entity.
 	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
@@ -174,14 +174,14 @@ type EnforcerProfile struct {
 	// Defines if the object is protected.
 	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
 
-	// If empty, the Defender auto-discovers the TCP networks. Auto-discovery
+	// If empty, the enforcer auto-discovers the TCP networks. Auto-discovery
 	// works best in Kubernetes and OpenShift deployments. You may need to manually
 	// specify the TCP networks if middle boxes exist that do not comply with
 	// [TCP Fast Open RFC 7413](https://tools.ietf.org/html/rfc7413).
 	TargetNetworks []string `json:"targetNetworks" msgpack:"targetNetworks" bson:"targetnetworks" mapstructure:"targetNetworks,omitempty"`
 
-	// If empty, the Defender enforces all UDP networks. This works best when all UDP
-	// networks have Defenders. If some UDP networks do not have Defenders, you
+	// If empty, the enforcer enforces all UDP networks. This works best when all UDP
+	// networks have enforcers. If some UDP networks do not have enforcers, you
 	// may need to manually specify the UDP networks that should be enforced.
 	TargetUDPNetworks []string `json:"targetUDPNetworks" msgpack:"targetUDPNetworks" bson:"targetudpnetworks" mapstructure:"targetUDPNetworks,omitempty"`
 
@@ -352,10 +352,10 @@ func (o *EnforcerProfile) DefaultOrder() []string {
 // Doc returns the documentation for the object
 func (o *EnforcerProfile) Doc() string {
 
-	return `Allows you to create reusable configuration profiles for your Defenders.
-Defender profiles contain various startup information that can (for some) 
-be updated live. Defender profiles are assigned to Defenders using a 
-Defender profile mapping.`
+	return `Allows you to create reusable configuration profiles for your enforcers.
+Enforcer profiles contain various startup information that can (for some) 
+be updated live. Enforcer profiles are assigned to enforcers using a 
+enforcer profile mapping.`
 }
 
 func (o *EnforcerProfile) String() string {
@@ -1018,7 +1018,7 @@ agents.`,
 		ConvertedName:  "KubernetesMetadataExtractor",
 		DefaultValue:   EnforcerProfileKubernetesMetadataExtractorPodAtomic,
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "kubernetesMetadataExtractor",
 		Stored:         true,
@@ -1028,7 +1028,7 @@ agents.`,
 		AllowedChoices: []string{},
 		ConvertedName:  "KubernetesSupportEnabled",
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "kubernetesSupportEnabled",
 		Stored:         true,
@@ -1054,7 +1054,7 @@ with the '@' prefix, and should only be used by external systems.`,
 		ConvertedName:  "MetadataExtractor",
 		DefaultValue:   EnforcerProfileMetadataExtractorDocker,
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "metadataExtractor",
 		Stored:         true,
@@ -1143,7 +1143,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"TargetNetworks": {
 		AllowedChoices: []string{},
 		ConvertedName:  "TargetNetworks",
-		Description: `If empty, the Defender auto-discovers the TCP networks. Auto-discovery
+		Description: `If empty, the enforcer auto-discovers the TCP networks. Auto-discovery
 works best in Kubernetes and OpenShift deployments. You may need to manually
 specify the TCP networks if middle boxes exist that do not comply with
 [TCP Fast Open RFC 7413](https://tools.ietf.org/html/rfc7413).`,
@@ -1157,8 +1157,8 @@ specify the TCP networks if middle boxes exist that do not comply with
 	"TargetUDPNetworks": {
 		AllowedChoices: []string{},
 		ConvertedName:  "TargetUDPNetworks",
-		Description: `If empty, the Defender enforces all UDP networks. This works best when all UDP
-networks have Defenders. If some UDP networks do not have Defenders, you
+		Description: `If empty, the enforcer enforces all UDP networks. This works best when all UDP
+networks have enforcers. If some UDP networks do not have enforcers, you
 may need to manually specify the UDP networks that should be enforced.`,
 		Exposed:   true,
 		Name:      "targetUDPNetworks",
@@ -1237,6 +1237,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	"id": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "_id",
 		ConvertedName:  "ID",
 		Description:    `Identifier of the object.`,
 		Exposed:        true,
@@ -1250,6 +1251,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	},
 	"annotations": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "annotations",
 		ConvertedName:  "Annotations",
 		Description:    `Stores additional information about an entity.`,
 		Exposed:        true,
@@ -1262,6 +1264,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	},
 	"associatedtags": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "associatedtags",
 		ConvertedName:  "AssociatedTags",
 		Description:    `List of tags attached to an entity.`,
 		Exposed:        true,
@@ -1275,6 +1278,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	"createidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createidempotencykey",
 		ConvertedName:  "CreateIdempotencyKey",
 		Description:    `internal idempotency key for a create operation.`,
 		Getter:         true,
@@ -1287,6 +1291,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	"createtime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createtime",
 		ConvertedName:  "CreateTime",
 		Description:    `Creation date of the object.`,
 		Exposed:        true,
@@ -1300,6 +1305,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	},
 	"description": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "description",
 		ConvertedName:  "Description",
 		Description:    `Description of the object.`,
 		Exposed:        true,
@@ -1313,6 +1319,7 @@ var EnforcerProfileLowerCaseAttributesMap = map[string]elemental.AttributeSpecif
 	},
 	"excludedinterfaces": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "excludedinterfaces",
 		ConvertedName:  "ExcludedInterfaces",
 		Description: `Ignore traffic with a source or destination matching the specified
 interfaces.`,
@@ -1325,6 +1332,7 @@ interfaces.`,
 	},
 	"excludednetworks": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "excludednetworks",
 		ConvertedName:  "ExcludedNetworks",
 		Description: `Ignore any networks specified here and do not even report any flows.
 This can be useful for excluding localhost loopback traffic, ignoring
@@ -1338,6 +1346,7 @@ traffic to the Kubernetes API, and using Microsegmentation for SSH only.`,
 	},
 	"ignoreexpression": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "ignoreexpression",
 		ConvertedName:  "IgnoreExpression",
 		Description: `A tag expression that identifies processing units to ignore. This can be
 useful to exclude ` + "`" + `kube-system` + "`" + ` pods, AWS EC2 agent pods, and third-party
@@ -1350,10 +1359,11 @@ agents.`,
 	},
 	"kubernetesmetadataextractor": {
 		AllowedChoices: []string{"KubeSquall", "PodAtomic", "PodContainers"},
+		BSONFieldName:  "kubernetesmetadataextractor",
 		ConvertedName:  "KubernetesMetadataExtractor",
 		DefaultValue:   EnforcerProfileKubernetesMetadataExtractorPodAtomic,
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "kubernetesMetadataExtractor",
 		Stored:         true,
@@ -1361,9 +1371,10 @@ agents.`,
 	},
 	"kubernetessupportenabled": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "kubernetessupportenabled",
 		ConvertedName:  "KubernetesSupportEnabled",
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "kubernetesSupportEnabled",
 		Stored:         true,
@@ -1371,6 +1382,7 @@ agents.`,
 	},
 	"metadata": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "metadata",
 		ConvertedName:  "Metadata",
 		CreationOnly:   true,
 		Description: `Contains tags that can only be set during creation, must all start
@@ -1386,10 +1398,11 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"metadataextractor": {
 		AllowedChoices: []string{"Docker", "ECS", "Kubernetes"},
+		BSONFieldName:  "metadataextractor",
 		ConvertedName:  "MetadataExtractor",
 		DefaultValue:   EnforcerProfileMetadataExtractorDocker,
 		Deprecated:     true,
-		Description:    `This field is kept for backward compatibility for Defenders <= 3.5.`,
+		Description:    `This field is kept for backward compatibility for enforcers <= 3.5.`,
 		Exposed:        true,
 		Name:           "metadataExtractor",
 		Stored:         true,
@@ -1397,6 +1410,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"migrationslog": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "migrationslog",
 		ConvertedName:  "MigrationsLog",
 		Description:    `Internal property maintaining migrations information.`,
 		Getter:         true,
@@ -1408,6 +1422,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"name": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "name",
 		ConvertedName:  "Name",
 		Description:    `Name of the entity.`,
 		Exposed:        true,
@@ -1424,6 +1439,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"namespace": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "namespace",
 		ConvertedName:  "Namespace",
 		Description:    `Namespace tag attached to an entity.`,
 		Exposed:        true,
@@ -1439,6 +1455,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"normalizedtags": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "normalizedtags",
 		ConvertedName:  "NormalizedTags",
 		Description:    `Contains the list of normalized tags of the entities.`,
 		Exposed:        true,
@@ -1453,6 +1470,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"propagate": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "propagate",
 		ConvertedName:  "Propagate",
 		Description:    `Propagates the policy to all of its children.`,
 		Exposed:        true,
@@ -1465,6 +1483,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"protected": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "protected",
 		ConvertedName:  "Protected",
 		Description:    `Defines if the object is protected.`,
 		Exposed:        true,
@@ -1477,8 +1496,9 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"targetnetworks": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "targetnetworks",
 		ConvertedName:  "TargetNetworks",
-		Description: `If empty, the Defender auto-discovers the TCP networks. Auto-discovery
+		Description: `If empty, the enforcer auto-discovers the TCP networks. Auto-discovery
 works best in Kubernetes and OpenShift deployments. You may need to manually
 specify the TCP networks if middle boxes exist that do not comply with
 [TCP Fast Open RFC 7413](https://tools.ietf.org/html/rfc7413).`,
@@ -1491,9 +1511,10 @@ specify the TCP networks if middle boxes exist that do not comply with
 	},
 	"targetudpnetworks": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "targetudpnetworks",
 		ConvertedName:  "TargetUDPNetworks",
-		Description: `If empty, the Defender enforces all UDP networks. This works best when all UDP
-networks have Defenders. If some UDP networks do not have Defenders, you
+		Description: `If empty, the enforcer enforces all UDP networks. This works best when all UDP
+networks have enforcers. If some UDP networks do not have enforcers, you
 may need to manually specify the UDP networks that should be enforced.`,
 		Exposed:   true,
 		Name:      "targetUDPNetworks",
@@ -1504,6 +1525,7 @@ may need to manually specify the UDP networks that should be enforced.`,
 	},
 	"trustedcas": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "trustedcas",
 		ConvertedName:  "TrustedCAs",
 		Description: `List of trusted certificate authorities. If empty, the main chain of trust
 will be used.`,
@@ -1516,6 +1538,7 @@ will be used.`,
 	"updateidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updateidempotencykey",
 		ConvertedName:  "UpdateIdempotencyKey",
 		Description:    `internal idempotency key for a update operation.`,
 		Getter:         true,
@@ -1528,6 +1551,7 @@ will be used.`,
 	"updatetime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updatetime",
 		ConvertedName:  "UpdateTime",
 		Description:    `Last update date of the object.`,
 		Exposed:        true,
@@ -1542,6 +1566,7 @@ will be used.`,
 	"zhash": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zhash",
 		ConvertedName:  "ZHash",
 		Description: `geographical hash of the data. This is used for sharding and
 georedundancy.`,
@@ -1555,6 +1580,7 @@ georedundancy.`,
 	"zone": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zone",
 		ConvertedName:  "Zone",
 		Description:    `Logical storage zone. Used for sharding.`,
 		Getter:         true,
@@ -1664,17 +1690,17 @@ type SparseEnforcerProfile struct {
 	// agents.
 	IgnoreExpression *[][]string `json:"ignoreExpression,omitempty" msgpack:"ignoreExpression,omitempty" bson:"ignoreexpression,omitempty" mapstructure:"ignoreExpression,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	KubernetesMetadataExtractor *EnforcerProfileKubernetesMetadataExtractorValue `json:"kubernetesMetadataExtractor,omitempty" msgpack:"kubernetesMetadataExtractor,omitempty" bson:"kubernetesmetadataextractor,omitempty" mapstructure:"kubernetesMetadataExtractor,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	KubernetesSupportEnabled *bool `json:"kubernetesSupportEnabled,omitempty" msgpack:"kubernetesSupportEnabled,omitempty" bson:"kubernetessupportenabled,omitempty" mapstructure:"kubernetesSupportEnabled,omitempty"`
 
 	// Contains tags that can only be set during creation, must all start
 	// with the '@' prefix, and should only be used by external systems.
 	Metadata *[]string `json:"metadata,omitempty" msgpack:"metadata,omitempty" bson:"metadata,omitempty" mapstructure:"metadata,omitempty"`
 
-	// This field is kept for backward compatibility for Defenders <= 3.5.
+	// This field is kept for backward compatibility for enforcers <= 3.5.
 	MetadataExtractor *EnforcerProfileMetadataExtractorValue `json:"metadataExtractor,omitempty" msgpack:"metadataExtractor,omitempty" bson:"metadataextractor,omitempty" mapstructure:"metadataExtractor,omitempty"`
 
 	// Internal property maintaining migrations information.
@@ -1695,14 +1721,14 @@ type SparseEnforcerProfile struct {
 	// Defines if the object is protected.
 	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
 
-	// If empty, the Defender auto-discovers the TCP networks. Auto-discovery
+	// If empty, the enforcer auto-discovers the TCP networks. Auto-discovery
 	// works best in Kubernetes and OpenShift deployments. You may need to manually
 	// specify the TCP networks if middle boxes exist that do not comply with
 	// [TCP Fast Open RFC 7413](https://tools.ietf.org/html/rfc7413).
 	TargetNetworks *[]string `json:"targetNetworks,omitempty" msgpack:"targetNetworks,omitempty" bson:"targetnetworks,omitempty" mapstructure:"targetNetworks,omitempty"`
 
-	// If empty, the Defender enforces all UDP networks. This works best when all UDP
-	// networks have Defenders. If some UDP networks do not have Defenders, you
+	// If empty, the enforcer enforces all UDP networks. This works best when all UDP
+	// networks have enforcers. If some UDP networks do not have enforcers, you
 	// may need to manually specify the UDP networks that should be enforced.
 	TargetUDPNetworks *[]string `json:"targetUDPNetworks,omitempty" msgpack:"targetUDPNetworks,omitempty" bson:"targetudpnetworks,omitempty" mapstructure:"targetUDPNetworks,omitempty"`
 

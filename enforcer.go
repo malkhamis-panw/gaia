@@ -135,7 +135,7 @@ func (o EnforcersList) Version() int {
 // Enforcer represents the model of a enforcer
 type Enforcer struct {
 	// Contains the fully qualified domain name (FQDN) of the server where the
-	// Defender is running.
+	// enforcer is running.
 	FQDN string `json:"FQDN" msgpack:"FQDN" bson:"fqdn" mapstructure:"FQDN,omitempty"`
 
 	// Identifier of the object.
@@ -147,14 +147,14 @@ type Enforcer struct {
 	// List of tags attached to an entity.
 	AssociatedTags []string `json:"associatedTags" msgpack:"associatedTags" bson:"associatedtags" mapstructure:"associatedTags,omitempty"`
 
-	// The certificate of the Defender.
+	// The certificate of the enforcer.
 	Certificate string `json:"certificate" msgpack:"certificate" bson:"certificate" mapstructure:"certificate,omitempty"`
 
 	// The expiration date of the certificate. This is an
 	// internal attribute, not exposed in the API.
 	CertificateExpirationDate time.Time `json:"-" msgpack:"-" bson:"-" mapstructure:"-,omitempty"`
 
-	// The certificate key of the Defender. This is an internal
+	// The certificate key of the enforcer. This is an internal
 	// attribute, not exposed in the API.
 	CertificateKey string `json:"-" msgpack:"-" bson:"-" mapstructure:"-,omitempty"`
 
@@ -163,10 +163,10 @@ type Enforcer struct {
 	// Console, providing a renewed certificate.
 	CertificateRequest string `json:"certificateRequest" msgpack:"certificateRequest" bson:"-" mapstructure:"certificateRequest,omitempty"`
 
-	// Indicates to the Defender whether or not it needs to collect information.
+	// Indicates to the enforcer whether or not it needs to collect information.
 	CollectInfo bool `json:"collectInfo" msgpack:"collectInfo" bson:"collectinfo" mapstructure:"collectInfo,omitempty"`
 
-	// Represents the latest information collected by the Defender.
+	// Represents the latest information collected by the enforcer.
 	CollectedInfo map[string]string `json:"collectedInfo" msgpack:"collectedInfo" bson:"collectedinfo" mapstructure:"collectedInfo,omitempty"`
 
 	// The Microsegmentation Console identifier managing this object. This property is mostly
@@ -179,7 +179,7 @@ type Enforcer struct {
 	// Creation date of the object.
 	CreateTime time.Time `json:"createTime" msgpack:"createTime" bson:"createtime" mapstructure:"createTime,omitempty"`
 
-	// The version number of the installed Defender binary.
+	// The version number of the installed enforcer binary.
 	CurrentVersion string `json:"currentVersion" msgpack:"currentVersion" bson:"currentversion" mapstructure:"currentVersion,omitempty"`
 
 	// Description of the object.
@@ -201,23 +201,23 @@ type Enforcer struct {
 	LastSyncTime time.Time `json:"lastSyncTime" msgpack:"lastSyncTime" bson:"lastsynctime" mapstructure:"lastSyncTime,omitempty"`
 
 	// `lastValidHostServices` is a read only attribute that stores the list valid host
-	// services that have been applied to this Defender. This list might be different
+	// services that have been applied to this enforcer. This list might be different
 	// from the list retrieved through policy, if the dynamically calculated list leads
 	// into conflicts.
 	LastValidHostServices HostServicesList `json:"-" msgpack:"-" bson:"lastvalidhostservices" mapstructure:"-,omitempty"`
 
-	// Contains the initial chain of trust for the Defender. This value is only
-	// given when you retrieve a single Defender.
+	// Contains the initial chain of trust for the enforcer. This value is only
+	// given when you retrieve a single enforcer.
 	LocalCA string `json:"localCA" msgpack:"localCA" bson:"-" mapstructure:"localCA,omitempty"`
 
-	// Log level of the Defender.
+	// Log level of the enforcer.
 	LogLevel EnforcerLogLevelValue `json:"logLevel" msgpack:"logLevel" bson:"loglevel" mapstructure:"logLevel,omitempty"`
 
 	// Determines the duration of which the log level will be active, using [Golang
 	// duration syntax](https://golang.org/pkg/time/#example_Duration).
 	LogLevelDuration string `json:"logLevelDuration" msgpack:"logLevelDuration" bson:"loglevelduration" mapstructure:"logLevelDuration,omitempty"`
 
-	// A unique identifier for every machine as detected by the Defender. It is
+	// A unique identifier for every machine as detected by the enforcer. It is
 	// based on hardware information such as the SMBIOS UUID, MAC addresses of
 	// interfaces, or cloud provider IDs.
 	MachineID string `json:"machineID" msgpack:"machineID" bson:"machineid" mapstructure:"machineID,omitempty"`
@@ -227,7 +227,7 @@ type Enforcer struct {
 	Metadata []string `json:"metadata" msgpack:"metadata" bson:"metadata" mapstructure:"metadata,omitempty"`
 
 	// Internal property maintaining migrations information.
-	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog" mapstructure:"-,omitempty"`
+	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
 	// Name of the entity.
 	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
@@ -238,7 +238,7 @@ type Enforcer struct {
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags []string `json:"normalizedTags" msgpack:"normalizedTags" bson:"normalizedtags" mapstructure:"normalizedTags,omitempty"`
 
-	// The status of the Defender.
+	// The status of the enforcer.
 	OperationalStatus EnforcerOperationalStatusValue `json:"operationalStatus" msgpack:"operationalStatus" bson:"operationalstatus" mapstructure:"operationalStatus,omitempty"`
 
 	// Defines if the object is protected.
@@ -248,18 +248,18 @@ type Enforcer struct {
 	// is signed by the private certificate authority.
 	PublicToken string `json:"publicToken" msgpack:"publicToken" bson:"publictoken" mapstructure:"publicToken,omitempty"`
 
-	// The time and date on which this Defender was started. The Defender reports
+	// The time and date on which this enforcer was started. The enforcer reports
 	// this and the value is preserved across disconnects.
 	StartTime time.Time `json:"startTime" msgpack:"startTime" bson:"starttime" mapstructure:"startTime,omitempty"`
 
-	// Local subnets of this Defender.
+	// Local subnets of this enforcer.
 	Subnets []string `json:"subnets" msgpack:"subnets" bson:"subnets" mapstructure:"subnets,omitempty"`
 
 	// The Microsegmentation Console sets this value to `true` if it hasn't heard from
-	// the Defender in the last five minutes.
+	// the enforcer in the last five minutes.
 	Unreachable bool `json:"unreachable" msgpack:"unreachable" bson:"unreachable" mapstructure:"unreachable,omitempty"`
 
-	// If `true`, the Defender version is outdated and should be updated.
+	// If `true`, the enforcer version is outdated and should be updated.
 	UpdateAvailable bool `json:"updateAvailable" msgpack:"updateAvailable" bson:"updateavailable" mapstructure:"updateAvailable,omitempty"`
 
 	// internal idempotency key for a update operation.
@@ -446,9 +446,9 @@ func (o *Enforcer) DefaultOrder() []string {
 // Doc returns the documentation for the object
 func (o *Enforcer) Doc() string {
 
-	return `Contains all parameters associated with a registered Defender. The
-object is mainly maintained by the Defenders themselves. Users can read the
-object in order to understand the current status of the Defenders.`
+	return `Contains all parameters associated with a registered enforcer. The
+object is mainly maintained by the enforcers themselves. Users can read the
+object in order to understand the current status of the enforcers.`
 }
 
 func (o *Enforcer) String() string {
@@ -1120,7 +1120,7 @@ var EnforcerAttributesMap = map[string]elemental.AttributeSpecification{
 		ConvertedName:  "FQDN",
 		CreationOnly:   true,
 		Description: `Contains the fully qualified domain name (FQDN) of the server where the
-Defender is running.`,
+enforcer is running.`,
 		Exposed:   true,
 		Name:      "FQDN",
 		Orderable: true,
@@ -1170,7 +1170,7 @@ Defender is running.`,
 		AllowedChoices: []string{},
 		Autogenerated:  true,
 		ConvertedName:  "Certificate",
-		Description:    `The certificate of the Defender.`,
+		Description:    `The certificate of the enforcer.`,
 		Exposed:        true,
 		Name:           "certificate",
 		Orderable:      true,
@@ -1192,7 +1192,7 @@ internal attribute, not exposed in the API.`,
 		AllowedChoices: []string{},
 		Autogenerated:  true,
 		ConvertedName:  "CertificateKey",
-		Description: `The certificate key of the Defender. This is an internal
+		Description: `The certificate key of the enforcer. This is an internal
 attribute, not exposed in the API.`,
 		Name:     "certificateKey",
 		ReadOnly: true,
@@ -1212,7 +1212,7 @@ Console, providing a renewed certificate.`,
 	"CollectInfo": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CollectInfo",
-		Description:    `Indicates to the Defender whether or not it needs to collect information.`,
+		Description:    `Indicates to the enforcer whether or not it needs to collect information.`,
 		Exposed:        true,
 		Name:           "collectInfo",
 		Stored:         true,
@@ -1222,7 +1222,7 @@ Console, providing a renewed certificate.`,
 		AllowedChoices: []string{},
 		ConvertedName:  "CollectedInfo",
 		Deprecated:     true,
-		Description:    `Represents the latest information collected by the Defender.`,
+		Description:    `Represents the latest information collected by the enforcer.`,
 		Exposed:        true,
 		Name:           "collectedInfo",
 		Stored:         true,
@@ -1275,7 +1275,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"CurrentVersion": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CurrentVersion",
-		Description:    `The version number of the installed Defender binary.`,
+		Description:    `The version number of the installed enforcer binary.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "currentVersion",
@@ -1348,7 +1348,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 		Autogenerated:  true,
 		ConvertedName:  "LastValidHostServices",
 		Description: `` + "`" + `lastValidHostServices` + "`" + ` is a read only attribute that stores the list valid host
-services that have been applied to this Defender. This list might be different
+services that have been applied to this enforcer. This list might be different
 from the list retrieved through policy, if the dynamically calculated list leads
 into conflicts.`,
 		Name:    "lastValidHostServices",
@@ -1360,8 +1360,8 @@ into conflicts.`,
 		AllowedChoices: []string{},
 		Autogenerated:  true,
 		ConvertedName:  "LocalCA",
-		Description: `Contains the initial chain of trust for the Defender. This value is only
-given when you retrieve a single Defender.`,
+		Description: `Contains the initial chain of trust for the enforcer. This value is only
+given when you retrieve a single enforcer.`,
 		Exposed:   true,
 		Name:      "localCA",
 		Transient: true,
@@ -1371,7 +1371,7 @@ given when you retrieve a single Defender.`,
 		AllowedChoices: []string{"Info", "Debug", "Warn", "Error", "Trace"},
 		ConvertedName:  "LogLevel",
 		DefaultValue:   EnforcerLogLevelInfo,
-		Description:    `Log level of the Defender.`,
+		Description:    `Log level of the enforcer.`,
 		Exposed:        true,
 		Name:           "logLevel",
 		Stored:         true,
@@ -1391,7 +1391,7 @@ duration syntax](https://golang.org/pkg/time/#example_Duration).`,
 	"MachineID": {
 		AllowedChoices: []string{},
 		ConvertedName:  "MachineID",
-		Description: `A unique identifier for every machine as detected by the Defender. It is
+		Description: `A unique identifier for every machine as detected by the enforcer. It is
 based on hardware information such as the SMBIOS UUID, MAC addresses of
 interfaces, or cloud provider IDs.`,
 		Exposed:    true,
@@ -1475,7 +1475,7 @@ with the '@' prefix, and should only be used by external systems.`,
 		AllowedChoices: []string{"Registered", "Connected", "Disconnected", "Initialized"},
 		ConvertedName:  "OperationalStatus",
 		DefaultValue:   EnforcerOperationalStatusRegistered,
-		Description:    `The status of the Defender.`,
+		Description:    `The status of the enforcer.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "operationalStatus",
@@ -1510,7 +1510,7 @@ is signed by the private certificate authority.`,
 	"StartTime": {
 		AllowedChoices: []string{},
 		ConvertedName:  "StartTime",
-		Description: `The time and date on which this Defender was started. The Defender reports
+		Description: `The time and date on which this enforcer was started. The enforcer reports
 this and the value is preserved across disconnects.`,
 		Exposed:   true,
 		Name:      "startTime",
@@ -1521,7 +1521,7 @@ this and the value is preserved across disconnects.`,
 	"Subnets": {
 		AllowedChoices: []string{},
 		ConvertedName:  "Subnets",
-		Description:    `Local subnets of this Defender.`,
+		Description:    `Local subnets of this enforcer.`,
 		Exposed:        true,
 		Name:           "subnets",
 		Stored:         true,
@@ -1533,7 +1533,7 @@ this and the value is preserved across disconnects.`,
 		Autogenerated:  true,
 		ConvertedName:  "Unreachable",
 		Description: `The Microsegmentation Console sets this value to ` + "`" + `true` + "`" + ` if it hasn't heard from
-the Defender in the last five minutes.`,
+the enforcer in the last five minutes.`,
 		Exposed:   true,
 		Name:      "unreachable",
 		ReadOnly:  true,
@@ -1544,7 +1544,7 @@ the Defender in the last five minutes.`,
 	"UpdateAvailable": {
 		AllowedChoices: []string{},
 		ConvertedName:  "UpdateAvailable",
-		Description:    `If ` + "`" + `true` + "`" + `, the Defender version is outdated and should be updated.`,
+		Description:    `If ` + "`" + `true` + "`" + `, the enforcer version is outdated and should be updated.`,
 		Exposed:        true,
 		Name:           "updateAvailable",
 		Orderable:      true,
@@ -1609,10 +1609,11 @@ georedundancy.`,
 var EnforcerLowerCaseAttributesMap = map[string]elemental.AttributeSpecification{
 	"fqdn": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "fqdn",
 		ConvertedName:  "FQDN",
 		CreationOnly:   true,
 		Description: `Contains the fully qualified domain name (FQDN) of the server where the
-Defender is running.`,
+enforcer is running.`,
 		Exposed:   true,
 		Name:      "FQDN",
 		Orderable: true,
@@ -1623,6 +1624,7 @@ Defender is running.`,
 	"id": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "_id",
 		ConvertedName:  "ID",
 		Description:    `Identifier of the object.`,
 		Exposed:        true,
@@ -1636,6 +1638,7 @@ Defender is running.`,
 	},
 	"annotations": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "annotations",
 		ConvertedName:  "Annotations",
 		Description:    `Stores additional information about an entity.`,
 		Exposed:        true,
@@ -1648,6 +1651,7 @@ Defender is running.`,
 	},
 	"associatedtags": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "associatedtags",
 		ConvertedName:  "AssociatedTags",
 		Description:    `List of tags attached to an entity.`,
 		Exposed:        true,
@@ -1661,8 +1665,9 @@ Defender is running.`,
 	"certificate": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "certificate",
 		ConvertedName:  "Certificate",
-		Description:    `The certificate of the Defender.`,
+		Description:    `The certificate of the enforcer.`,
 		Exposed:        true,
 		Name:           "certificate",
 		Orderable:      true,
@@ -1684,7 +1689,7 @@ internal attribute, not exposed in the API.`,
 		AllowedChoices: []string{},
 		Autogenerated:  true,
 		ConvertedName:  "CertificateKey",
-		Description: `The certificate key of the Defender. This is an internal
+		Description: `The certificate key of the enforcer. This is an internal
 attribute, not exposed in the API.`,
 		Name:     "certificateKey",
 		ReadOnly: true,
@@ -1703,8 +1708,9 @@ Console, providing a renewed certificate.`,
 	},
 	"collectinfo": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "collectinfo",
 		ConvertedName:  "CollectInfo",
-		Description:    `Indicates to the Defender whether or not it needs to collect information.`,
+		Description:    `Indicates to the enforcer whether or not it needs to collect information.`,
 		Exposed:        true,
 		Name:           "collectInfo",
 		Stored:         true,
@@ -1712,9 +1718,10 @@ Console, providing a renewed certificate.`,
 	},
 	"collectedinfo": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "collectedinfo",
 		ConvertedName:  "CollectedInfo",
 		Deprecated:     true,
-		Description:    `Represents the latest information collected by the Defender.`,
+		Description:    `Represents the latest information collected by the enforcer.`,
 		Exposed:        true,
 		Name:           "collectedInfo",
 		Stored:         true,
@@ -1724,6 +1731,7 @@ Console, providing a renewed certificate.`,
 	"controller": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "controller",
 		ConvertedName:  "Controller",
 		Description: `The Microsegmentation Console identifier managing this object. This property is mostly
 useful when federating multiple Microsegmentation Consoles.`,
@@ -1741,6 +1749,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"createidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createidempotencykey",
 		ConvertedName:  "CreateIdempotencyKey",
 		Description:    `internal idempotency key for a create operation.`,
 		Getter:         true,
@@ -1753,6 +1762,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"createtime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "createtime",
 		ConvertedName:  "CreateTime",
 		Description:    `Creation date of the object.`,
 		Exposed:        true,
@@ -1766,8 +1776,9 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"currentversion": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "currentversion",
 		ConvertedName:  "CurrentVersion",
-		Description:    `The version number of the installed Defender binary.`,
+		Description:    `The version number of the installed enforcer binary.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "currentVersion",
@@ -1777,6 +1788,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"description": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "description",
 		ConvertedName:  "Description",
 		Description:    `Description of the object.`,
 		Exposed:        true,
@@ -1790,6 +1802,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"enforcementstatus": {
 		AllowedChoices: []string{"Inactive", "Active", "Failed"},
+		BSONFieldName:  "enforcementstatus",
 		ConvertedName:  "EnforcementStatus",
 		DefaultValue:   EnforcerEnforcementStatusInactive,
 		Description:    `Status of the enforcement for host services.`,
@@ -1801,6 +1814,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"lastcollectionid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "lastcollectionid",
 		ConvertedName:  "LastCollectionID",
 		Description:    `Identifies the last collection.`,
 		Exposed:        true,
@@ -1810,6 +1824,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"lastcollectiontime": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "lastcollectiontime",
 		ConvertedName:  "LastCollectionTime",
 		Description:    `Identifies when the information was collected.`,
 		Exposed:        true,
@@ -1819,6 +1834,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"lastpoketime": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "lastpoketime",
 		ConvertedName:  "LastPokeTime",
 		Description:    `The time and date of the last poke.`,
 		Name:           "lastPokeTime",
@@ -1827,6 +1843,7 @@ useful when federating multiple Microsegmentation Consoles.`,
 	},
 	"lastsynctime": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "lastsynctime",
 		ConvertedName:  "LastSyncTime",
 		Description:    `The time and date of the last heartbeat.`,
 		Exposed:        true,
@@ -1838,9 +1855,10 @@ useful when federating multiple Microsegmentation Consoles.`,
 	"lastvalidhostservices": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "lastvalidhostservices",
 		ConvertedName:  "LastValidHostServices",
 		Description: `` + "`" + `lastValidHostServices` + "`" + ` is a read only attribute that stores the list valid host
-services that have been applied to this Defender. This list might be different
+services that have been applied to this enforcer. This list might be different
 from the list retrieved through policy, if the dynamically calculated list leads
 into conflicts.`,
 		Name:    "lastValidHostServices",
@@ -1852,8 +1870,8 @@ into conflicts.`,
 		AllowedChoices: []string{},
 		Autogenerated:  true,
 		ConvertedName:  "LocalCA",
-		Description: `Contains the initial chain of trust for the Defender. This value is only
-given when you retrieve a single Defender.`,
+		Description: `Contains the initial chain of trust for the enforcer. This value is only
+given when you retrieve a single enforcer.`,
 		Exposed:   true,
 		Name:      "localCA",
 		Transient: true,
@@ -1861,9 +1879,10 @@ given when you retrieve a single Defender.`,
 	},
 	"loglevel": {
 		AllowedChoices: []string{"Info", "Debug", "Warn", "Error", "Trace"},
+		BSONFieldName:  "loglevel",
 		ConvertedName:  "LogLevel",
 		DefaultValue:   EnforcerLogLevelInfo,
-		Description:    `Log level of the Defender.`,
+		Description:    `Log level of the enforcer.`,
 		Exposed:        true,
 		Name:           "logLevel",
 		Stored:         true,
@@ -1871,6 +1890,7 @@ given when you retrieve a single Defender.`,
 	},
 	"loglevelduration": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "loglevelduration",
 		ConvertedName:  "LogLevelDuration",
 		DefaultValue:   "10s",
 		Description: `Determines the duration of which the log level will be active, using [Golang
@@ -1882,8 +1902,9 @@ duration syntax](https://golang.org/pkg/time/#example_Duration).`,
 	},
 	"machineid": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "machineid",
 		ConvertedName:  "MachineID",
-		Description: `A unique identifier for every machine as detected by the Defender. It is
+		Description: `A unique identifier for every machine as detected by the enforcer. It is
 based on hardware information such as the SMBIOS UUID, MAC addresses of
 interfaces, or cloud provider IDs.`,
 		Exposed:    true,
@@ -1894,6 +1915,7 @@ interfaces, or cloud provider IDs.`,
 	},
 	"metadata": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "metadata",
 		ConvertedName:  "Metadata",
 		CreationOnly:   true,
 		Description: `Contains tags that can only be set during creation, must all start
@@ -1909,6 +1931,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"migrationslog": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "migrationslog",
 		ConvertedName:  "MigrationsLog",
 		Description:    `Internal property maintaining migrations information.`,
 		Getter:         true,
@@ -1920,6 +1943,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"name": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "name",
 		ConvertedName:  "Name",
 		Description:    `Name of the entity.`,
 		Exposed:        true,
@@ -1936,6 +1960,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"namespace": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "namespace",
 		ConvertedName:  "Namespace",
 		Description:    `Namespace tag attached to an entity.`,
 		Exposed:        true,
@@ -1951,6 +1976,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"normalizedtags": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "normalizedtags",
 		ConvertedName:  "NormalizedTags",
 		Description:    `Contains the list of normalized tags of the entities.`,
 		Exposed:        true,
@@ -1965,9 +1991,10 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"operationalstatus": {
 		AllowedChoices: []string{"Registered", "Connected", "Disconnected", "Initialized"},
+		BSONFieldName:  "operationalstatus",
 		ConvertedName:  "OperationalStatus",
 		DefaultValue:   EnforcerOperationalStatusRegistered,
-		Description:    `The status of the Defender.`,
+		Description:    `The status of the enforcer.`,
 		Exposed:        true,
 		Filterable:     true,
 		Name:           "operationalStatus",
@@ -1976,6 +2003,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	},
 	"protected": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "protected",
 		ConvertedName:  "Protected",
 		Description:    `Defines if the object is protected.`,
 		Exposed:        true,
@@ -1989,6 +2017,7 @@ with the '@' prefix, and should only be used by external systems.`,
 	"publictoken": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "publictoken",
 		ConvertedName:  "PublicToken",
 		Description: `The public token of the server that will be included in the datapath and
 is signed by the private certificate authority.`,
@@ -2001,8 +2030,9 @@ is signed by the private certificate authority.`,
 	},
 	"starttime": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "starttime",
 		ConvertedName:  "StartTime",
-		Description: `The time and date on which this Defender was started. The Defender reports
+		Description: `The time and date on which this enforcer was started. The enforcer reports
 this and the value is preserved across disconnects.`,
 		Exposed:   true,
 		Name:      "startTime",
@@ -2012,8 +2042,9 @@ this and the value is preserved across disconnects.`,
 	},
 	"subnets": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "subnets",
 		ConvertedName:  "Subnets",
-		Description:    `Local subnets of this Defender.`,
+		Description:    `Local subnets of this enforcer.`,
 		Exposed:        true,
 		Name:           "subnets",
 		Stored:         true,
@@ -2023,9 +2054,10 @@ this and the value is preserved across disconnects.`,
 	"unreachable": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "unreachable",
 		ConvertedName:  "Unreachable",
 		Description: `The Microsegmentation Console sets this value to ` + "`" + `true` + "`" + ` if it hasn't heard from
-the Defender in the last five minutes.`,
+the enforcer in the last five minutes.`,
 		Exposed:   true,
 		Name:      "unreachable",
 		ReadOnly:  true,
@@ -2035,8 +2067,9 @@ the Defender in the last five minutes.`,
 	},
 	"updateavailable": {
 		AllowedChoices: []string{},
+		BSONFieldName:  "updateavailable",
 		ConvertedName:  "UpdateAvailable",
-		Description:    `If ` + "`" + `true` + "`" + `, the Defender version is outdated and should be updated.`,
+		Description:    `If ` + "`" + `true` + "`" + `, the enforcer version is outdated and should be updated.`,
 		Exposed:        true,
 		Name:           "updateAvailable",
 		Orderable:      true,
@@ -2046,6 +2079,7 @@ the Defender in the last five minutes.`,
 	"updateidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updateidempotencykey",
 		ConvertedName:  "UpdateIdempotencyKey",
 		Description:    `internal idempotency key for a update operation.`,
 		Getter:         true,
@@ -2058,6 +2092,7 @@ the Defender in the last five minutes.`,
 	"updatetime": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "updatetime",
 		ConvertedName:  "UpdateTime",
 		Description:    `Last update date of the object.`,
 		Exposed:        true,
@@ -2072,6 +2107,7 @@ the Defender in the last five minutes.`,
 	"zhash": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zhash",
 		ConvertedName:  "ZHash",
 		Description: `geographical hash of the data. This is used for sharding and
 georedundancy.`,
@@ -2085,6 +2121,7 @@ georedundancy.`,
 	"zone": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
+		BSONFieldName:  "zone",
 		ConvertedName:  "Zone",
 		Description:    `Logical storage zone. Used for sharding.`,
 		Getter:         true,
@@ -2163,7 +2200,7 @@ func (o SparseEnforcersList) Version() int {
 // SparseEnforcer represents the sparse version of a enforcer.
 type SparseEnforcer struct {
 	// Contains the fully qualified domain name (FQDN) of the server where the
-	// Defender is running.
+	// enforcer is running.
 	FQDN *string `json:"FQDN,omitempty" msgpack:"FQDN,omitempty" bson:"fqdn,omitempty" mapstructure:"FQDN,omitempty"`
 
 	// Identifier of the object.
@@ -2175,14 +2212,14 @@ type SparseEnforcer struct {
 	// List of tags attached to an entity.
 	AssociatedTags *[]string `json:"associatedTags,omitempty" msgpack:"associatedTags,omitempty" bson:"associatedtags,omitempty" mapstructure:"associatedTags,omitempty"`
 
-	// The certificate of the Defender.
+	// The certificate of the enforcer.
 	Certificate *string `json:"certificate,omitempty" msgpack:"certificate,omitempty" bson:"certificate,omitempty" mapstructure:"certificate,omitempty"`
 
 	// The expiration date of the certificate. This is an
 	// internal attribute, not exposed in the API.
 	CertificateExpirationDate *time.Time `json:"-" msgpack:"-" bson:"-" mapstructure:"-,omitempty"`
 
-	// The certificate key of the Defender. This is an internal
+	// The certificate key of the enforcer. This is an internal
 	// attribute, not exposed in the API.
 	CertificateKey *string `json:"-" msgpack:"-" bson:"-" mapstructure:"-,omitempty"`
 
@@ -2191,10 +2228,10 @@ type SparseEnforcer struct {
 	// Console, providing a renewed certificate.
 	CertificateRequest *string `json:"certificateRequest,omitempty" msgpack:"certificateRequest,omitempty" bson:"-" mapstructure:"certificateRequest,omitempty"`
 
-	// Indicates to the Defender whether or not it needs to collect information.
+	// Indicates to the enforcer whether or not it needs to collect information.
 	CollectInfo *bool `json:"collectInfo,omitempty" msgpack:"collectInfo,omitempty" bson:"collectinfo,omitempty" mapstructure:"collectInfo,omitempty"`
 
-	// Represents the latest information collected by the Defender.
+	// Represents the latest information collected by the enforcer.
 	CollectedInfo *map[string]string `json:"collectedInfo,omitempty" msgpack:"collectedInfo,omitempty" bson:"collectedinfo,omitempty" mapstructure:"collectedInfo,omitempty"`
 
 	// The Microsegmentation Console identifier managing this object. This property is mostly
@@ -2207,7 +2244,7 @@ type SparseEnforcer struct {
 	// Creation date of the object.
 	CreateTime *time.Time `json:"createTime,omitempty" msgpack:"createTime,omitempty" bson:"createtime,omitempty" mapstructure:"createTime,omitempty"`
 
-	// The version number of the installed Defender binary.
+	// The version number of the installed enforcer binary.
 	CurrentVersion *string `json:"currentVersion,omitempty" msgpack:"currentVersion,omitempty" bson:"currentversion,omitempty" mapstructure:"currentVersion,omitempty"`
 
 	// Description of the object.
@@ -2229,23 +2266,23 @@ type SparseEnforcer struct {
 	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" msgpack:"lastSyncTime,omitempty" bson:"lastsynctime,omitempty" mapstructure:"lastSyncTime,omitempty"`
 
 	// `lastValidHostServices` is a read only attribute that stores the list valid host
-	// services that have been applied to this Defender. This list might be different
+	// services that have been applied to this enforcer. This list might be different
 	// from the list retrieved through policy, if the dynamically calculated list leads
 	// into conflicts.
 	LastValidHostServices *HostServicesList `json:"-" msgpack:"-" bson:"lastvalidhostservices,omitempty" mapstructure:"-,omitempty"`
 
-	// Contains the initial chain of trust for the Defender. This value is only
-	// given when you retrieve a single Defender.
+	// Contains the initial chain of trust for the enforcer. This value is only
+	// given when you retrieve a single enforcer.
 	LocalCA *string `json:"localCA,omitempty" msgpack:"localCA,omitempty" bson:"-" mapstructure:"localCA,omitempty"`
 
-	// Log level of the Defender.
+	// Log level of the enforcer.
 	LogLevel *EnforcerLogLevelValue `json:"logLevel,omitempty" msgpack:"logLevel,omitempty" bson:"loglevel,omitempty" mapstructure:"logLevel,omitempty"`
 
 	// Determines the duration of which the log level will be active, using [Golang
 	// duration syntax](https://golang.org/pkg/time/#example_Duration).
 	LogLevelDuration *string `json:"logLevelDuration,omitempty" msgpack:"logLevelDuration,omitempty" bson:"loglevelduration,omitempty" mapstructure:"logLevelDuration,omitempty"`
 
-	// A unique identifier for every machine as detected by the Defender. It is
+	// A unique identifier for every machine as detected by the enforcer. It is
 	// based on hardware information such as the SMBIOS UUID, MAC addresses of
 	// interfaces, or cloud provider IDs.
 	MachineID *string `json:"machineID,omitempty" msgpack:"machineID,omitempty" bson:"machineid,omitempty" mapstructure:"machineID,omitempty"`
@@ -2266,7 +2303,7 @@ type SparseEnforcer struct {
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags *[]string `json:"normalizedTags,omitempty" msgpack:"normalizedTags,omitempty" bson:"normalizedtags,omitempty" mapstructure:"normalizedTags,omitempty"`
 
-	// The status of the Defender.
+	// The status of the enforcer.
 	OperationalStatus *EnforcerOperationalStatusValue `json:"operationalStatus,omitempty" msgpack:"operationalStatus,omitempty" bson:"operationalstatus,omitempty" mapstructure:"operationalStatus,omitempty"`
 
 	// Defines if the object is protected.
@@ -2276,18 +2313,18 @@ type SparseEnforcer struct {
 	// is signed by the private certificate authority.
 	PublicToken *string `json:"publicToken,omitempty" msgpack:"publicToken,omitempty" bson:"publictoken,omitempty" mapstructure:"publicToken,omitempty"`
 
-	// The time and date on which this Defender was started. The Defender reports
+	// The time and date on which this enforcer was started. The enforcer reports
 	// this and the value is preserved across disconnects.
 	StartTime *time.Time `json:"startTime,omitempty" msgpack:"startTime,omitempty" bson:"starttime,omitempty" mapstructure:"startTime,omitempty"`
 
-	// Local subnets of this Defender.
+	// Local subnets of this enforcer.
 	Subnets *[]string `json:"subnets,omitempty" msgpack:"subnets,omitempty" bson:"subnets,omitempty" mapstructure:"subnets,omitempty"`
 
 	// The Microsegmentation Console sets this value to `true` if it hasn't heard from
-	// the Defender in the last five minutes.
+	// the enforcer in the last five minutes.
 	Unreachable *bool `json:"unreachable,omitempty" msgpack:"unreachable,omitempty" bson:"unreachable,omitempty" mapstructure:"unreachable,omitempty"`
 
-	// If `true`, the Defender version is outdated and should be updated.
+	// If `true`, the enforcer version is outdated and should be updated.
 	UpdateAvailable *bool `json:"updateAvailable,omitempty" msgpack:"updateAvailable,omitempty" bson:"updateavailable,omitempty" mapstructure:"updateAvailable,omitempty"`
 
 	// internal idempotency key for a update operation.
