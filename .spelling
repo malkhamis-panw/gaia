@@ -27,6 +27,7 @@ CNs
 CRD
 CRDs
 CRI-O
+CachedFlowReport
 CentOS
 ClaimMapping
 ClaimsSupported
@@ -235,6 +236,7 @@ backend
 base64-encoded
 bolded
 claims_supported
+clientLocalID
 clob
 collectionID
 containerd

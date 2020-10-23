@@ -25,6 +25,7 @@ var (
 		"automationtemplate":        AutomationTemplateIdentity,
 		"awsapigateway":             AWSAPIGatewayIdentity,
 		"awsregister":               AWSRegisterIdentity,
+		"cachedflowreport":          CachedFlowReportIdentity,
 		"call":                      CallIdentity,
 		"category":                  CategoryIdentity,
 
@@ -181,6 +182,7 @@ var (
 		"automationtemplates":         AutomationTemplateIdentity,
 		"awsapigateways":              AWSAPIGatewayIdentity,
 		"awsregister":                 AWSRegisterIdentity,
+		"cachedflowreports":           CachedFlowReportIdentity,
 		"calls":                       CallIdentity,
 		"categories":                  CategoryIdentity,
 
@@ -517,8 +519,14 @@ var (
 			{":shard", ":unique", "zone", "zHash"},
 		},
 		"awsregister": nil,
-		"call":        nil,
-		"category":    nil,
+		"cachedflowreport": {
+			{"sourceID"},
+			{"namespace", "timestamp"},
+			{"destinationID"},
+			{":shard", ":unique", "zone", "zHash"},
+		},
+		"call":     nil,
+		"category": nil,
 		"claims": {
 			{"namespace", "hash"},
 			{":shard", ":unique", "zone", "zHash"},
@@ -1053,6 +1061,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewAWSAPIGateway()
 	case AWSRegisterIdentity:
 		return NewAWSRegister()
+	case CachedFlowReportIdentity:
+		return NewCachedFlowReport()
 	case CallIdentity:
 		return NewCall()
 	case CategoryIdentity:
@@ -1340,6 +1350,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseAWSAPIGateway()
 	case AWSRegisterIdentity:
 		return NewSparseAWSRegister()
+	case CachedFlowReportIdentity:
+		return NewSparseCachedFlowReport()
 	case CallIdentity:
 		return NewSparseCall()
 	case CategoryIdentity:
@@ -1635,6 +1647,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &AWSAPIGatewaysList{}
 	case AWSRegisterIdentity:
 		return &AWSRegistersList{}
+	case CachedFlowReportIdentity:
+		return &CachedFlowReportsList{}
 	case CallIdentity:
 		return &CallsList{}
 	case CategoryIdentity:
@@ -1920,6 +1934,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseAWSAPIGatewaysList{}
 	case AWSRegisterIdentity:
 		return &SparseAWSRegistersList{}
+	case CachedFlowReportIdentity:
+		return &SparseCachedFlowReportsList{}
 	case CallIdentity:
 		return &SparseCallsList{}
 	case CategoryIdentity:
@@ -2199,6 +2215,7 @@ func AllIdentities() []elemental.Identity {
 		AutomationTemplateIdentity,
 		AWSAPIGatewayIdentity,
 		AWSRegisterIdentity,
+		CachedFlowReportIdentity,
 		CallIdentity,
 		CategoryIdentity,
 		ClaimsIdentity,
@@ -2386,6 +2403,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case AWSAPIGatewayIdentity:
 		return []string{}
 	case AWSRegisterIdentity:
+		return []string{}
+	case CachedFlowReportIdentity:
 		return []string{}
 	case CallIdentity:
 		return []string{}

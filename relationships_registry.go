@@ -707,6 +707,8 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[CachedFlowReportIdentity] = &elemental.Relationship{}
+
 	relationshipsRegistry[CallIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"apiproxy": {},
