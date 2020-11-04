@@ -6211,9 +6211,10 @@ List of tags attached to an entity.
 
 Type: `string`
 
-The local PUID set by enforcer. Enforcer may create a local PU if it cannot communicate with the
-Microsegmentation Console. When eventually the Microsegmentation Console is able to create the PU,
-the clientLocalID will be used to convert a CachedFlowReport containing a local PUID to a real FlowReport.
+The local PUID set by enforcer. Enforcer may create a local PU if it cannot
+communicate with the Microsegmentation Console. When eventually the
+Microsegmentation Console is able to create the PU, the `clientLocalID` will be
+used to convert a CachedFlowReport containing a local PUID to a real FlowReport.
 
 ##### `collectInfo`
 
@@ -6269,9 +6270,11 @@ Description of the object.
 
 Type: `enum(Active | Failed | Inactive)`
 
-Contains the state of the enforcer for the processing unit. `Inactive`
-(default): the enforcer is not enforcing any host service. `Active`: the
-enforcer is enforcing a host service. `Failed`.
+Contains the state of the enforcer for the processing unit.
+
+`Inactive` (default): the enforcer is not enforcing any host service.
+`Active`: the enforcer is enforcing a host service.
+`Failed`: an error occurred during the enforcement attempt.
 
 Default value:
 
