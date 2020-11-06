@@ -39,6 +39,7 @@ var (
 		"datapathcertificate": DataPathCertificateIdentity,
 		"debugbundle":         DebugBundleIdentity,
 		"dependencymap":       DependencyMapIdentity,
+		"discoverymode":       DiscoveryModeIdentity,
 		"dnslookupreport":     DNSLookupReportIdentity,
 		"email":               EmailIdentity,
 
@@ -197,6 +198,7 @@ var (
 		"datapathcertificates": DataPathCertificateIdentity,
 		"debugbundles":         DebugBundleIdentity,
 		"dependencymaps":       DependencyMapIdentity,
+		"discoverymode":        DiscoveryModeIdentity,
 		"dnslookupreports":     DNSLookupReportIdentity,
 		"emails":               EmailIdentity,
 
@@ -551,6 +553,11 @@ var (
 		"datapathcertificate": nil,
 		"debugbundle":         nil,
 		"dependencymap":       nil,
+		"discoverymode": {
+			{"propagate"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+		},
 		"dnslookupreport": {
 			{"namespace", "timestamp"},
 			{":shard", ":unique", "zone", "zHash"},
@@ -1086,6 +1093,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewDebugBundle()
 	case DependencyMapIdentity:
 		return NewDependencyMap()
+	case DiscoveryModeIdentity:
+		return NewDiscoveryMode()
 	case DNSLookupReportIdentity:
 		return NewDNSLookupReport()
 	case EmailIdentity:
@@ -1377,6 +1386,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseDebugBundle()
 	case DependencyMapIdentity:
 		return NewSparseDependencyMap()
+	case DiscoveryModeIdentity:
+		return NewSparseDiscoveryMode()
 	case DNSLookupReportIdentity:
 		return NewSparseDNSLookupReport()
 	case EmailIdentity:
@@ -1676,6 +1687,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &DebugBundlesList{}
 	case DependencyMapIdentity:
 		return &DependencyMapsList{}
+	case DiscoveryModeIdentity:
+		return &DiscoveryModesList{}
 	case DNSLookupReportIdentity:
 		return &DNSLookupReportsList{}
 	case EmailIdentity:
@@ -1965,6 +1978,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseDebugBundlesList{}
 	case DependencyMapIdentity:
 		return &SparseDependencyMapsList{}
+	case DiscoveryModeIdentity:
+		return &SparseDiscoveryModesList{}
 	case DNSLookupReportIdentity:
 		return &SparseDNSLookupReportsList{}
 	case EmailIdentity:
@@ -2237,6 +2252,7 @@ func AllIdentities() []elemental.Identity {
 		DataPathCertificateIdentity,
 		DebugBundleIdentity,
 		DependencyMapIdentity,
+		DiscoveryModeIdentity,
 		DNSLookupReportIdentity,
 		EmailIdentity,
 		EnforcerIdentity,
@@ -2441,6 +2457,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 			"depmaps",
 			"depmap",
 		}
+	case DiscoveryModeIdentity:
+		return []string{}
 	case DNSLookupReportIdentity:
 		return []string{}
 	case EmailIdentity:

@@ -970,6 +970,24 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[DiscoveryModeIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Delete: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Retrieve: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		RetrieveMany: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Info: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+	}
+
 	relationshipsRegistry[EmailIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
