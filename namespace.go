@@ -162,6 +162,9 @@ type Namespace struct {
 	// the same zone as its parent.
 	CustomZoning bool `json:"customZoning" msgpack:"customZoning" bson:"customzoning" mapstructure:"customZoning,omitempty"`
 
+	// Indicates the default enforcer version for this namespace.
+	DefaultEnforcerVersion string `json:"defaultEnforcerVersion" msgpack:"defaultEnforcerVersion" bson:"defaultenforcerversion" mapstructure:"defaultEnforcerVersion,omitempty"`
+
 	// Description of the object.
 	Description string `json:"description" msgpack:"description" bson:"description" mapstructure:"description,omitempty"`
 
@@ -240,9 +243,8 @@ func NewNamespace() *Namespace {
 
 	return &Namespace{
 		ModelVersion:               1,
-		Annotations:                map[string][]string{},
 		AssociatedTags:             []string{},
-		Metadata:                   []string{},
+		Annotations:                map[string][]string{},
 		NetworkAccessPolicyTags:    []string{},
 		NormalizedTags:             []string{},
 		OrganizationalMetadata:     []string{},
@@ -250,6 +252,7 @@ func NewNamespace() *Namespace {
 		ServiceCertificateValidity: "168h",
 		MigrationsLog:              map[string]string{},
 		JWTCertificates:            map[string]string{},
+		Metadata:                   []string{},
 		Type:                       NamespaceTypeDefault,
 	}
 }
@@ -296,6 +299,7 @@ func (o *Namespace) GetBSON() (interface{}, error) {
 	s.CreateIdempotencyKey = o.CreateIdempotencyKey
 	s.CreateTime = o.CreateTime
 	s.CustomZoning = o.CustomZoning
+	s.DefaultEnforcerVersion = o.DefaultEnforcerVersion
 	s.Description = o.Description
 	s.LocalCA = o.LocalCA
 	s.LocalCAEnabled = o.LocalCAEnabled
@@ -343,6 +347,7 @@ func (o *Namespace) SetBSON(raw bson.Raw) error {
 	o.CreateIdempotencyKey = s.CreateIdempotencyKey
 	o.CreateTime = s.CreateTime
 	o.CustomZoning = s.CustomZoning
+	o.DefaultEnforcerVersion = s.DefaultEnforcerVersion
 	o.Description = s.Description
 	o.LocalCA = s.LocalCA
 	o.LocalCAEnabled = s.LocalCAEnabled
@@ -610,6 +615,7 @@ func (o *Namespace) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			CreateIdempotencyKey:       &o.CreateIdempotencyKey,
 			CreateTime:                 &o.CreateTime,
 			CustomZoning:               &o.CustomZoning,
+			DefaultEnforcerVersion:     &o.DefaultEnforcerVersion,
 			Description:                &o.Description,
 			LocalCA:                    &o.LocalCA,
 			LocalCAEnabled:             &o.LocalCAEnabled,
@@ -658,6 +664,8 @@ func (o *Namespace) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.CreateTime = &(o.CreateTime)
 		case "customZoning":
 			sp.CustomZoning = &(o.CustomZoning)
+		case "defaultEnforcerVersion":
+			sp.DefaultEnforcerVersion = &(o.DefaultEnforcerVersion)
 		case "description":
 			sp.Description = &(o.Description)
 		case "localCA":
@@ -742,6 +750,9 @@ func (o *Namespace) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.CustomZoning != nil {
 		o.CustomZoning = *so.CustomZoning
+	}
+	if so.DefaultEnforcerVersion != nil {
+		o.DefaultEnforcerVersion = *so.DefaultEnforcerVersion
 	}
 	if so.Description != nil {
 		o.Description = *so.Description
@@ -837,6 +848,10 @@ func (o *Namespace) Validate() error {
 		errors = errors.Append(err)
 	}
 
+	if err := ValidateSemVer("defaultEnforcerVersion", o.DefaultEnforcerVersion); err != nil {
+		errors = errors.Append(err)
+	}
+
 	if err := elemental.ValidateMaximumLength("description", o.Description, 1024, false); err != nil {
 		errors = errors.Append(err)
 	}
@@ -927,6 +942,8 @@ func (o *Namespace) ValueForAttribute(name string) interface{} {
 		return o.CreateTime
 	case "customZoning":
 		return o.CustomZoning
+	case "defaultEnforcerVersion":
+		return o.DefaultEnforcerVersion
 	case "description":
 		return o.Description
 	case "localCA":
@@ -1123,6 +1140,16 @@ the same zone as its parent.`,
 		Name:    "customZoning",
 		Stored:  true,
 		Type:    "boolean",
+	},
+	"DefaultEnforcerVersion": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "defaultenforcerversion",
+		ConvertedName:  "DefaultEnforcerVersion",
+		Description:    `Indicates the default enforcer version for this namespace.`,
+		Exposed:        true,
+		Name:           "defaultEnforcerVersion",
+		Stored:         true,
+		Type:           "string",
 	},
 	"Description": {
 		AllowedChoices: []string{},
@@ -1538,6 +1565,16 @@ the same zone as its parent.`,
 		Stored:  true,
 		Type:    "boolean",
 	},
+	"defaultenforcerversion": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "defaultenforcerversion",
+		ConvertedName:  "DefaultEnforcerVersion",
+		Description:    `Indicates the default enforcer version for this namespace.`,
+		Exposed:        true,
+		Name:           "defaultEnforcerVersion",
+		Stored:         true,
+		Type:           "string",
+	},
 	"description": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "description",
@@ -1903,6 +1940,9 @@ type SparseNamespace struct {
 	// the same zone as its parent.
 	CustomZoning *bool `json:"customZoning,omitempty" msgpack:"customZoning,omitempty" bson:"customzoning,omitempty" mapstructure:"customZoning,omitempty"`
 
+	// Indicates the default enforcer version for this namespace.
+	DefaultEnforcerVersion *string `json:"defaultEnforcerVersion,omitempty" msgpack:"defaultEnforcerVersion,omitempty" bson:"defaultenforcerversion,omitempty" mapstructure:"defaultEnforcerVersion,omitempty"`
+
 	// Description of the object.
 	Description *string `json:"description,omitempty" msgpack:"description,omitempty" bson:"description,omitempty" mapstructure:"description,omitempty"`
 
@@ -2052,6 +2092,9 @@ func (o *SparseNamespace) GetBSON() (interface{}, error) {
 	if o.CustomZoning != nil {
 		s.CustomZoning = o.CustomZoning
 	}
+	if o.DefaultEnforcerVersion != nil {
+		s.DefaultEnforcerVersion = o.DefaultEnforcerVersion
+	}
 	if o.Description != nil {
 		s.Description = o.Description
 	}
@@ -2158,6 +2201,9 @@ func (o *SparseNamespace) SetBSON(raw bson.Raw) error {
 	if s.CustomZoning != nil {
 		o.CustomZoning = s.CustomZoning
 	}
+	if s.DefaultEnforcerVersion != nil {
+		o.DefaultEnforcerVersion = s.DefaultEnforcerVersion
+	}
 	if s.Description != nil {
 		o.Description = s.Description
 	}
@@ -2261,6 +2307,9 @@ func (o *SparseNamespace) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.CustomZoning != nil {
 		out.CustomZoning = *o.CustomZoning
+	}
+	if o.DefaultEnforcerVersion != nil {
+		out.DefaultEnforcerVersion = *o.DefaultEnforcerVersion
 	}
 	if o.Description != nil {
 		out.Description = *o.Description
@@ -2613,6 +2662,7 @@ type mongoAttributesNamespace struct {
 	CreateIdempotencyKey       string                           `bson:"createidempotencykey"`
 	CreateTime                 time.Time                        `bson:"createtime"`
 	CustomZoning               bool                             `bson:"customzoning"`
+	DefaultEnforcerVersion     string                           `bson:"defaultenforcerversion"`
 	Description                string                           `bson:"description"`
 	LocalCA                    string                           `bson:"localca"`
 	LocalCAEnabled             bool                             `bson:"localcaenabled"`
@@ -2645,6 +2695,7 @@ type mongoAttributesSparseNamespace struct {
 	CreateIdempotencyKey       *string                           `bson:"createidempotencykey,omitempty"`
 	CreateTime                 *time.Time                        `bson:"createtime,omitempty"`
 	CustomZoning               *bool                             `bson:"customzoning,omitempty"`
+	DefaultEnforcerVersion     *string                           `bson:"defaultenforcerversion,omitempty"`
 	Description                *string                           `bson:"description,omitempty"`
 	LocalCA                    *string                           `bson:"localca,omitempty"`
 	LocalCAEnabled             *bool                             `bson:"localcaenabled,omitempty"`

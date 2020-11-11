@@ -1205,6 +1205,7 @@ func init() {
 	relationshipsRegistry[EnforcerRefreshIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"enforcer": {},
+			"root":     {},
 		},
 	}
 
