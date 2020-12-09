@@ -1315,6 +1315,19 @@ func init() {
 					},
 				},
 			},
+			"networkrulesetpolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
 			"root": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -1348,6 +1361,19 @@ func init() {
 				},
 			},
 			"networkaccesspolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
+			"networkrulesetpolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
 						Name:         "mode",
@@ -3013,6 +3039,69 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[NetworkRuleSetPolicyIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Update: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Patch: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Delete: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+				},
+			},
+		},
+		Retrieve: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
+				},
+			},
+		},
+		RetrieveMany: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
+				},
+			},
+		},
+		Info: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
+				},
+			},
+		},
+	}
+
 	relationshipsRegistry[OAUTHInfoIdentity] = &elemental.Relationship{
 		Retrieve: map[string]*elemental.RelationshipInfo{
 			"root": {},
@@ -3620,6 +3709,19 @@ func init() {
 					},
 				},
 			},
+			"networkrulesetpolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
 			"processingunitpolicy": {},
 			"root": {
 				Parameters: []elemental.ParameterDefinition{
@@ -3654,6 +3756,19 @@ func init() {
 				},
 			},
 			"networkaccesspolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
+			"networkrulesetpolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
 						Name:         "mode",
@@ -4267,6 +4382,19 @@ func init() {
 					},
 				},
 			},
+			"networkrulesetpolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
 			"processingunit": {},
 			"root": {
 				Parameters: []elemental.ParameterDefinition{
@@ -4302,6 +4430,19 @@ func init() {
 				},
 			},
 			"networkaccesspolicy": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:         "mode",
+						Type:         "enum",
+						DefaultValue: "object",
+						AllowedChoices: []string{
+							"subject",
+							"object",
+						},
+					},
+				},
+			},
+			"networkrulesetpolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
 						Name:         "mode",
