@@ -127,6 +127,7 @@ var (
 		"renderedpolicy":         RenderedPolicyIdentity,
 		"rendertemplate":         RenderTemplateIdentity,
 		"report":                 ReportIdentity,
+		"reportsquery":           ReportsQueryIdentity,
 		"revocation":             RevocationIdentity,
 		"role":                   RoleIdentity,
 		"root":                   RootIdentity,
@@ -288,6 +289,7 @@ var (
 		"renderedpolicies":         RenderedPolicyIdentity,
 		"rendertemplates":          RenderTemplateIdentity,
 		"reports":                  ReportIdentity,
+		"reportsqueries":           ReportsQueryIdentity,
 		"revocations":              RevocationIdentity,
 		"roles":                    RoleIdentity,
 		"root":                     RootIdentity,
@@ -406,6 +408,7 @@ var (
 		"rpols":           RenderedPolicyIdentity,
 		"cook":            RenderTemplateIdentity,
 		"rtpl":            RenderTemplateIdentity,
+		"rq":              ReportsQueryIdentity,
 		"srv":             ServiceIdentity,
 		"srvdep":          ServiceDependencyIdentity,
 		"srvdeps":         ServiceDependencyIdentity,
@@ -906,6 +909,7 @@ var (
 		"renderedpolicy":  nil,
 		"rendertemplate":  nil,
 		"report":          nil,
+		"reportsquery":    nil,
 		"revocation": {
 			{":shard", ":unique", "zone", "zHash"},
 		},
@@ -1264,6 +1268,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewRenderTemplate()
 	case ReportIdentity:
 		return NewReport()
+	case ReportsQueryIdentity:
+		return NewReportsQuery()
 	case RevocationIdentity:
 		return NewRevocation()
 	case RoleIdentity:
@@ -1561,6 +1567,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseRenderTemplate()
 	case ReportIdentity:
 		return NewSparseReport()
+	case ReportsQueryIdentity:
+		return NewSparseReportsQuery()
 	case RevocationIdentity:
 		return NewSparseRevocation()
 	case RoleIdentity:
@@ -1866,6 +1874,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &RenderTemplatesList{}
 	case ReportIdentity:
 		return &ReportsList{}
+	case ReportsQueryIdentity:
+		return &ReportsQueriesList{}
 	case RevocationIdentity:
 		return &RevocationsList{}
 	case RoleIdentity:
@@ -2161,6 +2171,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseRenderTemplatesList{}
 	case ReportIdentity:
 		return &SparseReportsList{}
+	case ReportsQueryIdentity:
+		return &SparseReportsQueriesList{}
 	case RevocationIdentity:
 		return &SparseRevocationsList{}
 	case RoleIdentity:
@@ -2359,6 +2371,7 @@ func AllIdentities() []elemental.Identity {
 		RenderedPolicyIdentity,
 		RenderTemplateIdentity,
 		ReportIdentity,
+		ReportsQueryIdentity,
 		RevocationIdentity,
 		RoleIdentity,
 		RootIdentity,
@@ -2741,6 +2754,10 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		}
 	case ReportIdentity:
 		return []string{}
+	case ReportsQueryIdentity:
+		return []string{
+			"rq",
+		}
 	case RevocationIdentity:
 		return []string{}
 	case RoleIdentity:

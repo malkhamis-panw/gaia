@@ -15977,6 +15977,89 @@ Type: `string`
 
 Query resolution step width in duration format or float number of seconds.
 
+## visualization/reportsquery
+
+### ReportsQuery
+
+Supports querying Aporeto reports. All queries are protected within the
+namespace of the user.
+
+#### Example
+
+```json
+{
+  "report": "Flows"
+}
+```
+
+#### Relations
+
+##### `POST /reportsqueries`
+
+Sends a query on report data.
+
+Parameters:
+
+- `q` (`string`): Filtering query. Consequent `q` parameters will form an or.
+- `endAbsolute` (`time`): Set the absolute end of the time window.
+- `endRelative` (`duration`): Set the relative end of the time window.
+- `startAbsolute` (`time`): Set the absolute start of the time window.
+- `startRelative` (`duration`): Set the relative start of the time window.
+
+Mandatory Parameters
+
+(`endRelative`) or (`startRelative`) or (`startRelative` and `endRelative`) or (`startRelative` and `endAbsolute`) or (`startAbsolute` and `endRelative`) or (`startAbsolute` and `endAbsolute`)
+
+#### Attributes
+
+##### `DNSLookupReports`
+
+Type: [`[]dnslookupreport`](#dnslookupreport)
+
+List of DNSLookupReports.
+
+##### `counterReports`
+
+Type: [`[]counterreport`](#counterreport)
+
+List of CounterReports.
+
+##### `enforcerReports`
+
+Type: [`[]enforcerreport`](#enforcerreport)
+
+List of EnforcerReports.
+
+##### `eventLogs`
+
+Type: [`[]eventlog`](#eventlog)
+
+List of EventLogs.
+
+##### `flowReports`
+
+Type: [`[]flowreport`](#flowreport)
+
+List of FlowReports.
+
+##### `packetReports`
+
+Type: [`[]packetreport`](#packetreport)
+
+List of PacketReports.
+
+##### `report`
+
+Type: `enum(Flows | Enforcers | EventLogs | Packets | Counters | DNSLookups)`
+
+Name of the report type to query.
+
+Default value:
+
+```json
+"Flows"
+```
+
 ## visualization/statsquery
 
 ### StatsInfo
