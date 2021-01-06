@@ -253,6 +253,10 @@ func (o *Tenant) Validate() error {
 	errors := elemental.Errors{}
 	requiredErrors := elemental.Errors{}
 
+	if err := elemental.ValidateRequiredString("externalID", o.ExternalID); err != nil {
+		requiredErrors = requiredErrors.Append(err)
+	}
+
 	if err := elemental.ValidateRequiredString("name", o.Name); err != nil {
 		requiredErrors = requiredErrors.Append(err)
 	}
@@ -332,7 +336,6 @@ var TenantAttributesMap = map[string]elemental.AttributeSpecification{
 		Exposed:        true,
 		Name:           "externalID",
 		Required:       true,
-		Transient:      true,
 		Type:           "string",
 	},
 	"Name": {
@@ -370,7 +373,6 @@ var TenantLowerCaseAttributesMap = map[string]elemental.AttributeSpecification{
 		Exposed:        true,
 		Name:           "externalID",
 		Required:       true,
-		Transient:      true,
 		Type:           "string",
 	},
 	"name": {

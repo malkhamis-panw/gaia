@@ -24,7 +24,6 @@ attributes:
     exposed: true
     required: true
     example_value: customer-123
-    transient: true
 
   - name: name
     description: The name of the tenant.
