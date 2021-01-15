@@ -707,6 +707,18 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[CNSSearchIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+	}
+
+	relationshipsRegistry[CNSSuggestionIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+	}
+
 	relationshipsRegistry[CachedFlowReportIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
@@ -3280,6 +3292,8 @@ func init() {
 			},
 		},
 	}
+
+	relationshipsRegistry[PCSearchResultsIdentity] = &elemental.Relationship{}
 
 	relationshipsRegistry[PacketReportIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{

@@ -29,8 +29,10 @@ var (
 		"call":                      CallIdentity,
 		"category":                  CategoryIdentity,
 
-		"claims":       ClaimsIdentity,
-		"clausesmatch": ClauseMatchIdentity,
+		"claims":        ClaimsIdentity,
+		"clausesmatch":  ClauseMatchIdentity,
+		"cnssearch":     CNSSearchIdentity,
+		"cnssuggestion": CNSSuggestionIdentity,
 
 		"connectionexceptionreport": ConnectionExceptionReportIdentity,
 		"counterreport":             CounterReportIdentity,
@@ -102,6 +104,7 @@ var (
 		"packetreport":           PacketReportIdentity,
 		"passwordreset":          PasswordResetIdentity,
 		"pccprovider":            PCCProviderIdentity,
+		"pcsearchresult":         PCSearchResultsIdentity,
 
 		"pingprobe":   PingProbeIdentity,
 		"pingrequest": PingRequestIdentity,
@@ -193,6 +196,8 @@ var (
 
 		"claims":         ClaimsIdentity,
 		"clausesmatches": ClauseMatchIdentity,
+		"cnssearches":    CNSSearchIdentity,
+		"cnssuggestions": CNSSuggestionIdentity,
 
 		"connectionexceptionreports": ConnectionExceptionReportIdentity,
 		"counterreports":             CounterReportIdentity,
@@ -264,6 +269,7 @@ var (
 		"packetreports":          PacketReportIdentity,
 		"passwordreset":          PasswordResetIdentity,
 		"pccproviders":           PCCProviderIdentity,
+		"pcsearchresults":        PCSearchResultsIdentity,
 
 		"pingprobes":   PingProbeIdentity,
 		"pingrequests": PingRequestIdentity,
@@ -549,7 +555,9 @@ var (
 			{"namespace"},
 			{"namespace", "normalizedTags"},
 		},
-		"clausesmatch": nil,
+		"clausesmatch":  nil,
+		"cnssearch":     nil,
+		"cnssuggestion": nil,
 		"connectionexceptionreport": {
 			{"processingunitnamespace", "timestamp"},
 			{"enforcernamespace", "timestamp"},
@@ -574,6 +582,8 @@ var (
 		"dnslookupreport": {
 			{"namespace", "timestamp"},
 			{":shard", "zone", "zHash", "_id"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
 		},
 		"email": nil,
 		"enforcer": {
@@ -834,6 +844,7 @@ var (
 			{"name"},
 			{"createIdempotencyKey"},
 		},
+		"pcsearchresult": nil,
 		"pingprobe": {
 			{"pingID"},
 			{"namespace", "pingID"},
@@ -1100,6 +1111,10 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewClaims()
 	case ClauseMatchIdentity:
 		return NewClauseMatch()
+	case CNSSearchIdentity:
+		return NewCNSSearch()
+	case CNSSuggestionIdentity:
+		return NewCNSSuggestion()
 	case ConnectionExceptionReportIdentity:
 		return NewConnectionExceptionReport()
 	case CounterReportIdentity:
@@ -1230,6 +1245,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewPasswordReset()
 	case PCCProviderIdentity:
 		return NewPCCProvider()
+	case PCSearchResultsIdentity:
+		return NewPCSearchResults()
 	case PingProbeIdentity:
 		return NewPingProbe()
 	case PingRequestIdentity:
@@ -1399,6 +1416,10 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseClaims()
 	case ClauseMatchIdentity:
 		return NewSparseClauseMatch()
+	case CNSSearchIdentity:
+		return NewSparseCNSSearch()
+	case CNSSuggestionIdentity:
+		return NewSparseCNSSuggestion()
 	case ConnectionExceptionReportIdentity:
 		return NewSparseConnectionExceptionReport()
 	case CounterReportIdentity:
@@ -1529,6 +1550,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparsePasswordReset()
 	case PCCProviderIdentity:
 		return NewSparsePCCProvider()
+	case PCSearchResultsIdentity:
+		return NewSparsePCSearchResults()
 	case PingProbeIdentity:
 		return NewSparsePingProbe()
 	case PingRequestIdentity:
@@ -1706,6 +1729,10 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ClaimsList{}
 	case ClauseMatchIdentity:
 		return &ClauseMatchesList{}
+	case CNSSearchIdentity:
+		return &CNSSearchesList{}
+	case CNSSuggestionIdentity:
+		return &CNSSuggestionsList{}
 	case ConnectionExceptionReportIdentity:
 		return &ConnectionExceptionReportsList{}
 	case CounterReportIdentity:
@@ -1836,6 +1863,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &PasswordResetsList{}
 	case PCCProviderIdentity:
 		return &PCCProvidersList{}
+	case PCSearchResultsIdentity:
+		return &PCSearchResultsList{}
 	case PingProbeIdentity:
 		return &PingProbesList{}
 	case PingRequestIdentity:
@@ -2003,6 +2032,10 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseClaimsList{}
 	case ClauseMatchIdentity:
 		return &SparseClauseMatchesList{}
+	case CNSSearchIdentity:
+		return &SparseCNSSearchesList{}
+	case CNSSuggestionIdentity:
+		return &SparseCNSSuggestionsList{}
 	case ConnectionExceptionReportIdentity:
 		return &SparseConnectionExceptionReportsList{}
 	case CounterReportIdentity:
@@ -2133,6 +2166,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparsePasswordResetsList{}
 	case PCCProviderIdentity:
 		return &SparsePCCProvidersList{}
+	case PCSearchResultsIdentity:
+		return &SparsePCSearchResultsList{}
 	case PingProbeIdentity:
 		return &SparsePingProbesList{}
 	case PingRequestIdentity:
@@ -2293,6 +2328,8 @@ func AllIdentities() []elemental.Identity {
 		CategoryIdentity,
 		ClaimsIdentity,
 		ClauseMatchIdentity,
+		CNSSearchIdentity,
+		CNSSuggestionIdentity,
 		ConnectionExceptionReportIdentity,
 		CounterReportIdentity,
 		CustomerIdentity,
@@ -2358,6 +2395,7 @@ func AllIdentities() []elemental.Identity {
 		PacketReportIdentity,
 		PasswordResetIdentity,
 		PCCProviderIdentity,
+		PCSearchResultsIdentity,
 		PingProbeIdentity,
 		PingRequestIdentity,
 		PingResultIdentity,
@@ -2491,6 +2529,10 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case ClaimsIdentity:
 		return []string{}
 	case ClauseMatchIdentity:
+		return []string{}
+	case CNSSearchIdentity:
+		return []string{}
+	case CNSSuggestionIdentity:
 		return []string{}
 	case ConnectionExceptionReportIdentity:
 		return []string{}
@@ -2695,6 +2737,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case PasswordResetIdentity:
 		return []string{}
 	case PCCProviderIdentity:
+		return []string{}
+	case PCSearchResultsIdentity:
 		return []string{}
 	case PingProbeIdentity:
 		return []string{}
