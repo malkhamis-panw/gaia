@@ -597,7 +597,35 @@ relations:
   create:
     description: Creates a new message.
 
-- rest_name: metrics
+- rest_name: metricsquery
+  get:
+    description: |-
+      Prometheus compatible endpoint to evaluate a Prometheus query expression at a
+      single instant or over a range of time.
+    parameters:
+      required:
+      - - - query
+      entries:
+      - name: query
+        description: Prometheus expression query string.
+        type: string
+        example_value: flows{namespace=~"/mycompany.*"}
+
+      - name: time
+        description: Evaluation timestamp <rfc3339 | unix_timestamp>.
+        type: string
+        example_value: "2015-07-01T20:10:30.781Z"
+  create:
+    description: |-
+      Prometheus compatible endpoint to evaluate a Prometheus query expression at a
+      single instant or over a range of time.
+      This has the same behavior as the GET request, however it is useful when
+      specifying a large query that may breach server-side URL character limits. In
+      such a case, you can URL-encode the parameters that would be used for a GET
+      request directly in the request body by using the POST method and Content-Type:
+      application/x-www-form-urlencoded header.
+
+- rest_name: metricsqueryrange
   get:
     description: |-
       Evaluates an expression query over a range of time returning a "matrix" result
