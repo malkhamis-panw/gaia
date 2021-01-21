@@ -270,6 +270,12 @@ relations:
 - rest_name: echo
   get:
     description: echoes.
+    parameters:
+      entries:
+      - name: size
+        description: size.
+        type: string
+        example_value: "10"
 
 - rest_name: email
   create:

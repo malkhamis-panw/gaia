@@ -1024,10 +1024,24 @@ func init() {
 
 	relationshipsRegistry[EchoIdentity] = &elemental.Relationship{
 		RetrieveMany: map[string]*elemental.RelationshipInfo{
-			"root": {},
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name: "size",
+						Type: "string",
+					},
+				},
+			},
 		},
 		Info: map[string]*elemental.RelationshipInfo{
-			"root": {},
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name: "size",
+						Type: "string",
+					},
+				},
+			},
 		},
 	}
 
