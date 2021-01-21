@@ -44,6 +44,7 @@ var (
 		"dependencymap":          DependencyMapIdentity,
 		"discoverymode":          DiscoveryModeIdentity,
 		"dnslookupreport":        DNSLookupReportIdentity,
+		"echo":                   EchoIdentity,
 		"email":                  EmailIdentity,
 
 		"enforcer":                     EnforcerIdentity,
@@ -210,6 +211,7 @@ var (
 		"dependencymaps":         DependencyMapIdentity,
 		"discoverymode":          DiscoveryModeIdentity,
 		"dnslookupreports":       DNSLookupReportIdentity,
+		"echo":                   EchoIdentity,
 		"emails":                 EmailIdentity,
 
 		"enforcers":                      EnforcerIdentity,
@@ -588,6 +590,7 @@ var (
 			{"namespace"},
 			{"namespace", "normalizedTags"},
 		},
+		"echo":  nil,
 		"email": nil,
 		"enforcer": {
 			{":shard", ":unique", "zone", "zHash"},
@@ -1137,6 +1140,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewDiscoveryMode()
 	case DNSLookupReportIdentity:
 		return NewDNSLookupReport()
+	case EchoIdentity:
+		return NewEcho()
 	case EmailIdentity:
 		return NewEmail()
 	case EnforcerIdentity:
@@ -1444,6 +1449,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseDiscoveryMode()
 	case DNSLookupReportIdentity:
 		return NewSparseDNSLookupReport()
+	case EchoIdentity:
+		return NewSparseEcho()
 	case EmailIdentity:
 		return NewSparseEmail()
 	case EnforcerIdentity:
@@ -1759,6 +1766,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &DiscoveryModesList{}
 	case DNSLookupReportIdentity:
 		return &DNSLookupReportsList{}
+	case EchoIdentity:
+		return &EchosList{}
 	case EmailIdentity:
 		return &EmailsList{}
 	case EnforcerIdentity:
@@ -2064,6 +2073,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseDiscoveryModesList{}
 	case DNSLookupReportIdentity:
 		return &SparseDNSLookupReportsList{}
+	case EchoIdentity:
+		return &SparseEchosList{}
 	case EmailIdentity:
 		return &SparseEmailsList{}
 	case EnforcerIdentity:
@@ -2351,6 +2362,7 @@ func AllIdentities() []elemental.Identity {
 		DependencyMapIdentity,
 		DiscoveryModeIdentity,
 		DNSLookupReportIdentity,
+		EchoIdentity,
 		EmailIdentity,
 		EnforcerIdentity,
 		EnforcerLogIdentity,
@@ -2567,6 +2579,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case DiscoveryModeIdentity:
 		return []string{}
 	case DNSLookupReportIdentity:
+		return []string{}
+	case EchoIdentity:
 		return []string{}
 	case EmailIdentity:
 		return []string{}

@@ -1022,6 +1022,15 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[EchoIdentity] = &elemental.Relationship{
+		RetrieveMany: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Info: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+	}
+
 	relationshipsRegistry[EmailIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
