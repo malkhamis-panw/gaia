@@ -1,6 +1,8 @@
 256-bit
 521-bit
 7.4p1
+accessiblenamespace
+AccessibleNamespace
 AccessReport
 ack
 AccessReports
@@ -455,7 +457,6 @@ templated
 templating
 udp
 unencrypted
-unix
 unlogged
 URIs
 UserAccessPolicy
