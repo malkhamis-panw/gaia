@@ -6491,7 +6491,7 @@ List of vulnerabilities associated to the images.
 ### ProcessingUnit
 
 A processing unit represents anything that can compute. It can be a Docker
-container or a simple Unix process. Processing units are created, updated, and
+container or a simple UNIX process. Processing units are created, updated, and
 deleted by
 the system as they come and go. You can only modify their tags. Processing units
 use network policies to define which other processing units or external
@@ -7002,7 +7002,7 @@ Provide search results for Prisma Cloud's investigate page.
 
 ##### `POST /cnssearches`
 
-Retrieves rql search results.
+Retrieves RQL search results.
 
 #### Attributes
 
@@ -7028,7 +7028,7 @@ Description of the search.
 
 Type: `integer`
 
-Absolute end time of search, in unix time.
+Absolute end time of search, in UNIX time.
 
 Default value:
 
@@ -7082,7 +7082,7 @@ Type of search request. Should set to be network.
 
 Type: `integer`
 
-Absolute start time of search, in unix time.
+Absolute start time of search, in UNIX time.
 
 Default value:
 
@@ -7114,7 +7114,7 @@ Provides query suggestions for Prisma Cloud's investigate page.
 
 ##### `POST /cnssuggestions`
 
-Retrieves rql suggestions from cns.
+Retrieves RQL suggestions from Microsegmentation.
 
 #### Attributes
 
@@ -7134,7 +7134,7 @@ true
 
 Type: `integer`
 
-The length of the rql query part that is valid.
+The length of the RQL query part that is valid.
 
 Default value:
 
@@ -7146,7 +7146,7 @@ Default value:
 
 Type: `string`
 
-Prisma Cloud's rql query.
+Prisma Cloud's RQL query.
 
 ##### `suggestions`
 
@@ -7170,7 +7170,7 @@ false
 
 Type: `boolean`
 
-The validity of the rql query.
+The validity of the RQL query.
 
 Default value:
 
@@ -7180,7 +7180,7 @@ false
 
 ### PCSearchResults
 
-Represents the result data of rql search.
+Represents the result data of RQL search.
 
 #### Attributes
 
