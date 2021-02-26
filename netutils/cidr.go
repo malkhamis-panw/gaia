@@ -131,20 +131,6 @@ func ValidateUDPCIDRs(ss []string) error {
 			if !present {
 				return fmt.Errorf("%s is not contained in any CIDR", c.str)
 			}
-
-			// also make sure there are no included CIDRs in the excluded CIDRs
-			// "CoveredNetworks" basically gets all the networks under the particular IP,
-			// basically all the children networks.
-			entries, err = ranger.CoveredNetworks(c.ipNet)
-			if err != nil {
-				return fmt.Errorf("Cannot find the CIDR: %s", err)
-			}
-			// now check if there are any children networks that don't have NOT(!),
-			// basically, check if we have any included networks, if yes return error.
-			ip, present := checkIncPfxContainedInExc(entries, c.ipNet)
-			if present {
-				return fmt.Errorf("%s is contained in excluded CIDR %s", ip, c.Network())
-			}
 		}
 	}
 
@@ -235,17 +221,6 @@ func ValidateCIDRs(ss []string) error {
 			// if the excluded CIDR is not contained in the included CIDR then return error
 			if !present {
 				return fmt.Errorf("%s is not contained in any CIDR", c.str)
-			}
-
-			// also make sure there are no included CIDRs in the excluded CIDRs
-			entries, err = ranger.CoveredNetworks(c.ipNet)
-			if err != nil {
-				return fmt.Errorf("Cannot find the CIDR: %s", err)
-			}
-
-			ip, present := checkIncPfxContainedInExc(entries, c.ipNet)
-			if present {
-				return fmt.Errorf("%s is contained in excluded CIDR %s", ip, c.Network())
 			}
 		}
 	}

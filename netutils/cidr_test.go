@@ -237,7 +237,7 @@ func Test_ValidateCIDRs(t *testing.T) {
 			args: args{
 				[]string{"10.10.10.10/32", "!10.10.10.0/24", "10.10.0.0/16", "!10.0.0.0/8", "0.0.0.0/0"},
 			},
-			wantErr: true,
+			wantErr: false,
 		},
 		{
 			name: "recursive fail test",
@@ -349,7 +349,7 @@ func Test_ValidateCIDRs(t *testing.T) {
 			args: args{
 				[]string{"10.10.10.10/32", "!10.10.10.0/24", "10.10.0.0/16", "!10.0.0.0/8", "0.0.0.0/0", "2001:db8::/128", "!2001:db8::/64", "2001:db8::/32", "!2001:db8::/16", "::/0"},
 			},
-			wantErr: true,
+			wantErr: false,
 		},
 		{
 			name: "both IPv4 and IPv6 with IPv4 not contained failure test",
