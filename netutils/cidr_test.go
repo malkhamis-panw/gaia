@@ -392,6 +392,83 @@ func Test_ValidateUDPCIDRs(t *testing.T) {
 			wantErr: true,
 		},
 		{
+			name: "0/0 test",
+			args: args{
+				[]string{"0.0.0.0/0"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "basic negative multicast test",
+			args: args{
+				[]string{"0.0.0.0/0", "!128.0.0.0/1", "224.0.0.0/5", "224.0.0.0/4", "228.10.10.10/32", "240.0.0.0/8"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "all multicast subnets excluded test",
+			args: args{
+				[]string{"0.0.0.0/0", "!128.0.0.0/1", "!224.0.0.0/5", "!224.0.0.0/4", "!228.10.10.10/32", "240.0.0.0/8"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "all multicast subnets excluded test and everything under 128/1 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.0/1", "!224.0.0.0/5", "!224.0.0.0/4", "!228.10.10.10/32", "240.0.0.0/8"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "multicast 224/5, 232/5 excluded but 224/4(232.x.x.x/4) and 128/1 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "!224.0.0.0/5", "!232.10.2.3/5"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "multicast 224/5, 232/6 excluded but 224/4(232.x.x.x/4) and 128/1 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "!224.0.0.0/5", "!232.10.2.3/6"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "multicast 224/5, 232/6, 236/6 excluded but 224/4(232.x.x.x/4) and 128/1 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "!236.0.0.0/6", "!224.0.0.0/5", "!232.10.2.3/6"},
+			},
+			wantErr: false,
+		},
+		{
+			name: "multicast 224/5, 232/6 excluded but 236/6 and 128/1 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "236.0.0.0/6", "!224.0.0.0/5", "!232.10.2.3/6"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "multicast 224/4 excluded but 238.x.x.x/32 included",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "!224.0.0.0/4", "232.10.2.3/5"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "multicast 224/4 excluded, 238.x.x.x/32 excluded",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.1/1", "!224.0.0.0/5", "!224.0.0.0/6", "!238.10.2.3/32"},
+			},
+			wantErr: true,
+		},
+		{
+			name: "basic multicast test",
+			args: args{
+				[]string{"0.0.0.0/0", "128.0.0.0/1", "!224.0.0.0/5", "224.0.0.0/4", "228.10.10.10/32", "240.0.0.0/8"},
+			},
+			wantErr: true,
+		},
+		{
 			name: "basic test",
 			args: args{
 				[]string{"10.10.10.10/32"},
