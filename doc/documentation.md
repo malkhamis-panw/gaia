@@ -7102,6 +7102,13 @@ Default value:
 0
 ```
 
+##### `timeRange`
+
+Type: [`pctimerange`](#pctimerange)
+
+Time range used by PC APIs. Its type is dynamic. Aporeto needs to pass this data
+to PC backend.
+
 ### CNSSuggestion
 
 Provides query suggestions for Prisma Cloud's investigate page.
@@ -7190,7 +7197,7 @@ Default value:
 false
 ```
 
-### PCSearchResults
+### PCSearchResult
 
 Represents the result data of RQL search.
 
@@ -7213,6 +7220,30 @@ The pagination token for next page.
 Type: `integer`
 
 The total number of result items.
+
+### PCTimeRange
+
+Represents the time range parameter of PC.
+
+#### Attributes
+
+##### `relativeTimeType` [`read_only`]
+
+Type: `string`
+
+The type of relative time.
+
+##### `type` [`read_only`]
+
+Type: `string`
+
+The type of time range.
+
+##### `value` [`read_only`]
+
+Type: `pctimevalue`
+
+The value of time range.
 
 ## core/tag
 
