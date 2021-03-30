@@ -26,8 +26,29 @@ var (
 		"cachedflowreport":          CachedFlowReportIdentity,
 		"category":                  CategoryIdentity,
 
-		"claims":        ClaimsIdentity,
-		"clausesmatch":  ClauseMatchIdentity,
+		"claims":       ClaimsIdentity,
+		"clausesmatch": ClauseMatchIdentity,
+
+		"cloudalert":    CloudAlertIdentity,
+		"cloudendpoint": CloudEndpointIdentity,
+
+		"cloudgraph": CloudGraphIdentity,
+
+		"cloudmanagednetwork":   CloudManagedNetworkIdentity,
+		"cloudnetworkinterface": CloudNetworkInterfaceIdentity,
+		"cloudnetworkquery":     CloudNetworkQueryIdentity,
+
+		"cloudnetworkruleset": CloudNetworkRuleSetIdentity,
+
+		"cloudnode":   CloudNodeIdentity,
+		"cloudpolicy": CloudPolicyIdentity,
+
+		"cloudroutetable":      CloudRouteTableIdentity,
+		"cloudsnapshotaccount": CloudSnapshotAccountIdentity,
+		"cloudsubnet":          CloudSubnetIdentity,
+
+		"cloudvpc": CloudVPCIdentity,
+
 		"cnssearch":     CNSSearchIdentity,
 		"cnssuggestion": CNSSuggestionIdentity,
 
@@ -112,6 +133,7 @@ var (
 		"policyrenderer":        PolicyRendererIdentity,
 		"policyrule":            PolicyRuleIdentity,
 		"policyttl":             PolicyTTLIdentity,
+		"pollaccount":           PollAccountIdentity,
 		"processingunit":        ProcessingUnitIdentity,
 		"processingunitpolicy":  ProcessingUnitPolicyIdentity,
 		"processingunitrefresh": ProcessingUnitRefreshIdentity,
@@ -188,6 +210,27 @@ var (
 
 		"claims":         ClaimsIdentity,
 		"clausesmatches": ClauseMatchIdentity,
+
+		"cloudalerts":    CloudAlertIdentity,
+		"cloudendpoints": CloudEndpointIdentity,
+
+		"cloudgraphs": CloudGraphIdentity,
+
+		"cloudmanagednetworks":   CloudManagedNetworkIdentity,
+		"cloudnetworkinterfaces": CloudNetworkInterfaceIdentity,
+		"cloudnetworkqueries":    CloudNetworkQueryIdentity,
+
+		"cloudnetworkrulesets": CloudNetworkRuleSetIdentity,
+
+		"cloudnodes":    CloudNodeIdentity,
+		"cloudpolicies": CloudPolicyIdentity,
+
+		"cloudroutetables":      CloudRouteTableIdentity,
+		"cloudsnapshotaccounts": CloudSnapshotAccountIdentity,
+		"cloudsubnets":          CloudSubnetIdentity,
+
+		"cloudvpcs": CloudVPCIdentity,
+
 		"cnssearches":    CNSSearchIdentity,
 		"cnssuggestions": CNSSuggestionIdentity,
 
@@ -272,6 +315,7 @@ var (
 		"policyrenderers":         PolicyRendererIdentity,
 		"policyrules":             PolicyRuleIdentity,
 		"policyttls":              PolicyTTLIdentity,
+		"pollaccounts":            PollAccountIdentity,
 		"processingunits":         ProcessingUnitIdentity,
 		"processingunitpolicies":  ProcessingUnitPolicyIdentity,
 		"processingunitrefreshes": ProcessingUnitRefreshIdentity,
@@ -336,6 +380,9 @@ var (
 		"autos":           AutomationIdentity,
 		"auto":            AutomationIdentity,
 		"autotmpl":        AutomationTemplateIdentity,
+		"crules":          CloudNetworkRuleSetIdentity,
+		"vpc":             CloudVPCIdentity,
+		"vpcs":            CloudVPCIdentity,
 		"depmaps":         DependencyMapIdentity,
 		"depmap":          DependencyMapIdentity,
 		"defender":        EnforcerIdentity,
@@ -526,7 +573,128 @@ var (
 			{"namespace"},
 			{"namespace", "normalizedTags"},
 		},
-		"clausesmatch":  nil,
+		"clausesmatch": nil,
+		"cloudalert": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace", "name"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"name"},
+			{"createIdempotencyKey"},
+		},
+		"cloudendpoint": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
+		"cloudgraph": nil,
+		"cloudmanagednetwork": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"type"},
+			{"namespace"},
+			{"namespace", "nativeID"},
+			{"namespace", "type"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"key"},
+			{"createIdempotencyKey"},
+		},
+		"cloudnetworkinterface": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
+		"cloudnetworkquery": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace", "name"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"name"},
+			{"createIdempotencyKey"},
+		},
+		"cloudnetworkruleset": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
+		"cloudnode": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace", "vpcid"},
+			{"namespace", "securitytags", "type", "vpcid"},
+			{"namespace", "accountid"},
+			{"namespace", "nativeID"},
+			{"namespace", "type", "subtype"},
+			{"namespace", "relatedObjectID"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"key"},
+			{"createIdempotencyKey"},
+		},
+		"cloudpolicy": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace", "name"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"name"},
+			{"createIdempotencyKey"},
+		},
+		"cloudroutetable": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
+		"cloudsnapshotaccount": {
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"createIdempotencyKey"},
+		},
+		"cloudsubnet": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
+		"cloudvpc": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"namespace", "vpcid"},
+			{"createIdempotencyKey"},
+		},
 		"cnssearch":     nil,
 		"cnssuggestion": nil,
 		"connectionexceptionreport": {
@@ -843,6 +1011,7 @@ var (
 		"policyrenderer": nil,
 		"policyrule":     nil,
 		"policyttl":      nil,
+		"pollaccount":    nil,
 		"processingunit": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -1060,6 +1229,32 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewClaims()
 	case ClauseMatchIdentity:
 		return NewClauseMatch()
+	case CloudAlertIdentity:
+		return NewCloudAlert()
+	case CloudEndpointIdentity:
+		return NewCloudEndpoint()
+	case CloudGraphIdentity:
+		return NewCloudGraph()
+	case CloudManagedNetworkIdentity:
+		return NewCloudManagedNetwork()
+	case CloudNetworkInterfaceIdentity:
+		return NewCloudNetworkInterface()
+	case CloudNetworkQueryIdentity:
+		return NewCloudNetworkQuery()
+	case CloudNetworkRuleSetIdentity:
+		return NewCloudNetworkRuleSet()
+	case CloudNodeIdentity:
+		return NewCloudNode()
+	case CloudPolicyIdentity:
+		return NewCloudPolicy()
+	case CloudRouteTableIdentity:
+		return NewCloudRouteTable()
+	case CloudSnapshotAccountIdentity:
+		return NewCloudSnapshotAccount()
+	case CloudSubnetIdentity:
+		return NewCloudSubnet()
+	case CloudVPCIdentity:
+		return NewCloudVPC()
 	case CNSSearchIdentity:
 		return NewCNSSearch()
 	case CNSSuggestionIdentity:
@@ -1212,6 +1407,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewPolicyRule()
 	case PolicyTTLIdentity:
 		return NewPolicyTTL()
+	case PollAccountIdentity:
+		return NewPollAccount()
 	case ProcessingUnitIdentity:
 		return NewProcessingUnit()
 	case ProcessingUnitPolicyIdentity:
@@ -1355,6 +1552,32 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseClaims()
 	case ClauseMatchIdentity:
 		return NewSparseClauseMatch()
+	case CloudAlertIdentity:
+		return NewSparseCloudAlert()
+	case CloudEndpointIdentity:
+		return NewSparseCloudEndpoint()
+	case CloudGraphIdentity:
+		return NewSparseCloudGraph()
+	case CloudManagedNetworkIdentity:
+		return NewSparseCloudManagedNetwork()
+	case CloudNetworkInterfaceIdentity:
+		return NewSparseCloudNetworkInterface()
+	case CloudNetworkQueryIdentity:
+		return NewSparseCloudNetworkQuery()
+	case CloudNetworkRuleSetIdentity:
+		return NewSparseCloudNetworkRuleSet()
+	case CloudNodeIdentity:
+		return NewSparseCloudNode()
+	case CloudPolicyIdentity:
+		return NewSparseCloudPolicy()
+	case CloudRouteTableIdentity:
+		return NewSparseCloudRouteTable()
+	case CloudSnapshotAccountIdentity:
+		return NewSparseCloudSnapshotAccount()
+	case CloudSubnetIdentity:
+		return NewSparseCloudSubnet()
+	case CloudVPCIdentity:
+		return NewSparseCloudVPC()
 	case CNSSearchIdentity:
 		return NewSparseCNSSearch()
 	case CNSSuggestionIdentity:
@@ -1507,6 +1730,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparsePolicyRule()
 	case PolicyTTLIdentity:
 		return NewSparsePolicyTTL()
+	case PollAccountIdentity:
+		return NewSparsePollAccount()
 	case ProcessingUnitIdentity:
 		return NewSparseProcessingUnit()
 	case ProcessingUnitPolicyIdentity:
@@ -1658,6 +1883,32 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ClaimsList{}
 	case ClauseMatchIdentity:
 		return &ClauseMatchesList{}
+	case CloudAlertIdentity:
+		return &CloudAlertsList{}
+	case CloudEndpointIdentity:
+		return &CloudEndpointsList{}
+	case CloudGraphIdentity:
+		return &CloudGraphsList{}
+	case CloudManagedNetworkIdentity:
+		return &CloudManagedNetworksList{}
+	case CloudNetworkInterfaceIdentity:
+		return &CloudNetworkInterfacesList{}
+	case CloudNetworkQueryIdentity:
+		return &CloudNetworkQueriesList{}
+	case CloudNetworkRuleSetIdentity:
+		return &CloudNetworkRuleSetsList{}
+	case CloudNodeIdentity:
+		return &CloudNodesList{}
+	case CloudPolicyIdentity:
+		return &CloudPoliciesList{}
+	case CloudRouteTableIdentity:
+		return &CloudRouteTablesList{}
+	case CloudSnapshotAccountIdentity:
+		return &CloudSnapshotAccountsList{}
+	case CloudSubnetIdentity:
+		return &CloudSubnetsList{}
+	case CloudVPCIdentity:
+		return &CloudVPCsList{}
 	case CNSSearchIdentity:
 		return &CNSSearchesList{}
 	case CNSSuggestionIdentity:
@@ -1810,6 +2061,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &PolicyRulesList{}
 	case PolicyTTLIdentity:
 		return &PolicyTTLsList{}
+	case PollAccountIdentity:
+		return &PollAccountsList{}
 	case ProcessingUnitIdentity:
 		return &ProcessingUnitsList{}
 	case ProcessingUnitPolicyIdentity:
@@ -1951,6 +2204,32 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseClaimsList{}
 	case ClauseMatchIdentity:
 		return &SparseClauseMatchesList{}
+	case CloudAlertIdentity:
+		return &SparseCloudAlertsList{}
+	case CloudEndpointIdentity:
+		return &SparseCloudEndpointsList{}
+	case CloudGraphIdentity:
+		return &SparseCloudGraphsList{}
+	case CloudManagedNetworkIdentity:
+		return &SparseCloudManagedNetworksList{}
+	case CloudNetworkInterfaceIdentity:
+		return &SparseCloudNetworkInterfacesList{}
+	case CloudNetworkQueryIdentity:
+		return &SparseCloudNetworkQueriesList{}
+	case CloudNetworkRuleSetIdentity:
+		return &SparseCloudNetworkRuleSetsList{}
+	case CloudNodeIdentity:
+		return &SparseCloudNodesList{}
+	case CloudPolicyIdentity:
+		return &SparseCloudPoliciesList{}
+	case CloudRouteTableIdentity:
+		return &SparseCloudRouteTablesList{}
+	case CloudSnapshotAccountIdentity:
+		return &SparseCloudSnapshotAccountsList{}
+	case CloudSubnetIdentity:
+		return &SparseCloudSubnetsList{}
+	case CloudVPCIdentity:
+		return &SparseCloudVPCsList{}
 	case CNSSearchIdentity:
 		return &SparseCNSSearchesList{}
 	case CNSSuggestionIdentity:
@@ -2103,6 +2382,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparsePolicyRulesList{}
 	case PolicyTTLIdentity:
 		return &SparsePolicyTTLsList{}
+	case PollAccountIdentity:
+		return &SparsePollAccountsList{}
 	case ProcessingUnitIdentity:
 		return &SparseProcessingUnitsList{}
 	case ProcessingUnitPolicyIdentity:
@@ -2240,6 +2521,19 @@ func AllIdentities() []elemental.Identity {
 		CategoryIdentity,
 		ClaimsIdentity,
 		ClauseMatchIdentity,
+		CloudAlertIdentity,
+		CloudEndpointIdentity,
+		CloudGraphIdentity,
+		CloudManagedNetworkIdentity,
+		CloudNetworkInterfaceIdentity,
+		CloudNetworkQueryIdentity,
+		CloudNetworkRuleSetIdentity,
+		CloudNodeIdentity,
+		CloudPolicyIdentity,
+		CloudRouteTableIdentity,
+		CloudSnapshotAccountIdentity,
+		CloudSubnetIdentity,
+		CloudVPCIdentity,
 		CNSSearchIdentity,
 		CNSSuggestionIdentity,
 		ConnectionExceptionReportIdentity,
@@ -2316,6 +2610,7 @@ func AllIdentities() []elemental.Identity {
 		PolicyRendererIdentity,
 		PolicyRuleIdentity,
 		PolicyTTLIdentity,
+		PollAccountIdentity,
 		ProcessingUnitIdentity,
 		ProcessingUnitPolicyIdentity,
 		ProcessingUnitRefreshIdentity,
@@ -2433,6 +2728,37 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{}
 	case ClauseMatchIdentity:
 		return []string{}
+	case CloudAlertIdentity:
+		return []string{}
+	case CloudEndpointIdentity:
+		return []string{}
+	case CloudGraphIdentity:
+		return []string{}
+	case CloudManagedNetworkIdentity:
+		return []string{}
+	case CloudNetworkInterfaceIdentity:
+		return []string{}
+	case CloudNetworkQueryIdentity:
+		return []string{}
+	case CloudNetworkRuleSetIdentity:
+		return []string{
+			"crules",
+		}
+	case CloudNodeIdentity:
+		return []string{}
+	case CloudPolicyIdentity:
+		return []string{}
+	case CloudRouteTableIdentity:
+		return []string{}
+	case CloudSnapshotAccountIdentity:
+		return []string{}
+	case CloudSubnetIdentity:
+		return []string{}
+	case CloudVPCIdentity:
+		return []string{
+			"vpc",
+			"vpcs",
+		}
 	case CNSSearchIdentity:
 		return []string{}
 	case CNSSuggestionIdentity:
@@ -2662,6 +2988,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case PolicyRuleIdentity:
 		return []string{}
 	case PolicyTTLIdentity:
+		return []string{}
+	case PollAccountIdentity:
 		return []string{}
 	case ProcessingUnitIdentity:
 		return []string{
