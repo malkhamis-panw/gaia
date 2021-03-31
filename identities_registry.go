@@ -924,9 +924,10 @@ var (
 		"namespace": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
+			{"type"},
+			{"namespace"},
 			{"namespace", "normalizedTags"},
 			{"namespace", "name"},
-			{"namespace"},
 			{"name"},
 			{"createIdempotencyKey"},
 		},
