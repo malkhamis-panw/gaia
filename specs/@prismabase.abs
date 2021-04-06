@@ -18,6 +18,7 @@ attributes:
     example_value: 12344555
     getter: true
     setter: true
+    omit_empty: true
 
   - name: VPCID
     description: ID of the host VPC.
@@ -25,10 +26,10 @@ attributes:
     exposed: true
     stored: true
     example_value: vpc-023419c5952374917
-    filterable: true
     getter: true
     setter: true
     orderable: true
+    omit_empty: true
 
   - name: accountID
     exposed_name: accountId
@@ -38,9 +39,9 @@ attributes:
     exposed: true
     stored: true
     example_value: 9123450055
-    filterable: true
     getter: true
     setter: true
+    omit_empty: true
 
   - name: cloudTags
     description: Internal representation of object tags retrieved from the cloud provider.
@@ -48,9 +49,9 @@ attributes:
     exposed: true
     subtype: string
     stored: true
-    filterable: true
     getter: true
     setter: true
+    omit_empty: true
 
   - name: cloudType
     description: Cloud type of the entity.
@@ -58,10 +59,10 @@ attributes:
     exposed: true
     stored: true
     example_value: AWS
-    filterable: true
     getter: true
     setter: true
     orderable: true
+    omit_empty: true
 
   - name: customerID
     description: Customer ID as identified by Prisma Cloud.
@@ -69,9 +70,9 @@ attributes:
     exposed: true
     stored: true
     example_value: 1234455
-    filterable: true
     getter: true
     setter: true
+    omit_empty: true
 
   - name: ingestionTime
     description: The time that the object was first ingested.
@@ -81,6 +82,7 @@ attributes:
     getter: true
     setter: true
     orderable: true
+    omit_empty: true
 
   - name: name
     description: Name of the object (optional).
@@ -88,10 +90,10 @@ attributes:
     exposed: true
     stored: true
     example_value: myobject
-    filterable: true
     getter: true
     setter: true
     orderable: true
+    omit_empty: true
 
   - name: nativeID
     exposed_name: nativeID
@@ -101,7 +103,6 @@ attributes:
     stored: true
     required: true
     example_value: subnet-0ae4a90153dfb642c
-    filterable: true
     getter: true
     setter: true
     max_length: 256
@@ -120,6 +121,7 @@ attributes:
     getter: true
     setter: true
     orderable: true
+    omit_empty: true
 
   - name: regionName
     exposed_name: regionName
@@ -128,11 +130,11 @@ attributes:
     exposed: true
     stored: true
     example_value: AWS Tokyo
-    filterable: true
     getter: true
     setter: true
     max_length: 256
     orderable: true
+    omit_empty: true
 
   - name: resourceID
     description: Prisma Cloud Resource ID.
@@ -142,3 +144,4 @@ attributes:
     example_value: 12344555
     getter: true
     setter: true
+    omit_empty: true
