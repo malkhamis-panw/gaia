@@ -21,10 +21,9 @@ model:
   - '@migratable'
   - '@base'
   - '@namespaced'
-  - '@described'
   - '@identifiable-stored'
   - '@prismabase'
-  - '@named'
+  - '@timeable'
 
 # Indexes
 indexes:
@@ -35,13 +34,6 @@ indexes:
 # Attributes
 attributes:
   v1:
-  - name: accountids
-    description: List of accounts associated to alert rule.
-    type: list
-    exposed: true
-    subtype: string
-    stored: true
-
   - name: alertruleid
     description: Prisma Cloud Alert Rule id.
     type: string
@@ -63,7 +55,7 @@ attributes:
     subtype: boolean
     stored: true
 
-  - name: policyids
+  - name: policyIDs
     description: List of policy IDs associated to alert rule.
     type: list
     exposed: true
@@ -72,6 +64,13 @@ attributes:
 
   - name: regions
     description: List of regions where the alert rule is enforced.
+    type: list
+    exposed: true
+    subtype: string
+    stored: true
+
+  - name: targetAccountIDs
+    description: List of accounts associated to alert rule.
     type: list
     exposed: true
     subtype: string

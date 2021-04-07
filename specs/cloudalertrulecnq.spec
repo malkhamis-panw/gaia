@@ -35,14 +35,14 @@ indexes:
 # Attributes
 attributes:
   v1:
-  - name: alertruleid
+  - name: alertRuleID
     description: Prisma Cloud Alert Rule id.
     type: string
     exposed: true
     subtype: string
     stored: true
 
-  - name: cloudnetworkquery
+  - name: cloudNetworkQuery
     description: The cloud network query that should be used.
     type: ref
     exposed: true
@@ -51,23 +51,14 @@ attributes:
     extensions:
       refMode: pointer
 
-  - name: policyid
+  - name: policyID
     description: Prisma Cloud Policy id.
     type: string
     exposed: true
     subtype: string
     stored: true
 
-  - name: resultsgraph
-    description: The last successful result for the cloud network query.
-    type: ref
-    exposed: true
-    subtype: cloudgraph
-    stored: true
-    extensions:
-      refMode: pointer
-
-  - name: resulttimestamp
+  - name: resultTimestamp
     description: Result of the last successfully run query.
     type: time
     exposed: true

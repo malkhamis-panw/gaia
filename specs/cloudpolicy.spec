@@ -22,6 +22,7 @@ model:
   - '@described'
   - '@identifiable-stored'
   - '@named'
+  - '@timeable'
 
 # Indexes
 indexes:

@@ -96,7 +96,7 @@ type CloudAlertRuleCNQ struct {
 	AccountID string `json:"accountId,omitempty" msgpack:"accountId,omitempty" bson:"accountid,omitempty" mapstructure:"accountId,omitempty"`
 
 	// Prisma Cloud Alert Rule id.
-	Alertruleid string `json:"alertruleid" msgpack:"alertruleid" bson:"alertruleid" mapstructure:"alertruleid,omitempty"`
+	AlertRuleID string `json:"alertRuleID" msgpack:"alertRuleID" bson:"alertruleid" mapstructure:"alertRuleID,omitempty"`
 
 	// Stores additional information about an entity.
 	Annotations map[string][]string `json:"annotations" msgpack:"annotations" bson:"annotations" mapstructure:"annotations,omitempty"`
@@ -104,14 +104,14 @@ type CloudAlertRuleCNQ struct {
 	// List of tags attached to an entity.
 	AssociatedTags []string `json:"associatedTags" msgpack:"associatedTags" bson:"associatedtags" mapstructure:"associatedTags,omitempty"`
 
+	// The cloud network query that should be used.
+	CloudNetworkQuery *CloudNetworkQuery `json:"cloudNetworkQuery" msgpack:"cloudNetworkQuery" bson:"cloudnetworkquery" mapstructure:"cloudNetworkQuery,omitempty"`
+
 	// Internal representation of object tags retrieved from the cloud provider.
 	CloudTags []string `json:"cloudTags,omitempty" msgpack:"cloudTags,omitempty" bson:"cloudtags,omitempty" mapstructure:"cloudTags,omitempty"`
 
 	// Cloud type of the entity.
 	CloudType string `json:"cloudType,omitempty" msgpack:"cloudType,omitempty" bson:"cloudtype,omitempty" mapstructure:"cloudType,omitempty"`
-
-	// The cloud network query that should be used.
-	Cloudnetworkquery *CloudNetworkQuery `json:"cloudnetworkquery" msgpack:"cloudnetworkquery" bson:"cloudnetworkquery" mapstructure:"cloudnetworkquery,omitempty"`
 
 	// internal idempotency key for a create operation.
 	CreateIdempotencyKey string `json:"-" msgpack:"-" bson:"createidempotencykey" mapstructure:"-,omitempty"`
@@ -140,11 +140,11 @@ type CloudAlertRuleCNQ struct {
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags []string `json:"normalizedTags" msgpack:"normalizedTags" bson:"normalizedtags" mapstructure:"normalizedTags,omitempty"`
 
+	// Prisma Cloud Policy id.
+	PolicyID string `json:"policyID" msgpack:"policyID" bson:"policyid" mapstructure:"policyID,omitempty"`
+
 	// A list of policy references associated with this cloud node.
 	PolicyReferences []string `json:"policyReferences,omitempty" msgpack:"policyReferences,omitempty" bson:"policyreferences,omitempty" mapstructure:"policyReferences,omitempty"`
-
-	// Prisma Cloud Policy id.
-	Policyid string `json:"policyid" msgpack:"policyid" bson:"policyid" mapstructure:"policyid,omitempty"`
 
 	// Defines if the object is protected.
 	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
@@ -155,11 +155,8 @@ type CloudAlertRuleCNQ struct {
 	// Prisma Cloud Resource ID.
 	ResourceID int `json:"resourceID,omitempty" msgpack:"resourceID,omitempty" bson:"resourceid,omitempty" mapstructure:"resourceID,omitempty"`
 
-	// The last successful result for the cloud network query.
-	Resultsgraph *CloudGraph `json:"resultsgraph" msgpack:"resultsgraph" bson:"resultsgraph" mapstructure:"resultsgraph,omitempty"`
-
 	// Result of the last successfully run query.
-	Resulttimestamp time.Time `json:"resulttimestamp" msgpack:"resulttimestamp" bson:"ag" mapstructure:"resulttimestamp,omitempty"`
+	ResultTimestamp time.Time `json:"resultTimestamp" msgpack:"resultTimestamp" bson:"ag" mapstructure:"resultTimestamp,omitempty"`
 
 	// internal idempotency key for a update operation.
 	UpdateIdempotencyKey string `json:"-" msgpack:"-" bson:"updateidempotencykey" mapstructure:"-,omitempty"`
@@ -180,13 +177,12 @@ func NewCloudAlertRuleCNQ() *CloudAlertRuleCNQ {
 	return &CloudAlertRuleCNQ{
 		ModelVersion:      1,
 		MigrationsLog:     map[string]string{},
+		CloudNetworkQuery: NewCloudNetworkQuery(),
 		CloudTags:         []string{},
 		Annotations:       map[string][]string{},
 		AssociatedTags:    []string{},
-		Cloudnetworkquery: NewCloudNetworkQuery(),
-		NormalizedTags:    []string{},
 		PolicyReferences:  []string{},
-		Resultsgraph:      NewCloudGraph(),
+		NormalizedTags:    []string{},
 	}
 }
 
@@ -224,12 +220,12 @@ func (o *CloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	}
 	s.VPCID = o.VPCID
 	s.AccountID = o.AccountID
-	s.Alertruleid = o.Alertruleid
+	s.AlertRuleID = o.AlertRuleID
 	s.Annotations = o.Annotations
 	s.AssociatedTags = o.AssociatedTags
+	s.CloudNetworkQuery = o.CloudNetworkQuery
 	s.CloudTags = o.CloudTags
 	s.CloudType = o.CloudType
-	s.Cloudnetworkquery = o.Cloudnetworkquery
 	s.CreateIdempotencyKey = o.CreateIdempotencyKey
 	s.CustomerID = o.CustomerID
 	s.Description = o.Description
@@ -239,13 +235,12 @@ func (o *CloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	s.Namespace = o.Namespace
 	s.NativeID = o.NativeID
 	s.NormalizedTags = o.NormalizedTags
+	s.PolicyID = o.PolicyID
 	s.PolicyReferences = o.PolicyReferences
-	s.Policyid = o.Policyid
 	s.Protected = o.Protected
 	s.RegionName = o.RegionName
 	s.ResourceID = o.ResourceID
-	s.Resultsgraph = o.Resultsgraph
-	s.Resulttimestamp = o.Resulttimestamp
+	s.ResultTimestamp = o.ResultTimestamp
 	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.ZHash = o.ZHash
 	s.Zone = o.Zone
@@ -270,12 +265,12 @@ func (o *CloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	o.ID = s.ID.Hex()
 	o.VPCID = s.VPCID
 	o.AccountID = s.AccountID
-	o.Alertruleid = s.Alertruleid
+	o.AlertRuleID = s.AlertRuleID
 	o.Annotations = s.Annotations
 	o.AssociatedTags = s.AssociatedTags
+	o.CloudNetworkQuery = s.CloudNetworkQuery
 	o.CloudTags = s.CloudTags
 	o.CloudType = s.CloudType
-	o.Cloudnetworkquery = s.Cloudnetworkquery
 	o.CreateIdempotencyKey = s.CreateIdempotencyKey
 	o.CustomerID = s.CustomerID
 	o.Description = s.Description
@@ -285,13 +280,12 @@ func (o *CloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	o.Namespace = s.Namespace
 	o.NativeID = s.NativeID
 	o.NormalizedTags = s.NormalizedTags
+	o.PolicyID = s.PolicyID
 	o.PolicyReferences = s.PolicyReferences
-	o.Policyid = s.Policyid
 	o.Protected = s.Protected
 	o.RegionName = s.RegionName
 	o.ResourceID = s.ResourceID
-	o.Resultsgraph = s.Resultsgraph
-	o.Resulttimestamp = s.Resulttimestamp
+	o.ResultTimestamp = s.ResultTimestamp
 	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.ZHash = s.ZHash
 	o.Zone = s.Zone
@@ -617,12 +611,12 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			ID:                   &o.ID,
 			VPCID:                &o.VPCID,
 			AccountID:            &o.AccountID,
-			Alertruleid:          &o.Alertruleid,
+			AlertRuleID:          &o.AlertRuleID,
 			Annotations:          &o.Annotations,
 			AssociatedTags:       &o.AssociatedTags,
+			CloudNetworkQuery:    o.CloudNetworkQuery,
 			CloudTags:            &o.CloudTags,
 			CloudType:            &o.CloudType,
-			Cloudnetworkquery:    o.Cloudnetworkquery,
 			CreateIdempotencyKey: &o.CreateIdempotencyKey,
 			CustomerID:           &o.CustomerID,
 			Description:          &o.Description,
@@ -632,13 +626,12 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			Namespace:            &o.Namespace,
 			NativeID:             &o.NativeID,
 			NormalizedTags:       &o.NormalizedTags,
+			PolicyID:             &o.PolicyID,
 			PolicyReferences:     &o.PolicyReferences,
-			Policyid:             &o.Policyid,
 			Protected:            &o.Protected,
 			RegionName:           &o.RegionName,
 			ResourceID:           &o.ResourceID,
-			Resultsgraph:         o.Resultsgraph,
-			Resulttimestamp:      &o.Resulttimestamp,
+			ResultTimestamp:      &o.ResultTimestamp,
 			UpdateIdempotencyKey: &o.UpdateIdempotencyKey,
 			ZHash:                &o.ZHash,
 			Zone:                 &o.Zone,
@@ -656,18 +649,18 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			sp.VPCID = &(o.VPCID)
 		case "accountID":
 			sp.AccountID = &(o.AccountID)
-		case "alertruleid":
-			sp.Alertruleid = &(o.Alertruleid)
+		case "alertRuleID":
+			sp.AlertRuleID = &(o.AlertRuleID)
 		case "annotations":
 			sp.Annotations = &(o.Annotations)
 		case "associatedTags":
 			sp.AssociatedTags = &(o.AssociatedTags)
+		case "cloudNetworkQuery":
+			sp.CloudNetworkQuery = o.CloudNetworkQuery
 		case "cloudTags":
 			sp.CloudTags = &(o.CloudTags)
 		case "cloudType":
 			sp.CloudType = &(o.CloudType)
-		case "cloudnetworkquery":
-			sp.Cloudnetworkquery = o.Cloudnetworkquery
 		case "createIdempotencyKey":
 			sp.CreateIdempotencyKey = &(o.CreateIdempotencyKey)
 		case "customerID":
@@ -686,20 +679,18 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			sp.NativeID = &(o.NativeID)
 		case "normalizedTags":
 			sp.NormalizedTags = &(o.NormalizedTags)
+		case "policyID":
+			sp.PolicyID = &(o.PolicyID)
 		case "policyReferences":
 			sp.PolicyReferences = &(o.PolicyReferences)
-		case "policyid":
-			sp.Policyid = &(o.Policyid)
 		case "protected":
 			sp.Protected = &(o.Protected)
 		case "regionName":
 			sp.RegionName = &(o.RegionName)
 		case "resourceID":
 			sp.ResourceID = &(o.ResourceID)
-		case "resultsgraph":
-			sp.Resultsgraph = o.Resultsgraph
-		case "resulttimestamp":
-			sp.Resulttimestamp = &(o.Resulttimestamp)
+		case "resultTimestamp":
+			sp.ResultTimestamp = &(o.ResultTimestamp)
 		case "updateIdempotencyKey":
 			sp.UpdateIdempotencyKey = &(o.UpdateIdempotencyKey)
 		case "zHash":
@@ -731,8 +722,8 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	if so.AccountID != nil {
 		o.AccountID = *so.AccountID
 	}
-	if so.Alertruleid != nil {
-		o.Alertruleid = *so.Alertruleid
+	if so.AlertRuleID != nil {
+		o.AlertRuleID = *so.AlertRuleID
 	}
 	if so.Annotations != nil {
 		o.Annotations = *so.Annotations
@@ -740,14 +731,14 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	if so.AssociatedTags != nil {
 		o.AssociatedTags = *so.AssociatedTags
 	}
+	if so.CloudNetworkQuery != nil {
+		o.CloudNetworkQuery = so.CloudNetworkQuery
+	}
 	if so.CloudTags != nil {
 		o.CloudTags = *so.CloudTags
 	}
 	if so.CloudType != nil {
 		o.CloudType = *so.CloudType
-	}
-	if so.Cloudnetworkquery != nil {
-		o.Cloudnetworkquery = so.Cloudnetworkquery
 	}
 	if so.CreateIdempotencyKey != nil {
 		o.CreateIdempotencyKey = *so.CreateIdempotencyKey
@@ -776,11 +767,11 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	if so.NormalizedTags != nil {
 		o.NormalizedTags = *so.NormalizedTags
 	}
+	if so.PolicyID != nil {
+		o.PolicyID = *so.PolicyID
+	}
 	if so.PolicyReferences != nil {
 		o.PolicyReferences = *so.PolicyReferences
-	}
-	if so.Policyid != nil {
-		o.Policyid = *so.Policyid
 	}
 	if so.Protected != nil {
 		o.Protected = *so.Protected
@@ -791,11 +782,8 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	if so.ResourceID != nil {
 		o.ResourceID = *so.ResourceID
 	}
-	if so.Resultsgraph != nil {
-		o.Resultsgraph = so.Resultsgraph
-	}
-	if so.Resulttimestamp != nil {
-		o.Resulttimestamp = *so.Resulttimestamp
+	if so.ResultTimestamp != nil {
+		o.ResultTimestamp = *so.ResultTimestamp
 	}
 	if so.UpdateIdempotencyKey != nil {
 		o.UpdateIdempotencyKey = *so.UpdateIdempotencyKey
@@ -842,9 +830,9 @@ func (o *CloudAlertRuleCNQ) Validate() error {
 		errors = errors.Append(err)
 	}
 
-	if o.Cloudnetworkquery != nil {
-		elemental.ResetDefaultForZeroValues(o.Cloudnetworkquery)
-		if err := o.Cloudnetworkquery.Validate(); err != nil {
+	if o.CloudNetworkQuery != nil {
+		elemental.ResetDefaultForZeroValues(o.CloudNetworkQuery)
+		if err := o.CloudNetworkQuery.Validate(); err != nil {
 			errors = errors.Append(err)
 		}
 	}
@@ -867,13 +855,6 @@ func (o *CloudAlertRuleCNQ) Validate() error {
 
 	if err := elemental.ValidateMaximumLength("regionName", o.RegionName, 256, false); err != nil {
 		errors = errors.Append(err)
-	}
-
-	if o.Resultsgraph != nil {
-		elemental.ResetDefaultForZeroValues(o.Resultsgraph)
-		if err := o.Resultsgraph.Validate(); err != nil {
-			errors = errors.Append(err)
-		}
 	}
 
 	if len(requiredErrors) > 0 {
@@ -918,18 +899,18 @@ func (o *CloudAlertRuleCNQ) ValueForAttribute(name string) interface{} {
 		return o.VPCID
 	case "accountID":
 		return o.AccountID
-	case "alertruleid":
-		return o.Alertruleid
+	case "alertRuleID":
+		return o.AlertRuleID
 	case "annotations":
 		return o.Annotations
 	case "associatedTags":
 		return o.AssociatedTags
+	case "cloudNetworkQuery":
+		return o.CloudNetworkQuery
 	case "cloudTags":
 		return o.CloudTags
 	case "cloudType":
 		return o.CloudType
-	case "cloudnetworkquery":
-		return o.Cloudnetworkquery
 	case "createIdempotencyKey":
 		return o.CreateIdempotencyKey
 	case "customerID":
@@ -948,20 +929,18 @@ func (o *CloudAlertRuleCNQ) ValueForAttribute(name string) interface{} {
 		return o.NativeID
 	case "normalizedTags":
 		return o.NormalizedTags
+	case "policyID":
+		return o.PolicyID
 	case "policyReferences":
 		return o.PolicyReferences
-	case "policyid":
-		return o.Policyid
 	case "protected":
 		return o.Protected
 	case "regionName":
 		return o.RegionName
 	case "resourceID":
 		return o.ResourceID
-	case "resultsgraph":
-		return o.Resultsgraph
-	case "resulttimestamp":
-		return o.Resulttimestamp
+	case "resultTimestamp":
+		return o.ResultTimestamp
 	case "updateIdempotencyKey":
 		return o.UpdateIdempotencyKey
 	case "zHash":
@@ -1027,13 +1006,13 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Stored:         true,
 		Type:           "string",
 	},
-	"Alertruleid": {
+	"AlertRuleID": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "alertruleid",
-		ConvertedName:  "Alertruleid",
+		ConvertedName:  "AlertRuleID",
 		Description:    `Prisma Cloud Alert Rule id.`,
 		Exposed:        true,
-		Name:           "alertruleid",
+		Name:           "alertRuleID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -1064,6 +1043,17 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		SubType:        "string",
 		Type:           "list",
 	},
+	"CloudNetworkQuery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "cloudnetworkquery",
+		ConvertedName:  "CloudNetworkQuery",
+		Description:    `The cloud network query that should be used.`,
+		Exposed:        true,
+		Name:           "cloudNetworkQuery",
+		Stored:         true,
+		SubType:        "cloudnetworkquery",
+		Type:           "ref",
+	},
 	"CloudTags": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "cloudtags",
@@ -1089,17 +1079,6 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
-	},
-	"Cloudnetworkquery": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudnetworkquery",
-		ConvertedName:  "Cloudnetworkquery",
-		Description:    `The cloud network query that should be used.`,
-		Exposed:        true,
-		Name:           "cloudnetworkquery",
-		Stored:         true,
-		SubType:        "cloudnetworkquery",
-		Type:           "ref",
 	},
 	"CreateIdempotencyKey": {
 		AllowedChoices: []string{},
@@ -1225,6 +1204,17 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Transient:      true,
 		Type:           "list",
 	},
+	"PolicyID": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "policyid",
+		ConvertedName:  "PolicyID",
+		Description:    `Prisma Cloud Policy id.`,
+		Exposed:        true,
+		Name:           "policyID",
+		Stored:         true,
+		SubType:        "string",
+		Type:           "string",
+	},
 	"PolicyReferences": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "policyreferences",
@@ -1238,17 +1228,6 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"Policyid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "policyid",
-		ConvertedName:  "Policyid",
-		Description:    `Prisma Cloud Policy id.`,
-		Exposed:        true,
-		Name:           "policyid",
-		Stored:         true,
-		SubType:        "string",
-		Type:           "string",
 	},
 	"Protected": {
 		AllowedChoices: []string{},
@@ -1289,24 +1268,13 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Stored:         true,
 		Type:           "integer",
 	},
-	"Resultsgraph": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "resultsgraph",
-		ConvertedName:  "Resultsgraph",
-		Description:    `The last successful result for the cloud network query.`,
-		Exposed:        true,
-		Name:           "resultsgraph",
-		Stored:         true,
-		SubType:        "cloudgraph",
-		Type:           "ref",
-	},
-	"Resulttimestamp": {
+	"ResultTimestamp": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "ag",
-		ConvertedName:  "Resulttimestamp",
+		ConvertedName:  "ResultTimestamp",
 		Description:    `Result of the last successfully run query.`,
 		Exposed:        true,
-		Name:           "resulttimestamp",
+		Name:           "resultTimestamp",
 		Orderable:      true,
 		Stored:         true,
 		Type:           "time",
@@ -1411,10 +1379,10 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 	"alertruleid": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "alertruleid",
-		ConvertedName:  "Alertruleid",
+		ConvertedName:  "AlertRuleID",
 		Description:    `Prisma Cloud Alert Rule id.`,
 		Exposed:        true,
-		Name:           "alertruleid",
+		Name:           "alertRuleID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -1445,6 +1413,17 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		SubType:        "string",
 		Type:           "list",
 	},
+	"cloudnetworkquery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "cloudnetworkquery",
+		ConvertedName:  "CloudNetworkQuery",
+		Description:    `The cloud network query that should be used.`,
+		Exposed:        true,
+		Name:           "cloudNetworkQuery",
+		Stored:         true,
+		SubType:        "cloudnetworkquery",
+		Type:           "ref",
+	},
 	"cloudtags": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "cloudtags",
@@ -1470,17 +1449,6 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
-	},
-	"cloudnetworkquery": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudnetworkquery",
-		ConvertedName:  "Cloudnetworkquery",
-		Description:    `The cloud network query that should be used.`,
-		Exposed:        true,
-		Name:           "cloudnetworkquery",
-		Stored:         true,
-		SubType:        "cloudnetworkquery",
-		Type:           "ref",
 	},
 	"createidempotencykey": {
 		AllowedChoices: []string{},
@@ -1606,6 +1574,17 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Transient:      true,
 		Type:           "list",
 	},
+	"policyid": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "policyid",
+		ConvertedName:  "PolicyID",
+		Description:    `Prisma Cloud Policy id.`,
+		Exposed:        true,
+		Name:           "policyID",
+		Stored:         true,
+		SubType:        "string",
+		Type:           "string",
+	},
 	"policyreferences": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "policyreferences",
@@ -1619,17 +1598,6 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"policyid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "policyid",
-		ConvertedName:  "Policyid",
-		Description:    `Prisma Cloud Policy id.`,
-		Exposed:        true,
-		Name:           "policyid",
-		Stored:         true,
-		SubType:        "string",
-		Type:           "string",
 	},
 	"protected": {
 		AllowedChoices: []string{},
@@ -1670,24 +1638,13 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		Type:           "integer",
 	},
-	"resultsgraph": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "resultsgraph",
-		ConvertedName:  "Resultsgraph",
-		Description:    `The last successful result for the cloud network query.`,
-		Exposed:        true,
-		Name:           "resultsgraph",
-		Stored:         true,
-		SubType:        "cloudgraph",
-		Type:           "ref",
-	},
 	"resulttimestamp": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "ag",
-		ConvertedName:  "Resulttimestamp",
+		ConvertedName:  "ResultTimestamp",
 		Description:    `Result of the last successfully run query.`,
 		Exposed:        true,
-		Name:           "resulttimestamp",
+		Name:           "resultTimestamp",
 		Orderable:      true,
 		Stored:         true,
 		Type:           "time",
@@ -1813,7 +1770,7 @@ type SparseCloudAlertRuleCNQ struct {
 	AccountID *string `json:"accountId,omitempty" msgpack:"accountId,omitempty" bson:"accountid,omitempty" mapstructure:"accountId,omitempty"`
 
 	// Prisma Cloud Alert Rule id.
-	Alertruleid *string `json:"alertruleid,omitempty" msgpack:"alertruleid,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertruleid,omitempty"`
+	AlertRuleID *string `json:"alertRuleID,omitempty" msgpack:"alertRuleID,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertRuleID,omitempty"`
 
 	// Stores additional information about an entity.
 	Annotations *map[string][]string `json:"annotations,omitempty" msgpack:"annotations,omitempty" bson:"annotations,omitempty" mapstructure:"annotations,omitempty"`
@@ -1821,14 +1778,14 @@ type SparseCloudAlertRuleCNQ struct {
 	// List of tags attached to an entity.
 	AssociatedTags *[]string `json:"associatedTags,omitempty" msgpack:"associatedTags,omitempty" bson:"associatedtags,omitempty" mapstructure:"associatedTags,omitempty"`
 
+	// The cloud network query that should be used.
+	CloudNetworkQuery *CloudNetworkQuery `json:"cloudNetworkQuery,omitempty" msgpack:"cloudNetworkQuery,omitempty" bson:"cloudnetworkquery,omitempty" mapstructure:"cloudNetworkQuery,omitempty"`
+
 	// Internal representation of object tags retrieved from the cloud provider.
 	CloudTags *[]string `json:"cloudTags,omitempty" msgpack:"cloudTags,omitempty" bson:"cloudtags,omitempty" mapstructure:"cloudTags,omitempty"`
 
 	// Cloud type of the entity.
 	CloudType *string `json:"cloudType,omitempty" msgpack:"cloudType,omitempty" bson:"cloudtype,omitempty" mapstructure:"cloudType,omitempty"`
-
-	// The cloud network query that should be used.
-	Cloudnetworkquery *CloudNetworkQuery `json:"cloudnetworkquery,omitempty" msgpack:"cloudnetworkquery,omitempty" bson:"cloudnetworkquery,omitempty" mapstructure:"cloudnetworkquery,omitempty"`
 
 	// internal idempotency key for a create operation.
 	CreateIdempotencyKey *string `json:"-" msgpack:"-" bson:"createidempotencykey,omitempty" mapstructure:"-,omitempty"`
@@ -1857,11 +1814,11 @@ type SparseCloudAlertRuleCNQ struct {
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags *[]string `json:"normalizedTags,omitempty" msgpack:"normalizedTags,omitempty" bson:"normalizedtags,omitempty" mapstructure:"normalizedTags,omitempty"`
 
+	// Prisma Cloud Policy id.
+	PolicyID *string `json:"policyID,omitempty" msgpack:"policyID,omitempty" bson:"policyid,omitempty" mapstructure:"policyID,omitempty"`
+
 	// A list of policy references associated with this cloud node.
 	PolicyReferences *[]string `json:"policyReferences,omitempty" msgpack:"policyReferences,omitempty" bson:"policyreferences,omitempty" mapstructure:"policyReferences,omitempty"`
-
-	// Prisma Cloud Policy id.
-	Policyid *string `json:"policyid,omitempty" msgpack:"policyid,omitempty" bson:"policyid,omitempty" mapstructure:"policyid,omitempty"`
 
 	// Defines if the object is protected.
 	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
@@ -1872,11 +1829,8 @@ type SparseCloudAlertRuleCNQ struct {
 	// Prisma Cloud Resource ID.
 	ResourceID *int `json:"resourceID,omitempty" msgpack:"resourceID,omitempty" bson:"resourceid,omitempty" mapstructure:"resourceID,omitempty"`
 
-	// The last successful result for the cloud network query.
-	Resultsgraph *CloudGraph `json:"resultsgraph,omitempty" msgpack:"resultsgraph,omitempty" bson:"resultsgraph,omitempty" mapstructure:"resultsgraph,omitempty"`
-
 	// Result of the last successfully run query.
-	Resulttimestamp *time.Time `json:"resulttimestamp,omitempty" msgpack:"resulttimestamp,omitempty" bson:"ag,omitempty" mapstructure:"resulttimestamp,omitempty"`
+	ResultTimestamp *time.Time `json:"resultTimestamp,omitempty" msgpack:"resultTimestamp,omitempty" bson:"ag,omitempty" mapstructure:"resultTimestamp,omitempty"`
 
 	// internal idempotency key for a update operation.
 	UpdateIdempotencyKey *string `json:"-" msgpack:"-" bson:"updateidempotencykey,omitempty" mapstructure:"-,omitempty"`
@@ -1943,8 +1897,8 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	if o.AccountID != nil {
 		s.AccountID = o.AccountID
 	}
-	if o.Alertruleid != nil {
-		s.Alertruleid = o.Alertruleid
+	if o.AlertRuleID != nil {
+		s.AlertRuleID = o.AlertRuleID
 	}
 	if o.Annotations != nil {
 		s.Annotations = o.Annotations
@@ -1952,14 +1906,14 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	if o.AssociatedTags != nil {
 		s.AssociatedTags = o.AssociatedTags
 	}
+	if o.CloudNetworkQuery != nil {
+		s.CloudNetworkQuery = o.CloudNetworkQuery
+	}
 	if o.CloudTags != nil {
 		s.CloudTags = o.CloudTags
 	}
 	if o.CloudType != nil {
 		s.CloudType = o.CloudType
-	}
-	if o.Cloudnetworkquery != nil {
-		s.Cloudnetworkquery = o.Cloudnetworkquery
 	}
 	if o.CreateIdempotencyKey != nil {
 		s.CreateIdempotencyKey = o.CreateIdempotencyKey
@@ -1988,11 +1942,11 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	if o.NormalizedTags != nil {
 		s.NormalizedTags = o.NormalizedTags
 	}
+	if o.PolicyID != nil {
+		s.PolicyID = o.PolicyID
+	}
 	if o.PolicyReferences != nil {
 		s.PolicyReferences = o.PolicyReferences
-	}
-	if o.Policyid != nil {
-		s.Policyid = o.Policyid
 	}
 	if o.Protected != nil {
 		s.Protected = o.Protected
@@ -2003,11 +1957,8 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	if o.ResourceID != nil {
 		s.ResourceID = o.ResourceID
 	}
-	if o.Resultsgraph != nil {
-		s.Resultsgraph = o.Resultsgraph
-	}
-	if o.Resulttimestamp != nil {
-		s.Resulttimestamp = o.Resulttimestamp
+	if o.ResultTimestamp != nil {
+		s.ResultTimestamp = o.ResultTimestamp
 	}
 	if o.UpdateIdempotencyKey != nil {
 		s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
@@ -2046,8 +1997,8 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	if s.AccountID != nil {
 		o.AccountID = s.AccountID
 	}
-	if s.Alertruleid != nil {
-		o.Alertruleid = s.Alertruleid
+	if s.AlertRuleID != nil {
+		o.AlertRuleID = s.AlertRuleID
 	}
 	if s.Annotations != nil {
 		o.Annotations = s.Annotations
@@ -2055,14 +2006,14 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	if s.AssociatedTags != nil {
 		o.AssociatedTags = s.AssociatedTags
 	}
+	if s.CloudNetworkQuery != nil {
+		o.CloudNetworkQuery = s.CloudNetworkQuery
+	}
 	if s.CloudTags != nil {
 		o.CloudTags = s.CloudTags
 	}
 	if s.CloudType != nil {
 		o.CloudType = s.CloudType
-	}
-	if s.Cloudnetworkquery != nil {
-		o.Cloudnetworkquery = s.Cloudnetworkquery
 	}
 	if s.CreateIdempotencyKey != nil {
 		o.CreateIdempotencyKey = s.CreateIdempotencyKey
@@ -2091,11 +2042,11 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	if s.NormalizedTags != nil {
 		o.NormalizedTags = s.NormalizedTags
 	}
+	if s.PolicyID != nil {
+		o.PolicyID = s.PolicyID
+	}
 	if s.PolicyReferences != nil {
 		o.PolicyReferences = s.PolicyReferences
-	}
-	if s.Policyid != nil {
-		o.Policyid = s.Policyid
 	}
 	if s.Protected != nil {
 		o.Protected = s.Protected
@@ -2106,11 +2057,8 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	if s.ResourceID != nil {
 		o.ResourceID = s.ResourceID
 	}
-	if s.Resultsgraph != nil {
-		o.Resultsgraph = s.Resultsgraph
-	}
-	if s.Resulttimestamp != nil {
-		o.Resulttimestamp = s.Resulttimestamp
+	if s.ResultTimestamp != nil {
+		o.ResultTimestamp = s.ResultTimestamp
 	}
 	if s.UpdateIdempotencyKey != nil {
 		o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
@@ -2147,8 +2095,8 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	if o.AccountID != nil {
 		out.AccountID = *o.AccountID
 	}
-	if o.Alertruleid != nil {
-		out.Alertruleid = *o.Alertruleid
+	if o.AlertRuleID != nil {
+		out.AlertRuleID = *o.AlertRuleID
 	}
 	if o.Annotations != nil {
 		out.Annotations = *o.Annotations
@@ -2156,14 +2104,14 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	if o.AssociatedTags != nil {
 		out.AssociatedTags = *o.AssociatedTags
 	}
+	if o.CloudNetworkQuery != nil {
+		out.CloudNetworkQuery = o.CloudNetworkQuery
+	}
 	if o.CloudTags != nil {
 		out.CloudTags = *o.CloudTags
 	}
 	if o.CloudType != nil {
 		out.CloudType = *o.CloudType
-	}
-	if o.Cloudnetworkquery != nil {
-		out.Cloudnetworkquery = o.Cloudnetworkquery
 	}
 	if o.CreateIdempotencyKey != nil {
 		out.CreateIdempotencyKey = *o.CreateIdempotencyKey
@@ -2192,11 +2140,11 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	if o.NormalizedTags != nil {
 		out.NormalizedTags = *o.NormalizedTags
 	}
+	if o.PolicyID != nil {
+		out.PolicyID = *o.PolicyID
+	}
 	if o.PolicyReferences != nil {
 		out.PolicyReferences = *o.PolicyReferences
-	}
-	if o.Policyid != nil {
-		out.Policyid = *o.Policyid
 	}
 	if o.Protected != nil {
 		out.Protected = *o.Protected
@@ -2207,11 +2155,8 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	if o.ResourceID != nil {
 		out.ResourceID = *o.ResourceID
 	}
-	if o.Resultsgraph != nil {
-		out.Resultsgraph = o.Resultsgraph
-	}
-	if o.Resulttimestamp != nil {
-		out.Resulttimestamp = *o.Resulttimestamp
+	if o.ResultTimestamp != nil {
+		out.ResultTimestamp = *o.ResultTimestamp
 	}
 	if o.UpdateIdempotencyKey != nil {
 		out.UpdateIdempotencyKey = *o.UpdateIdempotencyKey
@@ -2623,12 +2568,12 @@ type mongoAttributesCloudAlertRuleCNQ struct {
 	ID                   bson.ObjectId       `bson:"_id,omitempty"`
 	VPCID                string              `bson:"vpcid,omitempty"`
 	AccountID            string              `bson:"accountid,omitempty"`
-	Alertruleid          string              `bson:"alertruleid"`
+	AlertRuleID          string              `bson:"alertruleid"`
 	Annotations          map[string][]string `bson:"annotations"`
 	AssociatedTags       []string            `bson:"associatedtags"`
+	CloudNetworkQuery    *CloudNetworkQuery  `bson:"cloudnetworkquery"`
 	CloudTags            []string            `bson:"cloudtags,omitempty"`
 	CloudType            string              `bson:"cloudtype,omitempty"`
-	Cloudnetworkquery    *CloudNetworkQuery  `bson:"cloudnetworkquery"`
 	CreateIdempotencyKey string              `bson:"createidempotencykey"`
 	CustomerID           int                 `bson:"customerid,omitempty"`
 	Description          string              `bson:"description"`
@@ -2638,13 +2583,12 @@ type mongoAttributesCloudAlertRuleCNQ struct {
 	Namespace            string              `bson:"namespace"`
 	NativeID             string              `bson:"nativeid"`
 	NormalizedTags       []string            `bson:"normalizedtags"`
+	PolicyID             string              `bson:"policyid"`
 	PolicyReferences     []string            `bson:"policyreferences,omitempty"`
-	Policyid             string              `bson:"policyid"`
 	Protected            bool                `bson:"protected"`
 	RegionName           string              `bson:"regionname,omitempty"`
 	ResourceID           int                 `bson:"resourceid,omitempty"`
-	Resultsgraph         *CloudGraph         `bson:"resultsgraph"`
-	Resulttimestamp      time.Time           `bson:"ag"`
+	ResultTimestamp      time.Time           `bson:"ag"`
 	UpdateIdempotencyKey string              `bson:"updateidempotencykey"`
 	ZHash                int                 `bson:"zhash"`
 	Zone                 int                 `bson:"zone"`
@@ -2654,12 +2598,12 @@ type mongoAttributesSparseCloudAlertRuleCNQ struct {
 	ID                   bson.ObjectId        `bson:"_id,omitempty"`
 	VPCID                *string              `bson:"vpcid,omitempty"`
 	AccountID            *string              `bson:"accountid,omitempty"`
-	Alertruleid          *string              `bson:"alertruleid,omitempty"`
+	AlertRuleID          *string              `bson:"alertruleid,omitempty"`
 	Annotations          *map[string][]string `bson:"annotations,omitempty"`
 	AssociatedTags       *[]string            `bson:"associatedtags,omitempty"`
+	CloudNetworkQuery    *CloudNetworkQuery   `bson:"cloudnetworkquery,omitempty"`
 	CloudTags            *[]string            `bson:"cloudtags,omitempty"`
 	CloudType            *string              `bson:"cloudtype,omitempty"`
-	Cloudnetworkquery    *CloudNetworkQuery   `bson:"cloudnetworkquery,omitempty"`
 	CreateIdempotencyKey *string              `bson:"createidempotencykey,omitempty"`
 	CustomerID           *int                 `bson:"customerid,omitempty"`
 	Description          *string              `bson:"description,omitempty"`
@@ -2669,13 +2613,12 @@ type mongoAttributesSparseCloudAlertRuleCNQ struct {
 	Namespace            *string              `bson:"namespace,omitempty"`
 	NativeID             *string              `bson:"nativeid,omitempty"`
 	NormalizedTags       *[]string            `bson:"normalizedtags,omitempty"`
+	PolicyID             *string              `bson:"policyid,omitempty"`
 	PolicyReferences     *[]string            `bson:"policyreferences,omitempty"`
-	Policyid             *string              `bson:"policyid,omitempty"`
 	Protected            *bool                `bson:"protected,omitempty"`
 	RegionName           *string              `bson:"regionname,omitempty"`
 	ResourceID           *int                 `bson:"resourceid,omitempty"`
-	Resultsgraph         *CloudGraph          `bson:"resultsgraph,omitempty"`
-	Resulttimestamp      *time.Time           `bson:"ag,omitempty"`
+	ResultTimestamp      *time.Time           `bson:"ag,omitempty"`
 	UpdateIdempotencyKey *string              `bson:"updateidempotencykey,omitempty"`
 	ZHash                *int                 `bson:"zhash,omitempty"`
 	Zone                 *int                 `bson:"zone,omitempty"`
