@@ -3,7 +3,7 @@ model:
   rest_name: cloudpolicy
   resource_name: cloudpolicies
   entity_name: CloudPolicy
-  package: yeul
+  package: vargid
   group: pcn/infrastructure
   description: Creates a Prisma Cloud policy and corresponding alert rules.
   get:
@@ -23,6 +23,13 @@ model:
   - '@identifiable-stored'
   - '@named'
 
+# Indexes
+indexes:
+- - namespace
+  - prismaCloudPolicyID
+- - namespace
+  - severity
+
 # Attributes
 attributes:
   v1:
@@ -38,6 +45,13 @@ attributes:
       derived from the parent.
     type: string
     exposed: true
+    read_only: true
+
+  - name: rqlQuery
+    description: The actual RQL query that is associated to the policy.
+    type: string
+    exposed: true
+    stored: true
     read_only: true
 
   - name: severity

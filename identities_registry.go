@@ -29,8 +29,10 @@ var (
 		"claims":       ClaimsIdentity,
 		"clausesmatch": ClauseMatchIdentity,
 
-		"cloudalert":    CloudAlertIdentity,
-		"cloudendpoint": CloudEndpointIdentity,
+		"cloudalert":        CloudAlertIdentity,
+		"cloudalertrule":    CloudAlertRuleIdentity,
+		"cloudalertrulecnq": CloudAlertRuleCNQIdentity,
+		"cloudendpoint":     CloudEndpointIdentity,
 
 		"cloudgraph": CloudGraphIdentity,
 
@@ -211,8 +213,10 @@ var (
 		"claims":         ClaimsIdentity,
 		"clausesmatches": ClauseMatchIdentity,
 
-		"cloudalerts":    CloudAlertIdentity,
-		"cloudendpoints": CloudEndpointIdentity,
+		"cloudalerts":        CloudAlertIdentity,
+		"cloudalertsrule":    CloudAlertRuleIdentity,
+		"cloudalertrulecnqs": CloudAlertRuleCNQIdentity,
+		"cloudendpoints":     CloudEndpointIdentity,
 
 		"cloudgraphs": CloudGraphIdentity,
 
@@ -583,6 +587,33 @@ var (
 			{"name"},
 			{"createIdempotencyKey"},
 		},
+		"cloudalertrule": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "vpcid"},
+			{"namespace", "name"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "alertruleid", "enabled"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"name"},
+			{"createIdempotencyKey"},
+		},
+		"cloudalertrulecnq": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace", "res"},
+			{"namespace"},
+			{"namespace", "vpcid"},
+			{"namespace", "name"},
+			{"namespace", "alertruleid", "policyid"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "nativeID"},
+			{"namespace", "accountid"},
+			{"name"},
+			{"createIdempotencyKey"},
+		},
 		"cloudendpoint": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -656,8 +687,10 @@ var (
 		"cloudpolicy": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
+			{"namespace", "severity"},
 			{"namespace", "name"},
 			{"namespace"},
+			{"namespace", "prismaCloudPolicyID"},
 			{"namespace", "normalizedTags"},
 			{"name"},
 			{"createIdempotencyKey"},
@@ -1235,6 +1268,10 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewClauseMatch()
 	case CloudAlertIdentity:
 		return NewCloudAlert()
+	case CloudAlertRuleIdentity:
+		return NewCloudAlertRule()
+	case CloudAlertRuleCNQIdentity:
+		return NewCloudAlertRuleCNQ()
 	case CloudEndpointIdentity:
 		return NewCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1558,6 +1595,10 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseClauseMatch()
 	case CloudAlertIdentity:
 		return NewSparseCloudAlert()
+	case CloudAlertRuleIdentity:
+		return NewSparseCloudAlertRule()
+	case CloudAlertRuleCNQIdentity:
+		return NewSparseCloudAlertRuleCNQ()
 	case CloudEndpointIdentity:
 		return NewSparseCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1889,6 +1930,10 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ClauseMatchesList{}
 	case CloudAlertIdentity:
 		return &CloudAlertsList{}
+	case CloudAlertRuleIdentity:
+		return &CloudAlertRulesList{}
+	case CloudAlertRuleCNQIdentity:
+		return &CloudAlertRuleCNQsList{}
 	case CloudEndpointIdentity:
 		return &CloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -2210,6 +2255,10 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseClauseMatchesList{}
 	case CloudAlertIdentity:
 		return &SparseCloudAlertsList{}
+	case CloudAlertRuleIdentity:
+		return &SparseCloudAlertRulesList{}
+	case CloudAlertRuleCNQIdentity:
+		return &SparseCloudAlertRuleCNQsList{}
 	case CloudEndpointIdentity:
 		return &SparseCloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -2526,6 +2575,8 @@ func AllIdentities() []elemental.Identity {
 		ClaimsIdentity,
 		ClauseMatchIdentity,
 		CloudAlertIdentity,
+		CloudAlertRuleIdentity,
+		CloudAlertRuleCNQIdentity,
 		CloudEndpointIdentity,
 		CloudGraphIdentity,
 		CloudManagedNetworkIdentity,
@@ -2733,6 +2784,10 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case ClauseMatchIdentity:
 		return []string{}
 	case CloudAlertIdentity:
+		return []string{}
+	case CloudAlertRuleIdentity:
+		return []string{}
+	case CloudAlertRuleCNQIdentity:
 		return []string{}
 	case CloudEndpointIdentity:
 		return []string{}

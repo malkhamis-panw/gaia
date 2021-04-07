@@ -125,9 +125,6 @@ type CloudAlertRuleCNQ struct {
 	// The time that the object was first ingested.
 	IngestionTime time.Time `json:"ingestionTime,omitempty" msgpack:"ingestionTime,omitempty" bson:"ingestiontime,omitempty" mapstructure:"ingestionTime,omitempty"`
 
-	// Result of the last successfully run query.
-	Lastresults time.Time `json:"lastresults" msgpack:"lastresults" bson:"ag" mapstructure:"lastresults,omitempty"`
-
 	// Internal property maintaining migrations information.
 	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
@@ -161,6 +158,9 @@ type CloudAlertRuleCNQ struct {
 	// The last successful result for the cloud network query.
 	Resultsgraph *CloudGraph `json:"resultsgraph" msgpack:"resultsgraph" bson:"resultsgraph" mapstructure:"resultsgraph,omitempty"`
 
+	// Result of the last successfully run query.
+	Resulttimestamp time.Time `json:"resulttimestamp" msgpack:"resulttimestamp" bson:"ag" mapstructure:"resulttimestamp,omitempty"`
+
 	// internal idempotency key for a update operation.
 	UpdateIdempotencyKey string `json:"-" msgpack:"-" bson:"updateidempotencykey" mapstructure:"-,omitempty"`
 
@@ -179,13 +179,13 @@ func NewCloudAlertRuleCNQ() *CloudAlertRuleCNQ {
 
 	return &CloudAlertRuleCNQ{
 		ModelVersion:      1,
+		MigrationsLog:     map[string]string{},
 		CloudTags:         []string{},
 		Annotations:       map[string][]string{},
 		AssociatedTags:    []string{},
 		Cloudnetworkquery: NewCloudNetworkQuery(),
-		MigrationsLog:     map[string]string{},
-		PolicyReferences:  []string{},
 		NormalizedTags:    []string{},
+		PolicyReferences:  []string{},
 		Resultsgraph:      NewCloudGraph(),
 	}
 }
@@ -234,7 +234,6 @@ func (o *CloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	s.CustomerID = o.CustomerID
 	s.Description = o.Description
 	s.IngestionTime = o.IngestionTime
-	s.Lastresults = o.Lastresults
 	s.MigrationsLog = o.MigrationsLog
 	s.Name = o.Name
 	s.Namespace = o.Namespace
@@ -246,6 +245,7 @@ func (o *CloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	s.RegionName = o.RegionName
 	s.ResourceID = o.ResourceID
 	s.Resultsgraph = o.Resultsgraph
+	s.Resulttimestamp = o.Resulttimestamp
 	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.ZHash = o.ZHash
 	s.Zone = o.Zone
@@ -280,7 +280,6 @@ func (o *CloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	o.CustomerID = s.CustomerID
 	o.Description = s.Description
 	o.IngestionTime = s.IngestionTime
-	o.Lastresults = s.Lastresults
 	o.MigrationsLog = s.MigrationsLog
 	o.Name = s.Name
 	o.Namespace = s.Namespace
@@ -292,6 +291,7 @@ func (o *CloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	o.RegionName = s.RegionName
 	o.ResourceID = s.ResourceID
 	o.Resultsgraph = s.Resultsgraph
+	o.Resulttimestamp = s.Resulttimestamp
 	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.ZHash = s.ZHash
 	o.Zone = s.Zone
@@ -627,7 +627,6 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			CustomerID:           &o.CustomerID,
 			Description:          &o.Description,
 			IngestionTime:        &o.IngestionTime,
-			Lastresults:          &o.Lastresults,
 			MigrationsLog:        &o.MigrationsLog,
 			Name:                 &o.Name,
 			Namespace:            &o.Namespace,
@@ -639,6 +638,7 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			RegionName:           &o.RegionName,
 			ResourceID:           &o.ResourceID,
 			Resultsgraph:         o.Resultsgraph,
+			Resulttimestamp:      &o.Resulttimestamp,
 			UpdateIdempotencyKey: &o.UpdateIdempotencyKey,
 			ZHash:                &o.ZHash,
 			Zone:                 &o.Zone,
@@ -676,8 +676,6 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			sp.Description = &(o.Description)
 		case "ingestionTime":
 			sp.IngestionTime = &(o.IngestionTime)
-		case "lastresults":
-			sp.Lastresults = &(o.Lastresults)
 		case "migrationsLog":
 			sp.MigrationsLog = &(o.MigrationsLog)
 		case "name":
@@ -700,6 +698,8 @@ func (o *CloudAlertRuleCNQ) ToSparse(fields ...string) elemental.SparseIdentifia
 			sp.ResourceID = &(o.ResourceID)
 		case "resultsgraph":
 			sp.Resultsgraph = o.Resultsgraph
+		case "resulttimestamp":
+			sp.Resulttimestamp = &(o.Resulttimestamp)
 		case "updateIdempotencyKey":
 			sp.UpdateIdempotencyKey = &(o.UpdateIdempotencyKey)
 		case "zHash":
@@ -761,9 +761,6 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	if so.IngestionTime != nil {
 		o.IngestionTime = *so.IngestionTime
 	}
-	if so.Lastresults != nil {
-		o.Lastresults = *so.Lastresults
-	}
 	if so.MigrationsLog != nil {
 		o.MigrationsLog = *so.MigrationsLog
 	}
@@ -796,6 +793,9 @@ func (o *CloudAlertRuleCNQ) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.Resultsgraph != nil {
 		o.Resultsgraph = so.Resultsgraph
+	}
+	if so.Resulttimestamp != nil {
+		o.Resulttimestamp = *so.Resulttimestamp
 	}
 	if so.UpdateIdempotencyKey != nil {
 		o.UpdateIdempotencyKey = *so.UpdateIdempotencyKey
@@ -938,8 +938,6 @@ func (o *CloudAlertRuleCNQ) ValueForAttribute(name string) interface{} {
 		return o.Description
 	case "ingestionTime":
 		return o.IngestionTime
-	case "lastresults":
-		return o.Lastresults
 	case "migrationsLog":
 		return o.MigrationsLog
 	case "name":
@@ -962,6 +960,8 @@ func (o *CloudAlertRuleCNQ) ValueForAttribute(name string) interface{} {
 		return o.ResourceID
 	case "resultsgraph":
 		return o.Resultsgraph
+	case "resulttimestamp":
+		return o.Resulttimestamp
 	case "updateIdempotencyKey":
 		return o.UpdateIdempotencyKey
 	case "zHash":
@@ -1153,17 +1153,6 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Stored:         true,
 		Type:           "time",
 	},
-	"Lastresults": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "ag",
-		ConvertedName:  "Lastresults",
-		Description:    `Result of the last successfully run query.`,
-		Exposed:        true,
-		Name:           "lastresults",
-		Orderable:      true,
-		Stored:         true,
-		Type:           "time",
-	},
 	"MigrationsLog": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "migrationslog",
@@ -1310,6 +1299,17 @@ var CloudAlertRuleCNQAttributesMap = map[string]elemental.AttributeSpecification
 		Stored:         true,
 		SubType:        "cloudgraph",
 		Type:           "ref",
+	},
+	"Resulttimestamp": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "ag",
+		ConvertedName:  "Resulttimestamp",
+		Description:    `Result of the last successfully run query.`,
+		Exposed:        true,
+		Name:           "resulttimestamp",
+		Orderable:      true,
+		Stored:         true,
+		Type:           "time",
 	},
 	"UpdateIdempotencyKey": {
 		AllowedChoices: []string{},
@@ -1534,17 +1534,6 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		Type:           "time",
 	},
-	"lastresults": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "ag",
-		ConvertedName:  "Lastresults",
-		Description:    `Result of the last successfully run query.`,
-		Exposed:        true,
-		Name:           "lastresults",
-		Orderable:      true,
-		Stored:         true,
-		Type:           "time",
-	},
 	"migrationslog": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "migrationslog",
@@ -1691,6 +1680,17 @@ var CloudAlertRuleCNQLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		SubType:        "cloudgraph",
 		Type:           "ref",
+	},
+	"resulttimestamp": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "ag",
+		ConvertedName:  "Resulttimestamp",
+		Description:    `Result of the last successfully run query.`,
+		Exposed:        true,
+		Name:           "resulttimestamp",
+		Orderable:      true,
+		Stored:         true,
+		Type:           "time",
 	},
 	"updateidempotencykey": {
 		AllowedChoices: []string{},
@@ -1842,9 +1842,6 @@ type SparseCloudAlertRuleCNQ struct {
 	// The time that the object was first ingested.
 	IngestionTime *time.Time `json:"ingestionTime,omitempty" msgpack:"ingestionTime,omitempty" bson:"ingestiontime,omitempty" mapstructure:"ingestionTime,omitempty"`
 
-	// Result of the last successfully run query.
-	Lastresults *time.Time `json:"lastresults,omitempty" msgpack:"lastresults,omitempty" bson:"ag,omitempty" mapstructure:"lastresults,omitempty"`
-
 	// Internal property maintaining migrations information.
 	MigrationsLog *map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
@@ -1877,6 +1874,9 @@ type SparseCloudAlertRuleCNQ struct {
 
 	// The last successful result for the cloud network query.
 	Resultsgraph *CloudGraph `json:"resultsgraph,omitempty" msgpack:"resultsgraph,omitempty" bson:"resultsgraph,omitempty" mapstructure:"resultsgraph,omitempty"`
+
+	// Result of the last successfully run query.
+	Resulttimestamp *time.Time `json:"resulttimestamp,omitempty" msgpack:"resulttimestamp,omitempty" bson:"ag,omitempty" mapstructure:"resulttimestamp,omitempty"`
 
 	// internal idempotency key for a update operation.
 	UpdateIdempotencyKey *string `json:"-" msgpack:"-" bson:"updateidempotencykey,omitempty" mapstructure:"-,omitempty"`
@@ -1973,9 +1973,6 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	if o.IngestionTime != nil {
 		s.IngestionTime = o.IngestionTime
 	}
-	if o.Lastresults != nil {
-		s.Lastresults = o.Lastresults
-	}
 	if o.MigrationsLog != nil {
 		s.MigrationsLog = o.MigrationsLog
 	}
@@ -2008,6 +2005,9 @@ func (o *SparseCloudAlertRuleCNQ) GetBSON() (interface{}, error) {
 	}
 	if o.Resultsgraph != nil {
 		s.Resultsgraph = o.Resultsgraph
+	}
+	if o.Resulttimestamp != nil {
+		s.Resulttimestamp = o.Resulttimestamp
 	}
 	if o.UpdateIdempotencyKey != nil {
 		s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
@@ -2076,9 +2076,6 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	if s.IngestionTime != nil {
 		o.IngestionTime = s.IngestionTime
 	}
-	if s.Lastresults != nil {
-		o.Lastresults = s.Lastresults
-	}
 	if s.MigrationsLog != nil {
 		o.MigrationsLog = s.MigrationsLog
 	}
@@ -2111,6 +2108,9 @@ func (o *SparseCloudAlertRuleCNQ) SetBSON(raw bson.Raw) error {
 	}
 	if s.Resultsgraph != nil {
 		o.Resultsgraph = s.Resultsgraph
+	}
+	if s.Resulttimestamp != nil {
+		o.Resulttimestamp = s.Resulttimestamp
 	}
 	if s.UpdateIdempotencyKey != nil {
 		o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
@@ -2177,9 +2177,6 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	if o.IngestionTime != nil {
 		out.IngestionTime = *o.IngestionTime
 	}
-	if o.Lastresults != nil {
-		out.Lastresults = *o.Lastresults
-	}
 	if o.MigrationsLog != nil {
 		out.MigrationsLog = *o.MigrationsLog
 	}
@@ -2212,6 +2209,9 @@ func (o *SparseCloudAlertRuleCNQ) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.Resultsgraph != nil {
 		out.Resultsgraph = o.Resultsgraph
+	}
+	if o.Resulttimestamp != nil {
+		out.Resulttimestamp = *o.Resulttimestamp
 	}
 	if o.UpdateIdempotencyKey != nil {
 		out.UpdateIdempotencyKey = *o.UpdateIdempotencyKey
@@ -2633,7 +2633,6 @@ type mongoAttributesCloudAlertRuleCNQ struct {
 	CustomerID           int                 `bson:"customerid,omitempty"`
 	Description          string              `bson:"description"`
 	IngestionTime        time.Time           `bson:"ingestiontime,omitempty"`
-	Lastresults          time.Time           `bson:"ag"`
 	MigrationsLog        map[string]string   `bson:"migrationslog,omitempty"`
 	Name                 string              `bson:"name,omitempty"`
 	Namespace            string              `bson:"namespace"`
@@ -2645,6 +2644,7 @@ type mongoAttributesCloudAlertRuleCNQ struct {
 	RegionName           string              `bson:"regionname,omitempty"`
 	ResourceID           int                 `bson:"resourceid,omitempty"`
 	Resultsgraph         *CloudGraph         `bson:"resultsgraph"`
+	Resulttimestamp      time.Time           `bson:"ag"`
 	UpdateIdempotencyKey string              `bson:"updateidempotencykey"`
 	ZHash                int                 `bson:"zhash"`
 	Zone                 int                 `bson:"zone"`
@@ -2664,7 +2664,6 @@ type mongoAttributesSparseCloudAlertRuleCNQ struct {
 	CustomerID           *int                 `bson:"customerid,omitempty"`
 	Description          *string              `bson:"description,omitempty"`
 	IngestionTime        *time.Time           `bson:"ingestiontime,omitempty"`
-	Lastresults          *time.Time           `bson:"ag,omitempty"`
 	MigrationsLog        *map[string]string   `bson:"migrationslog,omitempty"`
 	Name                 *string              `bson:"name,omitempty"`
 	Namespace            *string              `bson:"namespace,omitempty"`
@@ -2676,6 +2675,7 @@ type mongoAttributesSparseCloudAlertRuleCNQ struct {
 	RegionName           *string              `bson:"regionname,omitempty"`
 	ResourceID           *int                 `bson:"resourceid,omitempty"`
 	Resultsgraph         *CloudGraph          `bson:"resultsgraph,omitempty"`
+	Resulttimestamp      *time.Time           `bson:"ag,omitempty"`
 	UpdateIdempotencyKey *string              `bson:"updateidempotencykey,omitempty"`
 	ZHash                *int                 `bson:"zhash,omitempty"`
 	Zone                 *int                 `bson:"zone,omitempty"`

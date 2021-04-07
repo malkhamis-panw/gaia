@@ -28,7 +28,9 @@ model:
 indexes:
 - - namespace
   - alertruleid
-  - enabled
+  - policyid
+- - namespace
+  - resulttimestamp
 
 # Attributes
 attributes:
@@ -49,15 +51,6 @@ attributes:
     extensions:
       refMode: pointer
 
-  - name: lastresults
-    description: Result of the last successfully run query.
-    type: time
-    exposed: true
-    stored: true
-    orderable: true
-    extensions:
-      bson_name: ag
-
   - name: policyid
     description: Prisma Cloud Policy id.
     type: string
@@ -73,3 +66,12 @@ attributes:
     stored: true
     extensions:
       refMode: pointer
+
+  - name: resulttimestamp
+    description: Result of the last successfully run query.
+    type: time
+    exposed: true
+    stored: true
+    orderable: true
+    extensions:
+      bson_name: ag

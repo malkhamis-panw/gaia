@@ -26,7 +26,7 @@ const (
 var CloudPolicyIdentity = elemental.Identity{
 	Name:     "cloudpolicy",
 	Category: "cloudpolicies",
-	Package:  "yeul",
+	Package:  "vargid",
 	Private:  false,
 }
 
@@ -133,6 +133,9 @@ type CloudPolicy struct {
 	// derived from the parent.
 	QueryID string `json:"queryID" msgpack:"queryID" bson:"-" mapstructure:"queryID,omitempty"`
 
+	// The actual RQL query that is associated to the policy.
+	RqlQuery string `json:"rqlQuery" msgpack:"rqlQuery" bson:"rqlquery" mapstructure:"rqlQuery,omitempty"`
+
 	// The severity of a policy violation.
 	Severity CloudPolicySeverityValue `json:"severity" msgpack:"severity" bson:"severity" mapstructure:"severity,omitempty"`
 
@@ -202,6 +205,7 @@ func (o *CloudPolicy) GetBSON() (interface{}, error) {
 	s.NormalizedTags = o.NormalizedTags
 	s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
 	s.Protected = o.Protected
+	s.RqlQuery = o.RqlQuery
 	s.Severity = o.Severity
 	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.ZHash = o.ZHash
@@ -234,6 +238,7 @@ func (o *CloudPolicy) SetBSON(raw bson.Raw) error {
 	o.NormalizedTags = s.NormalizedTags
 	o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
 	o.Protected = s.Protected
+	o.RqlQuery = s.RqlQuery
 	o.Severity = s.Severity
 	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.ZHash = s.ZHash
@@ -436,6 +441,7 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			PrismaCloudPolicyID:  &o.PrismaCloudPolicyID,
 			Protected:            &o.Protected,
 			QueryID:              &o.QueryID,
+			RqlQuery:             &o.RqlQuery,
 			Severity:             &o.Severity,
 			UpdateIdempotencyKey: &o.UpdateIdempotencyKey,
 			ZHash:                &o.ZHash,
@@ -470,6 +476,8 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.Protected = &(o.Protected)
 		case "queryID":
 			sp.QueryID = &(o.QueryID)
+		case "rqlQuery":
+			sp.RqlQuery = &(o.RqlQuery)
 		case "severity":
 			sp.Severity = &(o.Severity)
 		case "updateIdempotencyKey":
@@ -526,6 +534,9 @@ func (o *CloudPolicy) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.QueryID != nil {
 		o.QueryID = *so.QueryID
+	}
+	if so.RqlQuery != nil {
+		o.RqlQuery = *so.RqlQuery
 	}
 	if so.Severity != nil {
 		o.Severity = *so.Severity
@@ -653,6 +664,8 @@ func (o *CloudPolicy) ValueForAttribute(name string) interface{} {
 		return o.Protected
 	case "queryID":
 		return o.QueryID
+	case "rqlQuery":
+		return o.RqlQuery
 	case "severity":
 		return o.Severity
 	case "updateIdempotencyKey":
@@ -828,6 +841,17 @@ derived from the parent.`,
 		Name:     "queryID",
 		ReadOnly: true,
 		Type:     "string",
+	},
+	"RqlQuery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "rqlquery",
+		ConvertedName:  "RqlQuery",
+		Description:    `The actual RQL query that is associated to the policy.`,
+		Exposed:        true,
+		Name:           "rqlQuery",
+		ReadOnly:       true,
+		Stored:         true,
+		Type:           "string",
 	},
 	"Severity": {
 		AllowedChoices: []string{"Low", "Medium", "High"},
@@ -1046,6 +1070,17 @@ derived from the parent.`,
 		ReadOnly: true,
 		Type:     "string",
 	},
+	"rqlquery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "rqlquery",
+		ConvertedName:  "RqlQuery",
+		Description:    `The actual RQL query that is associated to the policy.`,
+		Exposed:        true,
+		Name:           "rqlQuery",
+		ReadOnly:       true,
+		Stored:         true,
+		Type:           "string",
+	},
 	"severity": {
 		AllowedChoices: []string{"Low", "Medium", "High"},
 		BSONFieldName:  "severity",
@@ -1202,6 +1237,9 @@ type SparseCloudPolicy struct {
 	// derived from the parent.
 	QueryID *string `json:"queryID,omitempty" msgpack:"queryID,omitempty" bson:"-" mapstructure:"queryID,omitempty"`
 
+	// The actual RQL query that is associated to the policy.
+	RqlQuery *string `json:"rqlQuery,omitempty" msgpack:"rqlQuery,omitempty" bson:"rqlquery,omitempty" mapstructure:"rqlQuery,omitempty"`
+
 	// The severity of a policy violation.
 	Severity *CloudPolicySeverityValue `json:"severity,omitempty" msgpack:"severity,omitempty" bson:"severity,omitempty" mapstructure:"severity,omitempty"`
 
@@ -1291,6 +1329,9 @@ func (o *SparseCloudPolicy) GetBSON() (interface{}, error) {
 	if o.Protected != nil {
 		s.Protected = o.Protected
 	}
+	if o.RqlQuery != nil {
+		s.RqlQuery = o.RqlQuery
+	}
 	if o.Severity != nil {
 		s.Severity = o.Severity
 	}
@@ -1351,6 +1392,9 @@ func (o *SparseCloudPolicy) SetBSON(raw bson.Raw) error {
 	}
 	if s.Protected != nil {
 		o.Protected = s.Protected
+	}
+	if s.RqlQuery != nil {
+		o.RqlQuery = s.RqlQuery
 	}
 	if s.Severity != nil {
 		o.Severity = s.Severity
@@ -1413,6 +1457,9 @@ func (o *SparseCloudPolicy) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.QueryID != nil {
 		out.QueryID = *o.QueryID
+	}
+	if o.RqlQuery != nil {
+		out.RqlQuery = *o.RqlQuery
 	}
 	if o.Severity != nil {
 		out.Severity = *o.Severity
@@ -1658,6 +1705,7 @@ type mongoAttributesCloudPolicy struct {
 	NormalizedTags       []string                 `bson:"normalizedtags"`
 	PrismaCloudPolicyID  string                   `bson:"prismacloudpolicyid"`
 	Protected            bool                     `bson:"protected"`
+	RqlQuery             string                   `bson:"rqlquery"`
 	Severity             CloudPolicySeverityValue `bson:"severity"`
 	UpdateIdempotencyKey string                   `bson:"updateidempotencykey"`
 	ZHash                int                      `bson:"zhash"`
@@ -1675,6 +1723,7 @@ type mongoAttributesSparseCloudPolicy struct {
 	NormalizedTags       *[]string                 `bson:"normalizedtags,omitempty"`
 	PrismaCloudPolicyID  *string                   `bson:"prismacloudpolicyid,omitempty"`
 	Protected            *bool                     `bson:"protected,omitempty"`
+	RqlQuery             *string                   `bson:"rqlquery,omitempty"`
 	Severity             *CloudPolicySeverityValue `bson:"severity,omitempty"`
 	UpdateIdempotencyKey *string                   `bson:"updateidempotencykey,omitempty"`
 	ZHash                *int                      `bson:"zhash,omitempty"`
