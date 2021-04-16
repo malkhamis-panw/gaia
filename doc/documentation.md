@@ -11007,7 +11007,6 @@ namespace.
 ```json
 {
   "cloudType": "AWS",
-  "customerName": "customer-name",
   "name": "account-foo",
   "protected": false
 }
@@ -11044,12 +11043,6 @@ Default value:
 ```json
 "AWS"
 ```
-
-##### `customerName` [`required`]
-
-Type: `string`
-
-The customer name of the tenant.
 
 ##### `name`
 
