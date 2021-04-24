@@ -93,6 +93,10 @@ type Authz struct {
 	// ignored and this attribute will contain all the permission for the given claims.
 	Permissions map[string]map[string]bool `json:"permissions,omitempty" msgpack:"permissions,omitempty" bson:"-" mapstructure:"permissions,omitempty"`
 
+	// The raw resolved PolicyRuleList if needed for further processing.
+	// It will be empty unless the query parameter `forwardpolicyrules=true` is set.
+	PolicyRulesList PolicyRulesList `json:"policyRulesList,omitempty" msgpack:"policyRulesList,omitempty" bson:"-" mapstructure:"policyRulesList,omitempty"`
+
 	// Sets the namespace restrictions that should apply.
 	RestrictedNamespace string `json:"restrictedNamespace" msgpack:"restrictedNamespace" bson:"-" mapstructure:"restrictedNamespace,omitempty"`
 
@@ -115,6 +119,7 @@ func NewAuthz() *Authz {
 		ModelVersion:          1,
 		Claims:                []string{},
 		Permissions:           map[string]map[string]bool{},
+		PolicyRulesList:       PolicyRulesList{},
 		RestrictedNetworks:    []string{},
 		RestrictedPermissions: []string{},
 	}
@@ -206,6 +211,7 @@ func (o *Authz) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			ClientIP:              &o.ClientIP,
 			Error:                 &o.Error,
 			Permissions:           &o.Permissions,
+			PolicyRulesList:       &o.PolicyRulesList,
 			RestrictedNamespace:   &o.RestrictedNamespace,
 			RestrictedNetworks:    &o.RestrictedNetworks,
 			RestrictedPermissions: &o.RestrictedPermissions,
@@ -224,6 +230,8 @@ func (o *Authz) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.Error = &(o.Error)
 		case "permissions":
 			sp.Permissions = &(o.Permissions)
+		case "policyRulesList":
+			sp.PolicyRulesList = &(o.PolicyRulesList)
 		case "restrictedNamespace":
 			sp.RestrictedNamespace = &(o.RestrictedNamespace)
 		case "restrictedNetworks":
@@ -256,6 +264,9 @@ func (o *Authz) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.Permissions != nil {
 		o.Permissions = *so.Permissions
+	}
+	if so.PolicyRulesList != nil {
+		o.PolicyRulesList = *so.PolicyRulesList
 	}
 	if so.RestrictedNamespace != nil {
 		o.RestrictedNamespace = *so.RestrictedNamespace
@@ -305,6 +316,16 @@ func (o *Authz) Validate() error {
 		requiredErrors = requiredErrors.Append(err)
 	}
 
+	for _, sub := range o.PolicyRulesList {
+		if sub == nil {
+			continue
+		}
+		elemental.ResetDefaultForZeroValues(sub)
+		if err := sub.Validate(); err != nil {
+			errors = errors.Append(err)
+		}
+	}
+
 	if err := elemental.ValidateRequiredString("targetNamespace", o.TargetNamespace); err != nil {
 		requiredErrors = requiredErrors.Append(err)
 	}
@@ -351,6 +372,8 @@ func (o *Authz) ValueForAttribute(name string) interface{} {
 		return o.Error
 	case "permissions":
 		return o.Permissions
+	case "policyRulesList":
+		return o.PolicyRulesList
 	case "restrictedNamespace":
 		return o.RestrictedNamespace
 	case "restrictedNetworks":
@@ -405,6 +428,16 @@ ignored and this attribute will contain all the permission for the given claims.
 		ReadOnly: true,
 		SubType:  "map[string]map[string]bool",
 		Type:     "external",
+	},
+	"PolicyRulesList": {
+		AllowedChoices: []string{},
+		ConvertedName:  "PolicyRulesList",
+		Description: `The raw resolved PolicyRuleList if needed for further processing.
+It will be empty unless the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.`,
+		Exposed: true,
+		Name:    "policyRulesList",
+		SubType: "policyrule",
+		Type:    "refList",
 	},
 	"RestrictedNamespace": {
 		AllowedChoices: []string{},
@@ -484,6 +517,16 @@ ignored and this attribute will contain all the permission for the given claims.
 		ReadOnly: true,
 		SubType:  "map[string]map[string]bool",
 		Type:     "external",
+	},
+	"policyruleslist": {
+		AllowedChoices: []string{},
+		ConvertedName:  "PolicyRulesList",
+		Description: `The raw resolved PolicyRuleList if needed for further processing.
+It will be empty unless the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.`,
+		Exposed: true,
+		Name:    "policyRulesList",
+		SubType: "policyrule",
+		Type:    "refList",
 	},
 	"restrictednamespace": {
 		AllowedChoices: []string{},
@@ -598,6 +641,10 @@ type SparseAuthz struct {
 	// ignored and this attribute will contain all the permission for the given claims.
 	Permissions *map[string]map[string]bool `json:"permissions,omitempty" msgpack:"permissions,omitempty" bson:"-" mapstructure:"permissions,omitempty"`
 
+	// The raw resolved PolicyRuleList if needed for further processing.
+	// It will be empty unless the query parameter `forwardpolicyrules=true` is set.
+	PolicyRulesList *PolicyRulesList `json:"policyRulesList,omitempty" msgpack:"policyRulesList,omitempty" bson:"-" mapstructure:"policyRulesList,omitempty"`
+
 	// Sets the namespace restrictions that should apply.
 	RestrictedNamespace *string `json:"restrictedNamespace,omitempty" msgpack:"restrictedNamespace,omitempty" bson:"-" mapstructure:"restrictedNamespace,omitempty"`
 
@@ -685,6 +732,9 @@ func (o *SparseAuthz) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.Permissions != nil {
 		out.Permissions = *o.Permissions
+	}
+	if o.PolicyRulesList != nil {
+		out.PolicyRulesList = *o.PolicyRulesList
 	}
 	if o.RestrictedNamespace != nil {
 		out.RestrictedNamespace = *o.RestrictedNamespace
