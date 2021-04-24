@@ -218,7 +218,7 @@ attributes:
     type: string
     exposed: true
     stored: true
-    default_value: 10s
+    default_value: 2m
     validations:
     - $timeDuration
 
