@@ -58,7 +58,9 @@ func (o CloudAlertRulesList) List() elemental.IdentifiablesList {
 // DefaultOrder returns the default ordering fields of the content.
 func (o CloudAlertRulesList) DefaultOrder() []string {
 
-	return []string{}
+	return []string{
+		"name",
+	}
 }
 
 // ToSparse returns the CloudAlertRulesList converted to SparseCloudAlertRulesList.
@@ -81,20 +83,11 @@ func (o CloudAlertRulesList) Version() int {
 
 // CloudAlertRule represents the model of a cloudalertrule
 type CloudAlertRule struct {
-	// Prisma Cloud API ID (matches Prisma Cloud API ID).
-	APIID int `json:"APIID,omitempty" msgpack:"APIID,omitempty" bson:"apiid,omitempty" mapstructure:"APIID,omitempty"`
-
 	// Identifier of the object.
 	ID string `json:"ID" msgpack:"ID" bson:"-" mapstructure:"ID,omitempty"`
 
-	// ID of the host VPC.
-	VPCID string `json:"VPCID,omitempty" msgpack:"VPCID,omitempty" bson:"vpcid,omitempty" mapstructure:"VPCID,omitempty"`
-
-	// Cloud account ID associated with the entity (matches Prisma Cloud accountID).
-	AccountID string `json:"accountId,omitempty" msgpack:"accountId,omitempty" bson:"accountid,omitempty" mapstructure:"accountId,omitempty"`
-
 	// Prisma Cloud Alert Rule id.
-	Alertruleid string `json:"alertruleid" msgpack:"alertruleid" bson:"alertruleid" mapstructure:"alertruleid,omitempty"`
+	AlertRuleID string `json:"alertRuleID" msgpack:"alertRuleID" bson:"alertruleid" mapstructure:"alertRuleID,omitempty"`
 
 	// Stores additional information about an entity.
 	Annotations map[string][]string `json:"annotations" msgpack:"annotations" bson:"annotations" mapstructure:"annotations,omitempty"`
@@ -102,20 +95,11 @@ type CloudAlertRule struct {
 	// List of tags attached to an entity.
 	AssociatedTags []string `json:"associatedTags" msgpack:"associatedTags" bson:"associatedtags" mapstructure:"associatedTags,omitempty"`
 
-	// Internal representation of object tags retrieved from the cloud provider.
-	CloudTags []string `json:"cloudTags,omitempty" msgpack:"cloudTags,omitempty" bson:"cloudtags,omitempty" mapstructure:"cloudTags,omitempty"`
-
-	// Cloud type of the entity.
-	CloudType string `json:"cloudType,omitempty" msgpack:"cloudType,omitempty" bson:"cloudtype,omitempty" mapstructure:"cloudType,omitempty"`
-
 	// internal idempotency key for a create operation.
 	CreateIdempotencyKey string `json:"-" msgpack:"-" bson:"createidempotencykey" mapstructure:"-,omitempty"`
 
 	// Creation date of the object.
 	CreateTime time.Time `json:"createTime" msgpack:"createTime" bson:"createtime" mapstructure:"createTime,omitempty"`
-
-	// Customer ID as identified by Prisma Cloud.
-	CustomerID int `json:"customerID,omitempty" msgpack:"customerID,omitempty" bson:"customerid,omitempty" mapstructure:"customerID,omitempty"`
 
 	// Alert rule description.
 	Description string `json:"description" msgpack:"description" bson:"description" mapstructure:"description,omitempty"`
@@ -123,20 +107,14 @@ type CloudAlertRule struct {
 	// Is Alert Rule enabled.
 	Enabled bool `json:"enabled" msgpack:"enabled" bson:"enabled" mapstructure:"enabled,omitempty"`
 
-	// The time that the object was first ingested.
-	IngestionTime time.Time `json:"ingestionTime,omitempty" msgpack:"ingestionTime,omitempty" bson:"ingestiontime,omitempty" mapstructure:"ingestionTime,omitempty"`
-
 	// Internal property maintaining migrations information.
 	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
-	// Name of the object (optional).
-	Name string `json:"name,omitempty" msgpack:"name,omitempty" bson:"name,omitempty" mapstructure:"name,omitempty"`
+	// Name of the entity.
+	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
 
 	// Namespace tag attached to an entity.
 	Namespace string `json:"namespace" msgpack:"namespace" bson:"namespace" mapstructure:"namespace,omitempty"`
-
-	// ID of the cloud provider object.
-	NativeID string `json:"nativeID" msgpack:"nativeID" bson:"nativeid" mapstructure:"nativeID,omitempty"`
 
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags []string `json:"normalizedTags" msgpack:"normalizedTags" bson:"normalizedtags" mapstructure:"normalizedTags,omitempty"`
@@ -144,20 +122,11 @@ type CloudAlertRule struct {
 	// List of policy IDs associated to alert rule.
 	PolicyIDs []string `json:"policyIDs" msgpack:"policyIDs" bson:"policyids" mapstructure:"policyIDs,omitempty"`
 
-	// A list of policy references associated with this cloud node.
-	PolicyReferences []string `json:"policyReferences,omitempty" msgpack:"policyReferences,omitempty" bson:"policyreferences,omitempty" mapstructure:"policyReferences,omitempty"`
-
 	// Defines if the object is protected.
 	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
 
-	// Region name associated with the entity.
-	RegionName string `json:"regionName,omitempty" msgpack:"regionName,omitempty" bson:"regionname,omitempty" mapstructure:"regionName,omitempty"`
-
 	// List of regions where the alert rule is enforced.
 	Regions []string `json:"regions" msgpack:"regions" bson:"regions" mapstructure:"regions,omitempty"`
-
-	// Prisma Cloud Resource ID.
-	ResourceID int `json:"resourceID,omitempty" msgpack:"resourceID,omitempty" bson:"resourceid,omitempty" mapstructure:"resourceID,omitempty"`
 
 	// List of accounts associated to alert rule.
 	TargetAccountIDs []string `json:"targetAccountIDs" msgpack:"targetAccountIDs" bson:"targetaccountids" mapstructure:"targetAccountIDs,omitempty"`
@@ -183,14 +152,12 @@ func NewCloudAlertRule() *CloudAlertRule {
 
 	return &CloudAlertRule{
 		ModelVersion:     1,
-		MigrationsLog:    map[string]string{},
-		CloudTags:        []string{},
 		Annotations:      map[string][]string{},
 		AssociatedTags:   []string{},
-		Regions:          []string{},
+		MigrationsLog:    map[string]string{},
 		NormalizedTags:   []string{},
 		PolicyIDs:        []string{},
-		PolicyReferences: []string{},
+		Regions:          []string{},
 		TargetAccountIDs: []string{},
 	}
 }
@@ -223,34 +190,23 @@ func (o *CloudAlertRule) GetBSON() (interface{}, error) {
 
 	s := &mongoAttributesCloudAlertRule{}
 
-	s.APIID = o.APIID
 	if o.ID != "" {
 		s.ID = bson.ObjectIdHex(o.ID)
 	}
-	s.VPCID = o.VPCID
-	s.AccountID = o.AccountID
-	s.Alertruleid = o.Alertruleid
+	s.AlertRuleID = o.AlertRuleID
 	s.Annotations = o.Annotations
 	s.AssociatedTags = o.AssociatedTags
-	s.CloudTags = o.CloudTags
-	s.CloudType = o.CloudType
 	s.CreateIdempotencyKey = o.CreateIdempotencyKey
 	s.CreateTime = o.CreateTime
-	s.CustomerID = o.CustomerID
 	s.Description = o.Description
 	s.Enabled = o.Enabled
-	s.IngestionTime = o.IngestionTime
 	s.MigrationsLog = o.MigrationsLog
 	s.Name = o.Name
 	s.Namespace = o.Namespace
-	s.NativeID = o.NativeID
 	s.NormalizedTags = o.NormalizedTags
 	s.PolicyIDs = o.PolicyIDs
-	s.PolicyReferences = o.PolicyReferences
 	s.Protected = o.Protected
-	s.RegionName = o.RegionName
 	s.Regions = o.Regions
-	s.ResourceID = o.ResourceID
 	s.TargetAccountIDs = o.TargetAccountIDs
 	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.UpdateTime = o.UpdateTime
@@ -273,32 +229,21 @@ func (o *CloudAlertRule) SetBSON(raw bson.Raw) error {
 		return err
 	}
 
-	o.APIID = s.APIID
 	o.ID = s.ID.Hex()
-	o.VPCID = s.VPCID
-	o.AccountID = s.AccountID
-	o.Alertruleid = s.Alertruleid
+	o.AlertRuleID = s.AlertRuleID
 	o.Annotations = s.Annotations
 	o.AssociatedTags = s.AssociatedTags
-	o.CloudTags = s.CloudTags
-	o.CloudType = s.CloudType
 	o.CreateIdempotencyKey = s.CreateIdempotencyKey
 	o.CreateTime = s.CreateTime
-	o.CustomerID = s.CustomerID
 	o.Description = s.Description
 	o.Enabled = s.Enabled
-	o.IngestionTime = s.IngestionTime
 	o.MigrationsLog = s.MigrationsLog
 	o.Name = s.Name
 	o.Namespace = s.Namespace
-	o.NativeID = s.NativeID
 	o.NormalizedTags = s.NormalizedTags
 	o.PolicyIDs = s.PolicyIDs
-	o.PolicyReferences = s.PolicyReferences
 	o.Protected = s.Protected
-	o.RegionName = s.RegionName
 	o.Regions = s.Regions
-	o.ResourceID = s.ResourceID
 	o.TargetAccountIDs = s.TargetAccountIDs
 	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.UpdateTime = s.UpdateTime
@@ -323,7 +268,9 @@ func (o *CloudAlertRule) BleveType() string {
 // DefaultOrder returns the list of default ordering fields.
 func (o *CloudAlertRule) DefaultOrder() []string {
 
-	return []string{}
+	return []string{
+		"name",
+	}
 }
 
 // Doc returns the documentation for the object
@@ -336,42 +283,6 @@ with the alert rule.`
 func (o *CloudAlertRule) String() string {
 
 	return fmt.Sprintf("<%s:%s>", o.Identity().Name, o.Identifier())
-}
-
-// GetAPIID returns the APIID of the receiver.
-func (o *CloudAlertRule) GetAPIID() int {
-
-	return o.APIID
-}
-
-// SetAPIID sets the property APIID of the receiver using the given value.
-func (o *CloudAlertRule) SetAPIID(APIID int) {
-
-	o.APIID = APIID
-}
-
-// GetVPCID returns the VPCID of the receiver.
-func (o *CloudAlertRule) GetVPCID() string {
-
-	return o.VPCID
-}
-
-// SetVPCID sets the property VPCID of the receiver using the given value.
-func (o *CloudAlertRule) SetVPCID(VPCID string) {
-
-	o.VPCID = VPCID
-}
-
-// GetAccountID returns the AccountID of the receiver.
-func (o *CloudAlertRule) GetAccountID() string {
-
-	return o.AccountID
-}
-
-// SetAccountID sets the property AccountID of the receiver using the given value.
-func (o *CloudAlertRule) SetAccountID(accountID string) {
-
-	o.AccountID = accountID
 }
 
 // GetAnnotations returns the Annotations of the receiver.
@@ -398,30 +309,6 @@ func (o *CloudAlertRule) SetAssociatedTags(associatedTags []string) {
 	o.AssociatedTags = associatedTags
 }
 
-// GetCloudTags returns the CloudTags of the receiver.
-func (o *CloudAlertRule) GetCloudTags() []string {
-
-	return o.CloudTags
-}
-
-// SetCloudTags sets the property CloudTags of the receiver using the given value.
-func (o *CloudAlertRule) SetCloudTags(cloudTags []string) {
-
-	o.CloudTags = cloudTags
-}
-
-// GetCloudType returns the CloudType of the receiver.
-func (o *CloudAlertRule) GetCloudType() string {
-
-	return o.CloudType
-}
-
-// SetCloudType sets the property CloudType of the receiver using the given value.
-func (o *CloudAlertRule) SetCloudType(cloudType string) {
-
-	o.CloudType = cloudType
-}
-
 // GetCreateIdempotencyKey returns the CreateIdempotencyKey of the receiver.
 func (o *CloudAlertRule) GetCreateIdempotencyKey() string {
 
@@ -444,30 +331,6 @@ func (o *CloudAlertRule) GetCreateTime() time.Time {
 func (o *CloudAlertRule) SetCreateTime(createTime time.Time) {
 
 	o.CreateTime = createTime
-}
-
-// GetCustomerID returns the CustomerID of the receiver.
-func (o *CloudAlertRule) GetCustomerID() int {
-
-	return o.CustomerID
-}
-
-// SetCustomerID sets the property CustomerID of the receiver using the given value.
-func (o *CloudAlertRule) SetCustomerID(customerID int) {
-
-	o.CustomerID = customerID
-}
-
-// GetIngestionTime returns the IngestionTime of the receiver.
-func (o *CloudAlertRule) GetIngestionTime() time.Time {
-
-	return o.IngestionTime
-}
-
-// SetIngestionTime sets the property IngestionTime of the receiver using the given value.
-func (o *CloudAlertRule) SetIngestionTime(ingestionTime time.Time) {
-
-	o.IngestionTime = ingestionTime
 }
 
 // GetMigrationsLog returns the MigrationsLog of the receiver.
@@ -506,18 +369,6 @@ func (o *CloudAlertRule) SetNamespace(namespace string) {
 	o.Namespace = namespace
 }
 
-// GetNativeID returns the NativeID of the receiver.
-func (o *CloudAlertRule) GetNativeID() string {
-
-	return o.NativeID
-}
-
-// SetNativeID sets the property NativeID of the receiver using the given value.
-func (o *CloudAlertRule) SetNativeID(nativeID string) {
-
-	o.NativeID = nativeID
-}
-
 // GetNormalizedTags returns the NormalizedTags of the receiver.
 func (o *CloudAlertRule) GetNormalizedTags() []string {
 
@@ -530,18 +381,6 @@ func (o *CloudAlertRule) SetNormalizedTags(normalizedTags []string) {
 	o.NormalizedTags = normalizedTags
 }
 
-// GetPolicyReferences returns the PolicyReferences of the receiver.
-func (o *CloudAlertRule) GetPolicyReferences() []string {
-
-	return o.PolicyReferences
-}
-
-// SetPolicyReferences sets the property PolicyReferences of the receiver using the given value.
-func (o *CloudAlertRule) SetPolicyReferences(policyReferences []string) {
-
-	o.PolicyReferences = policyReferences
-}
-
 // GetProtected returns the Protected of the receiver.
 func (o *CloudAlertRule) GetProtected() bool {
 
@@ -552,30 +391,6 @@ func (o *CloudAlertRule) GetProtected() bool {
 func (o *CloudAlertRule) SetProtected(protected bool) {
 
 	o.Protected = protected
-}
-
-// GetRegionName returns the RegionName of the receiver.
-func (o *CloudAlertRule) GetRegionName() string {
-
-	return o.RegionName
-}
-
-// SetRegionName sets the property RegionName of the receiver using the given value.
-func (o *CloudAlertRule) SetRegionName(regionName string) {
-
-	o.RegionName = regionName
-}
-
-// GetResourceID returns the ResourceID of the receiver.
-func (o *CloudAlertRule) GetResourceID() int {
-
-	return o.ResourceID
-}
-
-// SetResourceID sets the property ResourceID of the receiver using the given value.
-func (o *CloudAlertRule) SetResourceID(resourceID int) {
-
-	o.ResourceID = resourceID
 }
 
 // GetUpdateIdempotencyKey returns the UpdateIdempotencyKey of the receiver.
@@ -633,32 +448,21 @@ func (o *CloudAlertRule) ToSparse(fields ...string) elemental.SparseIdentifiable
 	if len(fields) == 0 {
 		// nolint: goimports
 		return &SparseCloudAlertRule{
-			APIID:                &o.APIID,
 			ID:                   &o.ID,
-			VPCID:                &o.VPCID,
-			AccountID:            &o.AccountID,
-			Alertruleid:          &o.Alertruleid,
+			AlertRuleID:          &o.AlertRuleID,
 			Annotations:          &o.Annotations,
 			AssociatedTags:       &o.AssociatedTags,
-			CloudTags:            &o.CloudTags,
-			CloudType:            &o.CloudType,
 			CreateIdempotencyKey: &o.CreateIdempotencyKey,
 			CreateTime:           &o.CreateTime,
-			CustomerID:           &o.CustomerID,
 			Description:          &o.Description,
 			Enabled:              &o.Enabled,
-			IngestionTime:        &o.IngestionTime,
 			MigrationsLog:        &o.MigrationsLog,
 			Name:                 &o.Name,
 			Namespace:            &o.Namespace,
-			NativeID:             &o.NativeID,
 			NormalizedTags:       &o.NormalizedTags,
 			PolicyIDs:            &o.PolicyIDs,
-			PolicyReferences:     &o.PolicyReferences,
 			Protected:            &o.Protected,
-			RegionName:           &o.RegionName,
 			Regions:              &o.Regions,
-			ResourceID:           &o.ResourceID,
 			TargetAccountIDs:     &o.TargetAccountIDs,
 			UpdateIdempotencyKey: &o.UpdateIdempotencyKey,
 			UpdateTime:           &o.UpdateTime,
@@ -670,58 +474,36 @@ func (o *CloudAlertRule) ToSparse(fields ...string) elemental.SparseIdentifiable
 	sp := &SparseCloudAlertRule{}
 	for _, f := range fields {
 		switch f {
-		case "APIID":
-			sp.APIID = &(o.APIID)
 		case "ID":
 			sp.ID = &(o.ID)
-		case "VPCID":
-			sp.VPCID = &(o.VPCID)
-		case "accountID":
-			sp.AccountID = &(o.AccountID)
-		case "alertruleid":
-			sp.Alertruleid = &(o.Alertruleid)
+		case "alertRuleID":
+			sp.AlertRuleID = &(o.AlertRuleID)
 		case "annotations":
 			sp.Annotations = &(o.Annotations)
 		case "associatedTags":
 			sp.AssociatedTags = &(o.AssociatedTags)
-		case "cloudTags":
-			sp.CloudTags = &(o.CloudTags)
-		case "cloudType":
-			sp.CloudType = &(o.CloudType)
 		case "createIdempotencyKey":
 			sp.CreateIdempotencyKey = &(o.CreateIdempotencyKey)
 		case "createTime":
 			sp.CreateTime = &(o.CreateTime)
-		case "customerID":
-			sp.CustomerID = &(o.CustomerID)
 		case "description":
 			sp.Description = &(o.Description)
 		case "enabled":
 			sp.Enabled = &(o.Enabled)
-		case "ingestionTime":
-			sp.IngestionTime = &(o.IngestionTime)
 		case "migrationsLog":
 			sp.MigrationsLog = &(o.MigrationsLog)
 		case "name":
 			sp.Name = &(o.Name)
 		case "namespace":
 			sp.Namespace = &(o.Namespace)
-		case "nativeID":
-			sp.NativeID = &(o.NativeID)
 		case "normalizedTags":
 			sp.NormalizedTags = &(o.NormalizedTags)
 		case "policyIDs":
 			sp.PolicyIDs = &(o.PolicyIDs)
-		case "policyReferences":
-			sp.PolicyReferences = &(o.PolicyReferences)
 		case "protected":
 			sp.Protected = &(o.Protected)
-		case "regionName":
-			sp.RegionName = &(o.RegionName)
 		case "regions":
 			sp.Regions = &(o.Regions)
-		case "resourceID":
-			sp.ResourceID = &(o.ResourceID)
 		case "targetAccountIDs":
 			sp.TargetAccountIDs = &(o.TargetAccountIDs)
 		case "updateIdempotencyKey":
@@ -745,20 +527,11 @@ func (o *CloudAlertRule) Patch(sparse elemental.SparseIdentifiable) {
 	}
 
 	so := sparse.(*SparseCloudAlertRule)
-	if so.APIID != nil {
-		o.APIID = *so.APIID
-	}
 	if so.ID != nil {
 		o.ID = *so.ID
 	}
-	if so.VPCID != nil {
-		o.VPCID = *so.VPCID
-	}
-	if so.AccountID != nil {
-		o.AccountID = *so.AccountID
-	}
-	if so.Alertruleid != nil {
-		o.Alertruleid = *so.Alertruleid
+	if so.AlertRuleID != nil {
+		o.AlertRuleID = *so.AlertRuleID
 	}
 	if so.Annotations != nil {
 		o.Annotations = *so.Annotations
@@ -766,29 +539,17 @@ func (o *CloudAlertRule) Patch(sparse elemental.SparseIdentifiable) {
 	if so.AssociatedTags != nil {
 		o.AssociatedTags = *so.AssociatedTags
 	}
-	if so.CloudTags != nil {
-		o.CloudTags = *so.CloudTags
-	}
-	if so.CloudType != nil {
-		o.CloudType = *so.CloudType
-	}
 	if so.CreateIdempotencyKey != nil {
 		o.CreateIdempotencyKey = *so.CreateIdempotencyKey
 	}
 	if so.CreateTime != nil {
 		o.CreateTime = *so.CreateTime
 	}
-	if so.CustomerID != nil {
-		o.CustomerID = *so.CustomerID
-	}
 	if so.Description != nil {
 		o.Description = *so.Description
 	}
 	if so.Enabled != nil {
 		o.Enabled = *so.Enabled
-	}
-	if so.IngestionTime != nil {
-		o.IngestionTime = *so.IngestionTime
 	}
 	if so.MigrationsLog != nil {
 		o.MigrationsLog = *so.MigrationsLog
@@ -799,29 +560,17 @@ func (o *CloudAlertRule) Patch(sparse elemental.SparseIdentifiable) {
 	if so.Namespace != nil {
 		o.Namespace = *so.Namespace
 	}
-	if so.NativeID != nil {
-		o.NativeID = *so.NativeID
-	}
 	if so.NormalizedTags != nil {
 		o.NormalizedTags = *so.NormalizedTags
 	}
 	if so.PolicyIDs != nil {
 		o.PolicyIDs = *so.PolicyIDs
 	}
-	if so.PolicyReferences != nil {
-		o.PolicyReferences = *so.PolicyReferences
-	}
 	if so.Protected != nil {
 		o.Protected = *so.Protected
 	}
-	if so.RegionName != nil {
-		o.RegionName = *so.RegionName
-	}
 	if so.Regions != nil {
 		o.Regions = *so.Regions
-	}
-	if so.ResourceID != nil {
-		o.ResourceID = *so.ResourceID
 	}
 	if so.TargetAccountIDs != nil {
 		o.TargetAccountIDs = *so.TargetAccountIDs
@@ -874,19 +623,11 @@ func (o *CloudAlertRule) Validate() error {
 		errors = errors.Append(err)
 	}
 
-	if err := elemental.ValidateRequiredString("nativeID", o.NativeID); err != nil {
+	if err := elemental.ValidateRequiredString("name", o.Name); err != nil {
 		requiredErrors = requiredErrors.Append(err)
 	}
 
-	if err := elemental.ValidateMaximumLength("nativeID", o.NativeID, 256, false); err != nil {
-		errors = errors.Append(err)
-	}
-
-	if err := ValidateNativeID("nativeID", o.NativeID); err != nil {
-		errors = errors.Append(err)
-	}
-
-	if err := elemental.ValidateMaximumLength("regionName", o.RegionName, 256, false); err != nil {
+	if err := elemental.ValidateMaximumLength("name", o.Name, 256, false); err != nil {
 		errors = errors.Append(err)
 	}
 
@@ -924,58 +665,36 @@ func (*CloudAlertRule) AttributeSpecifications() map[string]elemental.AttributeS
 func (o *CloudAlertRule) ValueForAttribute(name string) interface{} {
 
 	switch name {
-	case "APIID":
-		return o.APIID
 	case "ID":
 		return o.ID
-	case "VPCID":
-		return o.VPCID
-	case "accountID":
-		return o.AccountID
-	case "alertruleid":
-		return o.Alertruleid
+	case "alertRuleID":
+		return o.AlertRuleID
 	case "annotations":
 		return o.Annotations
 	case "associatedTags":
 		return o.AssociatedTags
-	case "cloudTags":
-		return o.CloudTags
-	case "cloudType":
-		return o.CloudType
 	case "createIdempotencyKey":
 		return o.CreateIdempotencyKey
 	case "createTime":
 		return o.CreateTime
-	case "customerID":
-		return o.CustomerID
 	case "description":
 		return o.Description
 	case "enabled":
 		return o.Enabled
-	case "ingestionTime":
-		return o.IngestionTime
 	case "migrationsLog":
 		return o.MigrationsLog
 	case "name":
 		return o.Name
 	case "namespace":
 		return o.Namespace
-	case "nativeID":
-		return o.NativeID
 	case "normalizedTags":
 		return o.NormalizedTags
 	case "policyIDs":
 		return o.PolicyIDs
-	case "policyReferences":
-		return o.PolicyReferences
 	case "protected":
 		return o.Protected
-	case "regionName":
-		return o.RegionName
 	case "regions":
 		return o.Regions
-	case "resourceID":
-		return o.ResourceID
 	case "targetAccountIDs":
 		return o.TargetAccountIDs
 	case "updateIdempotencyKey":
@@ -993,18 +712,6 @@ func (o *CloudAlertRule) ValueForAttribute(name string) interface{} {
 
 // CloudAlertRuleAttributesMap represents the map of attribute for CloudAlertRule.
 var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
-	"APIID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "apiid",
-		ConvertedName:  "APIID",
-		Description:    `Prisma Cloud API ID (matches Prisma Cloud API ID).`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "APIID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
-	},
 	"ID": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -1020,38 +727,13 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Stored:         true,
 		Type:           "string",
 	},
-	"VPCID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "vpcid",
-		ConvertedName:  "VPCID",
-		Description:    `ID of the host VPC.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "VPCID",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"AccountID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "accountid",
-		ConvertedName:  "AccountID",
-		Description:    `Cloud account ID associated with the entity (matches Prisma Cloud accountID).`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "accountID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"Alertruleid": {
+	"AlertRuleID": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "alertruleid",
-		ConvertedName:  "Alertruleid",
+		ConvertedName:  "AlertRuleID",
 		Description:    `Prisma Cloud Alert Rule id.`,
 		Exposed:        true,
-		Name:           "alertruleid",
+		Name:           "alertRuleID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -1082,32 +764,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		SubType:        "string",
 		Type:           "list",
 	},
-	"CloudTags": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudtags",
-		ConvertedName:  "CloudTags",
-		Description:    `Internal representation of object tags retrieved from the cloud provider.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "cloudTags",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
-	"CloudType": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudtype",
-		ConvertedName:  "CloudType",
-		Description:    `Cloud type of the entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "cloudType",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"CreateIdempotencyKey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -1136,18 +792,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Stored:         true,
 		Type:           "time",
 	},
-	"CustomerID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "customerid",
-		ConvertedName:  "CustomerID",
-		Description:    `Customer ID as identified by Prisma Cloud.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "customerID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
-	},
 	"Description": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "description",
@@ -1170,19 +814,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		SubType:        "boolean",
 		Type:           "boolean",
 	},
-	"IngestionTime": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "ingestiontime",
-		ConvertedName:  "IngestionTime",
-		Description:    `The time that the object was first ingested.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "ingestionTime",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "time",
-	},
 	"MigrationsLog": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "migrationslog",
@@ -1199,11 +830,14 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		AllowedChoices: []string{},
 		BSONFieldName:  "name",
 		ConvertedName:  "Name",
-		Description:    `Name of the object (optional).`,
+		Description:    `Name of the entity.`,
 		Exposed:        true,
+		Filterable:     true,
 		Getter:         true,
+		MaxLength:      256,
 		Name:           "name",
 		Orderable:      true,
+		Required:       true,
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
@@ -1220,21 +854,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Name:           "namespace",
 		Orderable:      true,
 		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"NativeID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "nativeid",
-		ConvertedName:  "NativeID",
-		Description:    `ID of the cloud provider object.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "nativeID",
-		Orderable:      true,
-		Required:       true,
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
@@ -1266,20 +885,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		SubType:        "string",
 		Type:           "list",
 	},
-	"PolicyReferences": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "policyreferences",
-		ConvertedName:  "PolicyReferences",
-		Description:    `A list of policy references associated with this cloud node.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "policyReferences",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
 	"Protected": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "protected",
@@ -1293,20 +898,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Stored:         true,
 		Type:           "boolean",
 	},
-	"RegionName": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "regionname",
-		ConvertedName:  "RegionName",
-		Description:    `Region name associated with the entity.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "regionName",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"Regions": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "regions",
@@ -1317,18 +908,6 @@ var CloudAlertRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"ResourceID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "resourceid",
-		ConvertedName:  "ResourceID",
-		Description:    `Prisma Cloud Resource ID.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "resourceID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
 	},
 	"TargetAccountIDs": {
 		AllowedChoices: []string{},
@@ -1401,18 +980,6 @@ georedundancy.`,
 
 // CloudAlertRuleLowerCaseAttributesMap represents the map of attribute for CloudAlertRule.
 var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecification{
-	"apiid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "apiid",
-		ConvertedName:  "APIID",
-		Description:    `Prisma Cloud API ID (matches Prisma Cloud API ID).`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "APIID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
-	},
 	"id": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -1428,38 +995,13 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		Stored:         true,
 		Type:           "string",
 	},
-	"vpcid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "vpcid",
-		ConvertedName:  "VPCID",
-		Description:    `ID of the host VPC.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "VPCID",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"accountid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "accountid",
-		ConvertedName:  "AccountID",
-		Description:    `Cloud account ID associated with the entity (matches Prisma Cloud accountID).`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "accountID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"alertruleid": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "alertruleid",
-		ConvertedName:  "Alertruleid",
+		ConvertedName:  "AlertRuleID",
 		Description:    `Prisma Cloud Alert Rule id.`,
 		Exposed:        true,
-		Name:           "alertruleid",
+		Name:           "alertRuleID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -1490,32 +1032,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		SubType:        "string",
 		Type:           "list",
 	},
-	"cloudtags": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudtags",
-		ConvertedName:  "CloudTags",
-		Description:    `Internal representation of object tags retrieved from the cloud provider.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "cloudTags",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
-	"cloudtype": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "cloudtype",
-		ConvertedName:  "CloudType",
-		Description:    `Cloud type of the entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "cloudType",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"createidempotencykey": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -1544,18 +1060,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		Stored:         true,
 		Type:           "time",
 	},
-	"customerid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "customerid",
-		ConvertedName:  "CustomerID",
-		Description:    `Customer ID as identified by Prisma Cloud.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "customerID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
-	},
 	"description": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "description",
@@ -1578,19 +1082,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		SubType:        "boolean",
 		Type:           "boolean",
 	},
-	"ingestiontime": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "ingestiontime",
-		ConvertedName:  "IngestionTime",
-		Description:    `The time that the object was first ingested.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "ingestionTime",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "time",
-	},
 	"migrationslog": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "migrationslog",
@@ -1607,11 +1098,14 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		AllowedChoices: []string{},
 		BSONFieldName:  "name",
 		ConvertedName:  "Name",
-		Description:    `Name of the object (optional).`,
+		Description:    `Name of the entity.`,
 		Exposed:        true,
+		Filterable:     true,
 		Getter:         true,
+		MaxLength:      256,
 		Name:           "name",
 		Orderable:      true,
+		Required:       true,
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
@@ -1628,21 +1122,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		Name:           "namespace",
 		Orderable:      true,
 		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"nativeid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "nativeid",
-		ConvertedName:  "NativeID",
-		Description:    `ID of the cloud provider object.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "nativeID",
-		Orderable:      true,
-		Required:       true,
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
@@ -1674,20 +1153,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		SubType:        "string",
 		Type:           "list",
 	},
-	"policyreferences": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "policyreferences",
-		ConvertedName:  "PolicyReferences",
-		Description:    `A list of policy references associated with this cloud node.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "policyReferences",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
 	"protected": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "protected",
@@ -1701,20 +1166,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		Stored:         true,
 		Type:           "boolean",
 	},
-	"regionname": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "regionname",
-		ConvertedName:  "RegionName",
-		Description:    `Region name associated with the entity.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "regionName",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"regions": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "regions",
@@ -1725,18 +1176,6 @@ var CloudAlertRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecifi
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"resourceid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "resourceid",
-		ConvertedName:  "ResourceID",
-		Description:    `Prisma Cloud Resource ID.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "resourceID",
-		Setter:         true,
-		Stored:         true,
-		Type:           "integer",
 	},
 	"targetaccountids": {
 		AllowedChoices: []string{},
@@ -1848,7 +1287,9 @@ func (o SparseCloudAlertRulesList) List() elemental.IdentifiablesList {
 // DefaultOrder returns the default ordering fields of the content.
 func (o SparseCloudAlertRulesList) DefaultOrder() []string {
 
-	return []string{}
+	return []string{
+		"name",
+	}
 }
 
 // ToPlain returns the SparseCloudAlertRulesList converted to CloudAlertRulesList.
@@ -1870,20 +1311,11 @@ func (o SparseCloudAlertRulesList) Version() int {
 
 // SparseCloudAlertRule represents the sparse version of a cloudalertrule.
 type SparseCloudAlertRule struct {
-	// Prisma Cloud API ID (matches Prisma Cloud API ID).
-	APIID *int `json:"APIID,omitempty" msgpack:"APIID,omitempty" bson:"apiid,omitempty" mapstructure:"APIID,omitempty"`
-
 	// Identifier of the object.
 	ID *string `json:"ID,omitempty" msgpack:"ID,omitempty" bson:"-" mapstructure:"ID,omitempty"`
 
-	// ID of the host VPC.
-	VPCID *string `json:"VPCID,omitempty" msgpack:"VPCID,omitempty" bson:"vpcid,omitempty" mapstructure:"VPCID,omitempty"`
-
-	// Cloud account ID associated with the entity (matches Prisma Cloud accountID).
-	AccountID *string `json:"accountId,omitempty" msgpack:"accountId,omitempty" bson:"accountid,omitempty" mapstructure:"accountId,omitempty"`
-
 	// Prisma Cloud Alert Rule id.
-	Alertruleid *string `json:"alertruleid,omitempty" msgpack:"alertruleid,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertruleid,omitempty"`
+	AlertRuleID *string `json:"alertRuleID,omitempty" msgpack:"alertRuleID,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertRuleID,omitempty"`
 
 	// Stores additional information about an entity.
 	Annotations *map[string][]string `json:"annotations,omitempty" msgpack:"annotations,omitempty" bson:"annotations,omitempty" mapstructure:"annotations,omitempty"`
@@ -1891,20 +1323,11 @@ type SparseCloudAlertRule struct {
 	// List of tags attached to an entity.
 	AssociatedTags *[]string `json:"associatedTags,omitempty" msgpack:"associatedTags,omitempty" bson:"associatedtags,omitempty" mapstructure:"associatedTags,omitempty"`
 
-	// Internal representation of object tags retrieved from the cloud provider.
-	CloudTags *[]string `json:"cloudTags,omitempty" msgpack:"cloudTags,omitempty" bson:"cloudtags,omitempty" mapstructure:"cloudTags,omitempty"`
-
-	// Cloud type of the entity.
-	CloudType *string `json:"cloudType,omitempty" msgpack:"cloudType,omitempty" bson:"cloudtype,omitempty" mapstructure:"cloudType,omitempty"`
-
 	// internal idempotency key for a create operation.
 	CreateIdempotencyKey *string `json:"-" msgpack:"-" bson:"createidempotencykey,omitempty" mapstructure:"-,omitempty"`
 
 	// Creation date of the object.
 	CreateTime *time.Time `json:"createTime,omitempty" msgpack:"createTime,omitempty" bson:"createtime,omitempty" mapstructure:"createTime,omitempty"`
-
-	// Customer ID as identified by Prisma Cloud.
-	CustomerID *int `json:"customerID,omitempty" msgpack:"customerID,omitempty" bson:"customerid,omitempty" mapstructure:"customerID,omitempty"`
 
 	// Alert rule description.
 	Description *string `json:"description,omitempty" msgpack:"description,omitempty" bson:"description,omitempty" mapstructure:"description,omitempty"`
@@ -1912,20 +1335,14 @@ type SparseCloudAlertRule struct {
 	// Is Alert Rule enabled.
 	Enabled *bool `json:"enabled,omitempty" msgpack:"enabled,omitempty" bson:"enabled,omitempty" mapstructure:"enabled,omitempty"`
 
-	// The time that the object was first ingested.
-	IngestionTime *time.Time `json:"ingestionTime,omitempty" msgpack:"ingestionTime,omitempty" bson:"ingestiontime,omitempty" mapstructure:"ingestionTime,omitempty"`
-
 	// Internal property maintaining migrations information.
 	MigrationsLog *map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
-	// Name of the object (optional).
+	// Name of the entity.
 	Name *string `json:"name,omitempty" msgpack:"name,omitempty" bson:"name,omitempty" mapstructure:"name,omitempty"`
 
 	// Namespace tag attached to an entity.
 	Namespace *string `json:"namespace,omitempty" msgpack:"namespace,omitempty" bson:"namespace,omitempty" mapstructure:"namespace,omitempty"`
-
-	// ID of the cloud provider object.
-	NativeID *string `json:"nativeID,omitempty" msgpack:"nativeID,omitempty" bson:"nativeid,omitempty" mapstructure:"nativeID,omitempty"`
 
 	// Contains the list of normalized tags of the entities.
 	NormalizedTags *[]string `json:"normalizedTags,omitempty" msgpack:"normalizedTags,omitempty" bson:"normalizedtags,omitempty" mapstructure:"normalizedTags,omitempty"`
@@ -1933,20 +1350,11 @@ type SparseCloudAlertRule struct {
 	// List of policy IDs associated to alert rule.
 	PolicyIDs *[]string `json:"policyIDs,omitempty" msgpack:"policyIDs,omitempty" bson:"policyids,omitempty" mapstructure:"policyIDs,omitempty"`
 
-	// A list of policy references associated with this cloud node.
-	PolicyReferences *[]string `json:"policyReferences,omitempty" msgpack:"policyReferences,omitempty" bson:"policyreferences,omitempty" mapstructure:"policyReferences,omitempty"`
-
 	// Defines if the object is protected.
 	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
 
-	// Region name associated with the entity.
-	RegionName *string `json:"regionName,omitempty" msgpack:"regionName,omitempty" bson:"regionname,omitempty" mapstructure:"regionName,omitempty"`
-
 	// List of regions where the alert rule is enforced.
 	Regions *[]string `json:"regions,omitempty" msgpack:"regions,omitempty" bson:"regions,omitempty" mapstructure:"regions,omitempty"`
-
-	// Prisma Cloud Resource ID.
-	ResourceID *int `json:"resourceID,omitempty" msgpack:"resourceID,omitempty" bson:"resourceid,omitempty" mapstructure:"resourceID,omitempty"`
 
 	// List of accounts associated to alert rule.
 	TargetAccountIDs *[]string `json:"targetAccountIDs,omitempty" msgpack:"targetAccountIDs,omitempty" bson:"targetaccountids,omitempty" mapstructure:"targetAccountIDs,omitempty"`
@@ -2007,20 +1415,11 @@ func (o *SparseCloudAlertRule) GetBSON() (interface{}, error) {
 
 	s := &mongoAttributesSparseCloudAlertRule{}
 
-	if o.APIID != nil {
-		s.APIID = o.APIID
-	}
 	if o.ID != nil {
 		s.ID = bson.ObjectIdHex(*o.ID)
 	}
-	if o.VPCID != nil {
-		s.VPCID = o.VPCID
-	}
-	if o.AccountID != nil {
-		s.AccountID = o.AccountID
-	}
-	if o.Alertruleid != nil {
-		s.Alertruleid = o.Alertruleid
+	if o.AlertRuleID != nil {
+		s.AlertRuleID = o.AlertRuleID
 	}
 	if o.Annotations != nil {
 		s.Annotations = o.Annotations
@@ -2028,29 +1427,17 @@ func (o *SparseCloudAlertRule) GetBSON() (interface{}, error) {
 	if o.AssociatedTags != nil {
 		s.AssociatedTags = o.AssociatedTags
 	}
-	if o.CloudTags != nil {
-		s.CloudTags = o.CloudTags
-	}
-	if o.CloudType != nil {
-		s.CloudType = o.CloudType
-	}
 	if o.CreateIdempotencyKey != nil {
 		s.CreateIdempotencyKey = o.CreateIdempotencyKey
 	}
 	if o.CreateTime != nil {
 		s.CreateTime = o.CreateTime
 	}
-	if o.CustomerID != nil {
-		s.CustomerID = o.CustomerID
-	}
 	if o.Description != nil {
 		s.Description = o.Description
 	}
 	if o.Enabled != nil {
 		s.Enabled = o.Enabled
-	}
-	if o.IngestionTime != nil {
-		s.IngestionTime = o.IngestionTime
 	}
 	if o.MigrationsLog != nil {
 		s.MigrationsLog = o.MigrationsLog
@@ -2061,29 +1448,17 @@ func (o *SparseCloudAlertRule) GetBSON() (interface{}, error) {
 	if o.Namespace != nil {
 		s.Namespace = o.Namespace
 	}
-	if o.NativeID != nil {
-		s.NativeID = o.NativeID
-	}
 	if o.NormalizedTags != nil {
 		s.NormalizedTags = o.NormalizedTags
 	}
 	if o.PolicyIDs != nil {
 		s.PolicyIDs = o.PolicyIDs
 	}
-	if o.PolicyReferences != nil {
-		s.PolicyReferences = o.PolicyReferences
-	}
 	if o.Protected != nil {
 		s.Protected = o.Protected
 	}
-	if o.RegionName != nil {
-		s.RegionName = o.RegionName
-	}
 	if o.Regions != nil {
 		s.Regions = o.Regions
-	}
-	if o.ResourceID != nil {
-		s.ResourceID = o.ResourceID
 	}
 	if o.TargetAccountIDs != nil {
 		s.TargetAccountIDs = o.TargetAccountIDs
@@ -2117,19 +1492,10 @@ func (o *SparseCloudAlertRule) SetBSON(raw bson.Raw) error {
 		return err
 	}
 
-	if s.APIID != nil {
-		o.APIID = s.APIID
-	}
 	id := s.ID.Hex()
 	o.ID = &id
-	if s.VPCID != nil {
-		o.VPCID = s.VPCID
-	}
-	if s.AccountID != nil {
-		o.AccountID = s.AccountID
-	}
-	if s.Alertruleid != nil {
-		o.Alertruleid = s.Alertruleid
+	if s.AlertRuleID != nil {
+		o.AlertRuleID = s.AlertRuleID
 	}
 	if s.Annotations != nil {
 		o.Annotations = s.Annotations
@@ -2137,29 +1503,17 @@ func (o *SparseCloudAlertRule) SetBSON(raw bson.Raw) error {
 	if s.AssociatedTags != nil {
 		o.AssociatedTags = s.AssociatedTags
 	}
-	if s.CloudTags != nil {
-		o.CloudTags = s.CloudTags
-	}
-	if s.CloudType != nil {
-		o.CloudType = s.CloudType
-	}
 	if s.CreateIdempotencyKey != nil {
 		o.CreateIdempotencyKey = s.CreateIdempotencyKey
 	}
 	if s.CreateTime != nil {
 		o.CreateTime = s.CreateTime
 	}
-	if s.CustomerID != nil {
-		o.CustomerID = s.CustomerID
-	}
 	if s.Description != nil {
 		o.Description = s.Description
 	}
 	if s.Enabled != nil {
 		o.Enabled = s.Enabled
-	}
-	if s.IngestionTime != nil {
-		o.IngestionTime = s.IngestionTime
 	}
 	if s.MigrationsLog != nil {
 		o.MigrationsLog = s.MigrationsLog
@@ -2170,29 +1524,17 @@ func (o *SparseCloudAlertRule) SetBSON(raw bson.Raw) error {
 	if s.Namespace != nil {
 		o.Namespace = s.Namespace
 	}
-	if s.NativeID != nil {
-		o.NativeID = s.NativeID
-	}
 	if s.NormalizedTags != nil {
 		o.NormalizedTags = s.NormalizedTags
 	}
 	if s.PolicyIDs != nil {
 		o.PolicyIDs = s.PolicyIDs
 	}
-	if s.PolicyReferences != nil {
-		o.PolicyReferences = s.PolicyReferences
-	}
 	if s.Protected != nil {
 		o.Protected = s.Protected
 	}
-	if s.RegionName != nil {
-		o.RegionName = s.RegionName
-	}
 	if s.Regions != nil {
 		o.Regions = s.Regions
-	}
-	if s.ResourceID != nil {
-		o.ResourceID = s.ResourceID
 	}
 	if s.TargetAccountIDs != nil {
 		o.TargetAccountIDs = s.TargetAccountIDs
@@ -2223,20 +1565,11 @@ func (o *SparseCloudAlertRule) Version() int {
 func (o *SparseCloudAlertRule) ToPlain() elemental.PlainIdentifiable {
 
 	out := NewCloudAlertRule()
-	if o.APIID != nil {
-		out.APIID = *o.APIID
-	}
 	if o.ID != nil {
 		out.ID = *o.ID
 	}
-	if o.VPCID != nil {
-		out.VPCID = *o.VPCID
-	}
-	if o.AccountID != nil {
-		out.AccountID = *o.AccountID
-	}
-	if o.Alertruleid != nil {
-		out.Alertruleid = *o.Alertruleid
+	if o.AlertRuleID != nil {
+		out.AlertRuleID = *o.AlertRuleID
 	}
 	if o.Annotations != nil {
 		out.Annotations = *o.Annotations
@@ -2244,29 +1577,17 @@ func (o *SparseCloudAlertRule) ToPlain() elemental.PlainIdentifiable {
 	if o.AssociatedTags != nil {
 		out.AssociatedTags = *o.AssociatedTags
 	}
-	if o.CloudTags != nil {
-		out.CloudTags = *o.CloudTags
-	}
-	if o.CloudType != nil {
-		out.CloudType = *o.CloudType
-	}
 	if o.CreateIdempotencyKey != nil {
 		out.CreateIdempotencyKey = *o.CreateIdempotencyKey
 	}
 	if o.CreateTime != nil {
 		out.CreateTime = *o.CreateTime
 	}
-	if o.CustomerID != nil {
-		out.CustomerID = *o.CustomerID
-	}
 	if o.Description != nil {
 		out.Description = *o.Description
 	}
 	if o.Enabled != nil {
 		out.Enabled = *o.Enabled
-	}
-	if o.IngestionTime != nil {
-		out.IngestionTime = *o.IngestionTime
 	}
 	if o.MigrationsLog != nil {
 		out.MigrationsLog = *o.MigrationsLog
@@ -2277,29 +1598,17 @@ func (o *SparseCloudAlertRule) ToPlain() elemental.PlainIdentifiable {
 	if o.Namespace != nil {
 		out.Namespace = *o.Namespace
 	}
-	if o.NativeID != nil {
-		out.NativeID = *o.NativeID
-	}
 	if o.NormalizedTags != nil {
 		out.NormalizedTags = *o.NormalizedTags
 	}
 	if o.PolicyIDs != nil {
 		out.PolicyIDs = *o.PolicyIDs
 	}
-	if o.PolicyReferences != nil {
-		out.PolicyReferences = *o.PolicyReferences
-	}
 	if o.Protected != nil {
 		out.Protected = *o.Protected
 	}
-	if o.RegionName != nil {
-		out.RegionName = *o.RegionName
-	}
 	if o.Regions != nil {
 		out.Regions = *o.Regions
-	}
-	if o.ResourceID != nil {
-		out.ResourceID = *o.ResourceID
 	}
 	if o.TargetAccountIDs != nil {
 		out.TargetAccountIDs = *o.TargetAccountIDs
@@ -2318,54 +1627,6 @@ func (o *SparseCloudAlertRule) ToPlain() elemental.PlainIdentifiable {
 	}
 
 	return out
-}
-
-// GetAPIID returns the APIID of the receiver.
-func (o *SparseCloudAlertRule) GetAPIID() (out int) {
-
-	if o.APIID == nil {
-		return
-	}
-
-	return *o.APIID
-}
-
-// SetAPIID sets the property APIID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetAPIID(APIID int) {
-
-	o.APIID = &APIID
-}
-
-// GetVPCID returns the VPCID of the receiver.
-func (o *SparseCloudAlertRule) GetVPCID() (out string) {
-
-	if o.VPCID == nil {
-		return
-	}
-
-	return *o.VPCID
-}
-
-// SetVPCID sets the property VPCID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetVPCID(VPCID string) {
-
-	o.VPCID = &VPCID
-}
-
-// GetAccountID returns the AccountID of the receiver.
-func (o *SparseCloudAlertRule) GetAccountID() (out string) {
-
-	if o.AccountID == nil {
-		return
-	}
-
-	return *o.AccountID
-}
-
-// SetAccountID sets the property AccountID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetAccountID(accountID string) {
-
-	o.AccountID = &accountID
 }
 
 // GetAnnotations returns the Annotations of the receiver.
@@ -2400,38 +1661,6 @@ func (o *SparseCloudAlertRule) SetAssociatedTags(associatedTags []string) {
 	o.AssociatedTags = &associatedTags
 }
 
-// GetCloudTags returns the CloudTags of the receiver.
-func (o *SparseCloudAlertRule) GetCloudTags() (out []string) {
-
-	if o.CloudTags == nil {
-		return
-	}
-
-	return *o.CloudTags
-}
-
-// SetCloudTags sets the property CloudTags of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetCloudTags(cloudTags []string) {
-
-	o.CloudTags = &cloudTags
-}
-
-// GetCloudType returns the CloudType of the receiver.
-func (o *SparseCloudAlertRule) GetCloudType() (out string) {
-
-	if o.CloudType == nil {
-		return
-	}
-
-	return *o.CloudType
-}
-
-// SetCloudType sets the property CloudType of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetCloudType(cloudType string) {
-
-	o.CloudType = &cloudType
-}
-
 // GetCreateIdempotencyKey returns the CreateIdempotencyKey of the receiver.
 func (o *SparseCloudAlertRule) GetCreateIdempotencyKey() (out string) {
 
@@ -2462,38 +1691,6 @@ func (o *SparseCloudAlertRule) GetCreateTime() (out time.Time) {
 func (o *SparseCloudAlertRule) SetCreateTime(createTime time.Time) {
 
 	o.CreateTime = &createTime
-}
-
-// GetCustomerID returns the CustomerID of the receiver.
-func (o *SparseCloudAlertRule) GetCustomerID() (out int) {
-
-	if o.CustomerID == nil {
-		return
-	}
-
-	return *o.CustomerID
-}
-
-// SetCustomerID sets the property CustomerID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetCustomerID(customerID int) {
-
-	o.CustomerID = &customerID
-}
-
-// GetIngestionTime returns the IngestionTime of the receiver.
-func (o *SparseCloudAlertRule) GetIngestionTime() (out time.Time) {
-
-	if o.IngestionTime == nil {
-		return
-	}
-
-	return *o.IngestionTime
-}
-
-// SetIngestionTime sets the property IngestionTime of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetIngestionTime(ingestionTime time.Time) {
-
-	o.IngestionTime = &ingestionTime
 }
 
 // GetMigrationsLog returns the MigrationsLog of the receiver.
@@ -2544,22 +1741,6 @@ func (o *SparseCloudAlertRule) SetNamespace(namespace string) {
 	o.Namespace = &namespace
 }
 
-// GetNativeID returns the NativeID of the receiver.
-func (o *SparseCloudAlertRule) GetNativeID() (out string) {
-
-	if o.NativeID == nil {
-		return
-	}
-
-	return *o.NativeID
-}
-
-// SetNativeID sets the property NativeID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetNativeID(nativeID string) {
-
-	o.NativeID = &nativeID
-}
-
 // GetNormalizedTags returns the NormalizedTags of the receiver.
 func (o *SparseCloudAlertRule) GetNormalizedTags() (out []string) {
 
@@ -2576,22 +1757,6 @@ func (o *SparseCloudAlertRule) SetNormalizedTags(normalizedTags []string) {
 	o.NormalizedTags = &normalizedTags
 }
 
-// GetPolicyReferences returns the PolicyReferences of the receiver.
-func (o *SparseCloudAlertRule) GetPolicyReferences() (out []string) {
-
-	if o.PolicyReferences == nil {
-		return
-	}
-
-	return *o.PolicyReferences
-}
-
-// SetPolicyReferences sets the property PolicyReferences of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetPolicyReferences(policyReferences []string) {
-
-	o.PolicyReferences = &policyReferences
-}
-
 // GetProtected returns the Protected of the receiver.
 func (o *SparseCloudAlertRule) GetProtected() (out bool) {
 
@@ -2606,38 +1771,6 @@ func (o *SparseCloudAlertRule) GetProtected() (out bool) {
 func (o *SparseCloudAlertRule) SetProtected(protected bool) {
 
 	o.Protected = &protected
-}
-
-// GetRegionName returns the RegionName of the receiver.
-func (o *SparseCloudAlertRule) GetRegionName() (out string) {
-
-	if o.RegionName == nil {
-		return
-	}
-
-	return *o.RegionName
-}
-
-// SetRegionName sets the property RegionName of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetRegionName(regionName string) {
-
-	o.RegionName = &regionName
-}
-
-// GetResourceID returns the ResourceID of the receiver.
-func (o *SparseCloudAlertRule) GetResourceID() (out int) {
-
-	if o.ResourceID == nil {
-		return
-	}
-
-	return *o.ResourceID
-}
-
-// SetResourceID sets the property ResourceID of the receiver using the address of the given value.
-func (o *SparseCloudAlertRule) SetResourceID(resourceID int) {
-
-	o.ResourceID = &resourceID
 }
 
 // GetUpdateIdempotencyKey returns the UpdateIdempotencyKey of the receiver.
@@ -2729,32 +1862,21 @@ func (o *SparseCloudAlertRule) DeepCopyInto(out *SparseCloudAlertRule) {
 }
 
 type mongoAttributesCloudAlertRule struct {
-	APIID                int                 `bson:"apiid,omitempty"`
 	ID                   bson.ObjectId       `bson:"_id,omitempty"`
-	VPCID                string              `bson:"vpcid,omitempty"`
-	AccountID            string              `bson:"accountid,omitempty"`
-	Alertruleid          string              `bson:"alertruleid"`
+	AlertRuleID          string              `bson:"alertruleid"`
 	Annotations          map[string][]string `bson:"annotations"`
 	AssociatedTags       []string            `bson:"associatedtags"`
-	CloudTags            []string            `bson:"cloudtags,omitempty"`
-	CloudType            string              `bson:"cloudtype,omitempty"`
 	CreateIdempotencyKey string              `bson:"createidempotencykey"`
 	CreateTime           time.Time           `bson:"createtime"`
-	CustomerID           int                 `bson:"customerid,omitempty"`
 	Description          string              `bson:"description"`
 	Enabled              bool                `bson:"enabled"`
-	IngestionTime        time.Time           `bson:"ingestiontime,omitempty"`
 	MigrationsLog        map[string]string   `bson:"migrationslog,omitempty"`
-	Name                 string              `bson:"name,omitempty"`
+	Name                 string              `bson:"name"`
 	Namespace            string              `bson:"namespace"`
-	NativeID             string              `bson:"nativeid"`
 	NormalizedTags       []string            `bson:"normalizedtags"`
 	PolicyIDs            []string            `bson:"policyids"`
-	PolicyReferences     []string            `bson:"policyreferences,omitempty"`
 	Protected            bool                `bson:"protected"`
-	RegionName           string              `bson:"regionname,omitempty"`
 	Regions              []string            `bson:"regions"`
-	ResourceID           int                 `bson:"resourceid,omitempty"`
 	TargetAccountIDs     []string            `bson:"targetaccountids"`
 	UpdateIdempotencyKey string              `bson:"updateidempotencykey"`
 	UpdateTime           time.Time           `bson:"updatetime"`
@@ -2762,32 +1884,21 @@ type mongoAttributesCloudAlertRule struct {
 	Zone                 int                 `bson:"zone"`
 }
 type mongoAttributesSparseCloudAlertRule struct {
-	APIID                *int                 `bson:"apiid,omitempty"`
 	ID                   bson.ObjectId        `bson:"_id,omitempty"`
-	VPCID                *string              `bson:"vpcid,omitempty"`
-	AccountID            *string              `bson:"accountid,omitempty"`
-	Alertruleid          *string              `bson:"alertruleid,omitempty"`
+	AlertRuleID          *string              `bson:"alertruleid,omitempty"`
 	Annotations          *map[string][]string `bson:"annotations,omitempty"`
 	AssociatedTags       *[]string            `bson:"associatedtags,omitempty"`
-	CloudTags            *[]string            `bson:"cloudtags,omitempty"`
-	CloudType            *string              `bson:"cloudtype,omitempty"`
 	CreateIdempotencyKey *string              `bson:"createidempotencykey,omitempty"`
 	CreateTime           *time.Time           `bson:"createtime,omitempty"`
-	CustomerID           *int                 `bson:"customerid,omitempty"`
 	Description          *string              `bson:"description,omitempty"`
 	Enabled              *bool                `bson:"enabled,omitempty"`
-	IngestionTime        *time.Time           `bson:"ingestiontime,omitempty"`
 	MigrationsLog        *map[string]string   `bson:"migrationslog,omitempty"`
 	Name                 *string              `bson:"name,omitempty"`
 	Namespace            *string              `bson:"namespace,omitempty"`
-	NativeID             *string              `bson:"nativeid,omitempty"`
 	NormalizedTags       *[]string            `bson:"normalizedtags,omitempty"`
 	PolicyIDs            *[]string            `bson:"policyids,omitempty"`
-	PolicyReferences     *[]string            `bson:"policyreferences,omitempty"`
 	Protected            *bool                `bson:"protected,omitempty"`
-	RegionName           *string              `bson:"regionname,omitempty"`
 	Regions              *[]string            `bson:"regions,omitempty"`
-	ResourceID           *int                 `bson:"resourceid,omitempty"`
 	TargetAccountIDs     *[]string            `bson:"targetaccountids,omitempty"`
 	UpdateIdempotencyKey *string              `bson:"updateidempotencykey,omitempty"`
 	UpdateTime           *time.Time           `bson:"updatetime,omitempty"`

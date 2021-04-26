@@ -756,6 +756,8 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[CloudCNQReplyIdentity] = &elemental.Relationship{}
+
 	relationshipsRegistry[CloudEndpointIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},

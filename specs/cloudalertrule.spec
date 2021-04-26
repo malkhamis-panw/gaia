@@ -17,24 +17,26 @@ model:
   delete:
     description: Deletes the Prisma Cloud Alert Rule with a given id.
   extends:
-  - '@zoned'
-  - '@migratable'
   - '@base'
+  - '@migratable'
   - '@namespaced'
   - '@identifiable-stored'
-  - '@prismabase'
   - '@timeable'
+  - '@named'
+  - '@zoned'
 
 # Indexes
 indexes:
 - - namespace
-  - alertruleid
+  - alertRuleID
   - enabled
+- - :unique
+  - alertRuleID
 
 # Attributes
 attributes:
   v1:
-  - name: alertruleid
+  - name: alertRuleID
     description: Prisma Cloud Alert Rule id.
     type: string
     exposed: true

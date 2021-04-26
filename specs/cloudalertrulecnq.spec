@@ -21,7 +21,6 @@ model:
   - '@namespaced'
   - '@described'
   - '@identifiable-stored'
-  - '@prismabase'
   - '@named'
 
 # Indexes

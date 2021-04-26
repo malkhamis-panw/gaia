@@ -32,6 +32,7 @@ var (
 		"cloudalert":        CloudAlertIdentity,
 		"cloudalertrule":    CloudAlertRuleIdentity,
 		"cloudalertrulecnq": CloudAlertRuleCNQIdentity,
+		"cloudcnqreply":     CloudCNQReplyIdentity,
 		"cloudendpoint":     CloudEndpointIdentity,
 
 		"cloudgraph": CloudGraphIdentity,
@@ -216,6 +217,7 @@ var (
 		"cloudalerts":        CloudAlertIdentity,
 		"cloudalertsrule":    CloudAlertRuleIdentity,
 		"cloudalertrulecnqs": CloudAlertRuleCNQIdentity,
+		"cloudcnqreplyies":   CloudCNQReplyIdentity,
 		"cloudendpoints":     CloudEndpointIdentity,
 
 		"cloudgraphs": CloudGraphIdentity,
@@ -588,28 +590,31 @@ var (
 			{"createIdempotencyKey"},
 		},
 		"cloudalertrule": {
+			{":unique", "alertRuleID"},
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
-			{"namespace", "nativeID"},
-			{"namespace", "accountid"},
+			{"namespace", "name"},
 			{"namespace"},
 			{"namespace", "normalizedTags"},
-			{"namespace", "alertruleid", "enabled"},
-			{"namespace", "vpcid"},
+			{"namespace", "alertRuleID", "enabled"},
+			{"name"},
 			{"createIdempotencyKey"},
 		},
 		"cloudalertrulecnq": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
 			{"namespace", "resulttimestamp"},
-			{"namespace"},
-			{"namespace", "vpcid"},
 			{"namespace", "name"},
+			{"namespace"},
 			{"namespace", "alertruleid", "policyid"},
 			{"namespace", "normalizedTags"},
-			{"namespace", "nativeID"},
-			{"namespace", "accountid"},
 			{"name"},
+			{"createIdempotencyKey"},
+		},
+		"cloudcnqreply": {
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
 			{"createIdempotencyKey"},
 		},
 		"cloudendpoint": {
@@ -1270,6 +1275,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewCloudAlertRule()
 	case CloudAlertRuleCNQIdentity:
 		return NewCloudAlertRuleCNQ()
+	case CloudCNQReplyIdentity:
+		return NewCloudCNQReply()
 	case CloudEndpointIdentity:
 		return NewCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1597,6 +1604,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseCloudAlertRule()
 	case CloudAlertRuleCNQIdentity:
 		return NewSparseCloudAlertRuleCNQ()
+	case CloudCNQReplyIdentity:
+		return NewSparseCloudCNQReply()
 	case CloudEndpointIdentity:
 		return NewSparseCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1932,6 +1941,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &CloudAlertRulesList{}
 	case CloudAlertRuleCNQIdentity:
 		return &CloudAlertRuleCNQsList{}
+	case CloudCNQReplyIdentity:
+		return &CloudCNQRepliesList{}
 	case CloudEndpointIdentity:
 		return &CloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -2257,6 +2268,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseCloudAlertRulesList{}
 	case CloudAlertRuleCNQIdentity:
 		return &SparseCloudAlertRuleCNQsList{}
+	case CloudCNQReplyIdentity:
+		return &SparseCloudCNQRepliesList{}
 	case CloudEndpointIdentity:
 		return &SparseCloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -2575,6 +2588,7 @@ func AllIdentities() []elemental.Identity {
 		CloudAlertIdentity,
 		CloudAlertRuleIdentity,
 		CloudAlertRuleCNQIdentity,
+		CloudCNQReplyIdentity,
 		CloudEndpointIdentity,
 		CloudGraphIdentity,
 		CloudManagedNetworkIdentity,
@@ -2786,6 +2800,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case CloudAlertRuleIdentity:
 		return []string{}
 	case CloudAlertRuleCNQIdentity:
+		return []string{}
+	case CloudCNQReplyIdentity:
 		return []string{}
 	case CloudEndpointIdentity:
 		return []string{}
