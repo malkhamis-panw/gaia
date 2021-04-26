@@ -93,8 +93,13 @@ type Authz struct {
 	// ignored and this attribute will contain all the permission for the given claims.
 	Permissions map[string]map[string]bool `json:"permissions,omitempty" msgpack:"permissions,omitempty" bson:"-" mapstructure:"permissions,omitempty"`
 
-	// The raw resolved PolicyRuleList if needed for further processing.
-	// It will be empty unless the query parameter `forwardpolicyrules=true` is set.
+	// Contains the raw resolved and unfiltered PolicyRuleList. It will be empty unless
+	// the query parameter `forwardpolicyrules=true` is set.
+	// Note that this contains the straight rules that matched the user claims in the
+	// target namespace. It can contain rules that are filtered out in later stage
+	// because it applies to children namespace or because the rule only applies to a
+	// certain source network, or because the token contains restrictions. Unless you
+	// really know why you need it, you mostly don't.
 	PolicyRulesList PolicyRulesList `json:"policyRulesList,omitempty" msgpack:"policyRulesList,omitempty" bson:"-" mapstructure:"policyRulesList,omitempty"`
 
 	// Sets the namespace restrictions that should apply.
@@ -432,8 +437,13 @@ ignored and this attribute will contain all the permission for the given claims.
 	"PolicyRulesList": {
 		AllowedChoices: []string{},
 		ConvertedName:  "PolicyRulesList",
-		Description: `The raw resolved PolicyRuleList if needed for further processing.
-It will be empty unless the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.`,
+		Description: `Contains the raw resolved and unfiltered PolicyRuleList. It will be empty unless
+the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.
+Note that this contains the straight rules that matched the user claims in the
+target namespace. It can contain rules that are filtered out in later stage
+because it applies to children namespace or because the rule only applies to a
+certain source network, or because the token contains restrictions. Unless you
+really know why you need it, you mostly don't.`,
 		Exposed: true,
 		Name:    "policyRulesList",
 		SubType: "policyrule",
@@ -521,8 +531,13 @@ ignored and this attribute will contain all the permission for the given claims.
 	"policyruleslist": {
 		AllowedChoices: []string{},
 		ConvertedName:  "PolicyRulesList",
-		Description: `The raw resolved PolicyRuleList if needed for further processing.
-It will be empty unless the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.`,
+		Description: `Contains the raw resolved and unfiltered PolicyRuleList. It will be empty unless
+the query parameter ` + "`" + `forwardpolicyrules=true` + "`" + ` is set.
+Note that this contains the straight rules that matched the user claims in the
+target namespace. It can contain rules that are filtered out in later stage
+because it applies to children namespace or because the rule only applies to a
+certain source network, or because the token contains restrictions. Unless you
+really know why you need it, you mostly don't.`,
 		Exposed: true,
 		Name:    "policyRulesList",
 		SubType: "policyrule",
@@ -641,8 +656,13 @@ type SparseAuthz struct {
 	// ignored and this attribute will contain all the permission for the given claims.
 	Permissions *map[string]map[string]bool `json:"permissions,omitempty" msgpack:"permissions,omitempty" bson:"-" mapstructure:"permissions,omitempty"`
 
-	// The raw resolved PolicyRuleList if needed for further processing.
-	// It will be empty unless the query parameter `forwardpolicyrules=true` is set.
+	// Contains the raw resolved and unfiltered PolicyRuleList. It will be empty unless
+	// the query parameter `forwardpolicyrules=true` is set.
+	// Note that this contains the straight rules that matched the user claims in the
+	// target namespace. It can contain rules that are filtered out in later stage
+	// because it applies to children namespace or because the rule only applies to a
+	// certain source network, or because the token contains restrictions. Unless you
+	// really know why you need it, you mostly don't.
 	PolicyRulesList *PolicyRulesList `json:"policyRulesList,omitempty" msgpack:"policyRulesList,omitempty" bson:"-" mapstructure:"policyRulesList,omitempty"`
 
 	// Sets the namespace restrictions that should apply.

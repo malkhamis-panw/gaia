@@ -47,8 +47,13 @@ attributes:
 
   - name: policyRulesList
     description: |-
-      The raw resolved PolicyRuleList if needed for further processing.
-      It will be empty unless the query parameter `forwardpolicyrules=true` is set.
+      Contains the raw resolved and unfiltered PolicyRuleList. It will be empty unless
+      the query parameter `forwardpolicyrules=true` is set.
+      Note that this contains the straight rules that matched the user claims in the
+      target namespace. It can contain rules that are filtered out in later stage
+      because it applies to children namespace or because the rule only applies to a
+      certain source network, or because the token contains restrictions. Unless you
+      really know why you need it, you mostly don't.
     type: refList
     exposed: true
     subtype: policyrule
