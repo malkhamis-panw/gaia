@@ -149,7 +149,7 @@ type RenderedPolicy struct {
 	// The list of load balancers this processing unit is implementing.
 	ExposedLoadBalancers LoadBalancersList `json:"exposedLoadBalancers" msgpack:"exposedLoadBalancers" bson:"-" mapstructure:"exposedLoadBalancers,omitempty"`
 
-	// The list of services that this processing unit is behind.
+	// The list of services that this processing unit is implementing.
 	ExposedServices ServicesList `json:"exposedServices" msgpack:"exposedServices" bson:"-" mapstructure:"exposedServices,omitempty"`
 
 	// Contains the list of all tags and their hashed that have been used.
@@ -691,7 +691,7 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 	"ExposedServices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "ExposedServices",
-		Description:    `The list of services that this processing unit is behind.`,
+		Description:    `The list of services that this processing unit is implementing.`,
 		Exposed:        true,
 		Name:           "exposedServices",
 		SubType:        "service",
@@ -893,7 +893,7 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 	"exposedservices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "ExposedServices",
-		Description:    `The list of services that this processing unit is behind.`,
+		Description:    `The list of services that this processing unit is implementing.`,
 		Exposed:        true,
 		Name:           "exposedServices",
 		SubType:        "service",
@@ -1099,7 +1099,7 @@ type SparseRenderedPolicy struct {
 	// The list of load balancers this processing unit is implementing.
 	ExposedLoadBalancers *LoadBalancersList `json:"exposedLoadBalancers,omitempty" msgpack:"exposedLoadBalancers,omitempty" bson:"-" mapstructure:"exposedLoadBalancers,omitempty"`
 
-	// The list of services that this processing unit is behind.
+	// The list of services that this processing unit is implementing.
 	ExposedServices *ServicesList `json:"exposedServices,omitempty" msgpack:"exposedServices,omitempty" bson:"-" mapstructure:"exposedServices,omitempty"`
 
 	// Contains the list of all tags and their hashed that have been used.

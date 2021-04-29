@@ -98,7 +98,7 @@ attributes:
       noInit: true
 
   - name: exposedServices
-    description: The list of services that this processing unit is behind.
+    description: The list of services that this processing unit is implementing.
     type: refList
     exposed: true
     subtype: service
