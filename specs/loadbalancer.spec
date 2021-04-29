@@ -39,6 +39,9 @@ indexes:
 - - allProcessingUnitTags
 - - namespace
   - allProcessingUnitTags
+- - allTLSCertificateTags
+- - namespace
+  - allTLSCertificateTags
 
 # Attributes
 attributes:
@@ -73,14 +76,12 @@ attributes:
     type: list
     subtype: string
     stored: true
-    read_only: true
 
   - name: allTLSCertificateTags
     description: This is a set of all selector tags for matching in the database.
     type: list
     subtype: string
     stored: true
-    read_only: true
 
   - name: exposedPort
     description: |-

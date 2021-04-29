@@ -5149,7 +5149,39 @@ func init() {
 		},
 	}
 
-	relationshipsRegistry[TLSCertificateIdentity] = &elemental.Relationship{}
+	relationshipsRegistry[TLSCertificateIdentity] = &elemental.Relationship{
+		Update: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Patch: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Delete: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+				},
+			},
+		},
+		Retrieve: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name: "archived",
+						Type: "boolean",
+					},
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
+				},
+			},
+		},
+	}
 
 	relationshipsRegistry[TagIdentity] = &elemental.Relationship{
 		RetrieveMany: map[string]*elemental.RelationshipInfo{
