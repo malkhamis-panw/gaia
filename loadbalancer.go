@@ -140,10 +140,6 @@ type LoadBalancer struct {
 	// port that the implementation is listening on can be different.
 	ExposedPort int `json:"exposedPort" msgpack:"exposedPort" bson:"exposedport" mapstructure:"exposedPort,omitempty"`
 
-	// Indicates that the exposed service is TLS. This means that the enforcer has to
-	// initiate a TLS session in order to forward traffic to the service.
-	ExposedServiceIsTLS bool `json:"exposedServiceIsTLS" msgpack:"exposedServiceIsTLS" bson:"exposedserviceistls" mapstructure:"exposedServiceIsTLS,omitempty"`
-
 	// The host names that the service can be accessed on.
 	Hosts []string `json:"hosts" msgpack:"hosts" bson:"hosts" mapstructure:"hosts,omitempty"`
 
@@ -226,14 +222,13 @@ func NewLoadBalancer() *LoadBalancer {
 		AllTLSCertificateTags:   []string{},
 		Annotations:             map[string][]string{},
 		Hosts:                   []string{},
-		ExposedServiceIsTLS:     false,
-		MigrationsLog:           map[string]string{},
 		TLSCertificatesSelector: [][]string{},
 		Metadata:                []string{},
 		ProxyProtocolSubnets:    []string{},
 		NormalizedTags:          []string{},
 		ProcessingUnitSelector:  [][]string{},
 		IPs:                     []string{},
+		MigrationsLog:           map[string]string{},
 	}
 }
 
@@ -280,7 +275,6 @@ func (o *LoadBalancer) GetBSON() (interface{}, error) {
 	s.Description = o.Description
 	s.Disabled = o.Disabled
 	s.ExposedPort = o.ExposedPort
-	s.ExposedServiceIsTLS = o.ExposedServiceIsTLS
 	s.Hosts = o.Hosts
 	s.Metadata = o.Metadata
 	s.MigrationsLog = o.MigrationsLog
@@ -330,7 +324,6 @@ func (o *LoadBalancer) SetBSON(raw bson.Raw) error {
 	o.Description = s.Description
 	o.Disabled = s.Disabled
 	o.ExposedPort = s.ExposedPort
-	o.ExposedServiceIsTLS = s.ExposedServiceIsTLS
 	o.Hosts = s.Hosts
 	o.Metadata = s.Metadata
 	o.MigrationsLog = s.MigrationsLog
@@ -621,7 +614,6 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			Description:                   &o.Description,
 			Disabled:                      &o.Disabled,
 			ExposedPort:                   &o.ExposedPort,
-			ExposedServiceIsTLS:           &o.ExposedServiceIsTLS,
 			Hosts:                         &o.Hosts,
 			Metadata:                      &o.Metadata,
 			MigrationsLog:                 &o.MigrationsLog,
@@ -673,8 +665,6 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.Disabled = &(o.Disabled)
 		case "exposedPort":
 			sp.ExposedPort = &(o.ExposedPort)
-		case "exposedServiceIsTLS":
-			sp.ExposedServiceIsTLS = &(o.ExposedServiceIsTLS)
 		case "hosts":
 			sp.Hosts = &(o.Hosts)
 		case "metadata":
@@ -764,9 +754,6 @@ func (o *LoadBalancer) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.ExposedPort != nil {
 		o.ExposedPort = *so.ExposedPort
-	}
-	if so.ExposedServiceIsTLS != nil {
-		o.ExposedServiceIsTLS = *so.ExposedServiceIsTLS
 	}
 	if so.Hosts != nil {
 		o.Hosts = *so.Hosts
@@ -977,8 +964,6 @@ func (o *LoadBalancer) ValueForAttribute(name string) interface{} {
 		return o.Disabled
 	case "exposedPort":
 		return o.ExposedPort
-	case "exposedServiceIsTLS":
-		return o.ExposedServiceIsTLS
 	case "hosts":
 		return o.Hosts
 	case "metadata":
@@ -1191,19 +1176,6 @@ port that the implementation is listening on can be different.`,
 		Required: true,
 		Stored:   true,
 		Type:     "integer",
-	},
-	"ExposedServiceIsTLS": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "exposedserviceistls",
-		ConvertedName:  "ExposedServiceIsTLS",
-		Description: `Indicates that the exposed service is TLS. This means that the enforcer has to
-initiate a TLS session in order to forward traffic to the service.`,
-		Exposed:    true,
-		Filterable: true,
-		Name:       "exposedServiceIsTLS",
-		Orderable:  true,
-		Stored:     true,
-		Type:       "boolean",
 	},
 	"Hosts": {
 		AllowedChoices: []string{},
@@ -1631,19 +1603,6 @@ port that the implementation is listening on can be different.`,
 		Stored:   true,
 		Type:     "integer",
 	},
-	"exposedserviceistls": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "exposedserviceistls",
-		ConvertedName:  "ExposedServiceIsTLS",
-		Description: `Indicates that the exposed service is TLS. This means that the enforcer has to
-initiate a TLS session in order to forward traffic to the service.`,
-		Exposed:    true,
-		Filterable: true,
-		Name:       "exposedServiceIsTLS",
-		Orderable:  true,
-		Stored:     true,
-		Type:       "boolean",
-	},
 	"hosts": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "hosts",
@@ -2011,10 +1970,6 @@ type SparseLoadBalancer struct {
 	// port that the implementation is listening on can be different.
 	ExposedPort *int `json:"exposedPort,omitempty" msgpack:"exposedPort,omitempty" bson:"exposedport,omitempty" mapstructure:"exposedPort,omitempty"`
 
-	// Indicates that the exposed service is TLS. This means that the enforcer has to
-	// initiate a TLS session in order to forward traffic to the service.
-	ExposedServiceIsTLS *bool `json:"exposedServiceIsTLS,omitempty" msgpack:"exposedServiceIsTLS,omitempty" bson:"exposedserviceistls,omitempty" mapstructure:"exposedServiceIsTLS,omitempty"`
-
 	// The host names that the service can be accessed on.
 	Hosts *[]string `json:"hosts,omitempty" msgpack:"hosts,omitempty" bson:"hosts,omitempty" mapstructure:"hosts,omitempty"`
 
@@ -2166,9 +2121,6 @@ func (o *SparseLoadBalancer) GetBSON() (interface{}, error) {
 	if o.ExposedPort != nil {
 		s.ExposedPort = o.ExposedPort
 	}
-	if o.ExposedServiceIsTLS != nil {
-		s.ExposedServiceIsTLS = o.ExposedServiceIsTLS
-	}
 	if o.Hosts != nil {
 		s.Hosts = o.Hosts
 	}
@@ -2281,9 +2233,6 @@ func (o *SparseLoadBalancer) SetBSON(raw bson.Raw) error {
 	if s.ExposedPort != nil {
 		o.ExposedPort = s.ExposedPort
 	}
-	if s.ExposedServiceIsTLS != nil {
-		o.ExposedServiceIsTLS = s.ExposedServiceIsTLS
-	}
 	if s.Hosts != nil {
 		o.Hosts = s.Hosts
 	}
@@ -2393,9 +2342,6 @@ func (o *SparseLoadBalancer) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.ExposedPort != nil {
 		out.ExposedPort = *o.ExposedPort
-	}
-	if o.ExposedServiceIsTLS != nil {
-		out.ExposedServiceIsTLS = *o.ExposedServiceIsTLS
 	}
 	if o.Hosts != nil {
 		out.Hosts = *o.Hosts
@@ -2784,7 +2730,6 @@ type mongoAttributesLoadBalancer struct {
 	Description                   string                `bson:"description"`
 	Disabled                      bool                  `bson:"disabled"`
 	ExposedPort                   int                   `bson:"exposedport"`
-	ExposedServiceIsTLS           bool                  `bson:"exposedserviceistls"`
 	Hosts                         []string              `bson:"hosts"`
 	Metadata                      []string              `bson:"metadata"`
 	MigrationsLog                 map[string]string     `bson:"migrationslog,omitempty"`
@@ -2819,7 +2764,6 @@ type mongoAttributesSparseLoadBalancer struct {
 	Description                   *string                `bson:"description,omitempty"`
 	Disabled                      *bool                  `bson:"disabled,omitempty"`
 	ExposedPort                   *int                   `bson:"exposedport,omitempty"`
-	ExposedServiceIsTLS           *bool                  `bson:"exposedserviceistls,omitempty"`
 	Hosts                         *[]string              `bson:"hosts,omitempty"`
 	Metadata                      *[]string              `bson:"metadata,omitempty"`
 	MigrationsLog                 *map[string]string     `bson:"migrationslog,omitempty"`

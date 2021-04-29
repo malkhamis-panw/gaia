@@ -17079,7 +17079,6 @@ Defines a generic external LoadBalancer that sits between 2 enforcers.
   ],
   "disabled": false,
   "exposedPort": 443,
-  "exposedServiceIsTLS": false,
   "name": "the name",
   "port": 443,
   "processingUnitSelector": [
@@ -17202,19 +17201,6 @@ the `port` attribute that describes the port that the service is actually
 listening on. For example if a load balancer is used, the `exposedPort` is
 the port that the load balancer is listening for the service, whereas the
 port that the implementation is listening on can be different.
-
-##### `exposedServiceIsTLS`
-
-Type: `boolean`
-
-Indicates that the exposed service is TLS. This means that the enforcer has to
-initiate a TLS session in order to forward traffic to the service.
-
-Default value:
-
-```json
-false
-```
 
 ##### `hosts`
 
