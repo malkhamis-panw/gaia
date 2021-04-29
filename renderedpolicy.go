@@ -137,11 +137,11 @@ type RenderedPolicy struct {
 	// Describes the default for outgoing traffic.
 	DefaultPUOutgoingTrafficAction RenderedPolicyDefaultPUOutgoingTrafficActionValue `json:"defaultPUOutgoingTrafficAction" msgpack:"defaultPUOutgoingTrafficAction" bson:"-" mapstructure:"defaultPUOutgoingTrafficAction,omitempty"`
 
-	// The list of load balancers this processing unit depends on.
-	DependendLoadBalancers LoadBalancersList `json:"dependendLoadBalancers" msgpack:"dependendLoadBalancers" bson:"-" mapstructure:"dependendLoadBalancers,omitempty"`
-
 	// The list of services that this processing unit depends on.
 	DependendServices ServicesList `json:"dependendServices" msgpack:"dependendServices" bson:"-" mapstructure:"dependendServices,omitempty"`
+
+	// The list of load balancers this processing unit depends on.
+	DependentLoadBalancers LoadBalancersList `json:"dependentLoadBalancers" msgpack:"dependentLoadBalancers" bson:"-" mapstructure:"dependentLoadBalancers,omitempty"`
 
 	// Lists all the egress policies attached to processing unit.
 	EgressPolicies map[string]PolicyRulesList `json:"egressPolicies,omitempty" msgpack:"egressPolicies,omitempty" bson:"-" mapstructure:"egressPolicies,omitempty"`
@@ -301,8 +301,8 @@ func (o *RenderedPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable
 			DatapathType:                   &o.DatapathType,
 			DefaultPUIncomingTrafficAction: &o.DefaultPUIncomingTrafficAction,
 			DefaultPUOutgoingTrafficAction: &o.DefaultPUOutgoingTrafficAction,
-			DependendLoadBalancers:         &o.DependendLoadBalancers,
 			DependendServices:              &o.DependendServices,
+			DependentLoadBalancers:         &o.DependentLoadBalancers,
 			EgressPolicies:                 &o.EgressPolicies,
 			ExposedLoadBalancers:           &o.ExposedLoadBalancers,
 			ExposedServices:                &o.ExposedServices,
@@ -329,10 +329,10 @@ func (o *RenderedPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable
 			sp.DefaultPUIncomingTrafficAction = &(o.DefaultPUIncomingTrafficAction)
 		case "defaultPUOutgoingTrafficAction":
 			sp.DefaultPUOutgoingTrafficAction = &(o.DefaultPUOutgoingTrafficAction)
-		case "dependendLoadBalancers":
-			sp.DependendLoadBalancers = &(o.DependendLoadBalancers)
 		case "dependendServices":
 			sp.DependendServices = &(o.DependendServices)
+		case "dependentLoadBalancers":
+			sp.DependentLoadBalancers = &(o.DependentLoadBalancers)
 		case "egressPolicies":
 			sp.EgressPolicies = &(o.EgressPolicies)
 		case "exposedLoadBalancers":
@@ -382,11 +382,11 @@ func (o *RenderedPolicy) Patch(sparse elemental.SparseIdentifiable) {
 	if so.DefaultPUOutgoingTrafficAction != nil {
 		o.DefaultPUOutgoingTrafficAction = *so.DefaultPUOutgoingTrafficAction
 	}
-	if so.DependendLoadBalancers != nil {
-		o.DependendLoadBalancers = *so.DependendLoadBalancers
-	}
 	if so.DependendServices != nil {
 		o.DependendServices = *so.DependendServices
+	}
+	if so.DependentLoadBalancers != nil {
+		o.DependentLoadBalancers = *so.DependentLoadBalancers
 	}
 	if so.EgressPolicies != nil {
 		o.EgressPolicies = *so.EgressPolicies
@@ -468,7 +468,7 @@ func (o *RenderedPolicy) Validate() error {
 		errors = errors.Append(err)
 	}
 
-	for _, sub := range o.DependendLoadBalancers {
+	for _, sub := range o.DependendServices {
 		if sub == nil {
 			continue
 		}
@@ -478,7 +478,7 @@ func (o *RenderedPolicy) Validate() error {
 		}
 	}
 
-	for _, sub := range o.DependendServices {
+	for _, sub := range o.DependentLoadBalancers {
 		if sub == nil {
 			continue
 		}
@@ -567,10 +567,10 @@ func (o *RenderedPolicy) ValueForAttribute(name string) interface{} {
 		return o.DefaultPUIncomingTrafficAction
 	case "defaultPUOutgoingTrafficAction":
 		return o.DefaultPUOutgoingTrafficAction
-	case "dependendLoadBalancers":
-		return o.DependendLoadBalancers
 	case "dependendServices":
 		return o.DependendServices
+	case "dependentLoadBalancers":
+		return o.DependentLoadBalancers
 	case "egressPolicies":
 		return o.EgressPolicies
 	case "exposedLoadBalancers":
@@ -649,15 +649,6 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Name:           "defaultPUOutgoingTrafficAction",
 		Type:           "enum",
 	},
-	"DependendLoadBalancers": {
-		AllowedChoices: []string{},
-		ConvertedName:  "DependendLoadBalancers",
-		Description:    `The list of load balancers this processing unit depends on.`,
-		Exposed:        true,
-		Name:           "dependendLoadBalancers",
-		SubType:        "loadbalancer",
-		Type:           "refList",
-	},
 	"DependendServices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "DependendServices",
@@ -665,6 +656,15 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Exposed:        true,
 		Name:           "dependendServices",
 		SubType:        "service",
+		Type:           "refList",
+	},
+	"DependentLoadBalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "DependentLoadBalancers",
+		Description:    `The list of load balancers this processing unit depends on.`,
+		Exposed:        true,
+		Name:           "dependentLoadBalancers",
+		SubType:        "loadbalancer",
 		Type:           "refList",
 	},
 	"EgressPolicies": {
@@ -851,15 +851,6 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Name:           "defaultPUOutgoingTrafficAction",
 		Type:           "enum",
 	},
-	"dependendloadbalancers": {
-		AllowedChoices: []string{},
-		ConvertedName:  "DependendLoadBalancers",
-		Description:    `The list of load balancers this processing unit depends on.`,
-		Exposed:        true,
-		Name:           "dependendLoadBalancers",
-		SubType:        "loadbalancer",
-		Type:           "refList",
-	},
 	"dependendservices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "DependendServices",
@@ -867,6 +858,15 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Exposed:        true,
 		Name:           "dependendServices",
 		SubType:        "service",
+		Type:           "refList",
+	},
+	"dependentloadbalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "DependentLoadBalancers",
+		Description:    `The list of load balancers this processing unit depends on.`,
+		Exposed:        true,
+		Name:           "dependentLoadBalancers",
+		SubType:        "loadbalancer",
 		Type:           "refList",
 	},
 	"egresspolicies": {
@@ -1087,11 +1087,11 @@ type SparseRenderedPolicy struct {
 	// Describes the default for outgoing traffic.
 	DefaultPUOutgoingTrafficAction *RenderedPolicyDefaultPUOutgoingTrafficActionValue `json:"defaultPUOutgoingTrafficAction,omitempty" msgpack:"defaultPUOutgoingTrafficAction,omitempty" bson:"-" mapstructure:"defaultPUOutgoingTrafficAction,omitempty"`
 
-	// The list of load balancers this processing unit depends on.
-	DependendLoadBalancers *LoadBalancersList `json:"dependendLoadBalancers,omitempty" msgpack:"dependendLoadBalancers,omitempty" bson:"-" mapstructure:"dependendLoadBalancers,omitempty"`
-
 	// The list of services that this processing unit depends on.
 	DependendServices *ServicesList `json:"dependendServices,omitempty" msgpack:"dependendServices,omitempty" bson:"-" mapstructure:"dependendServices,omitempty"`
+
+	// The list of load balancers this processing unit depends on.
+	DependentLoadBalancers *LoadBalancersList `json:"dependentLoadBalancers,omitempty" msgpack:"dependentLoadBalancers,omitempty" bson:"-" mapstructure:"dependentLoadBalancers,omitempty"`
 
 	// Lists all the egress policies attached to processing unit.
 	EgressPolicies *map[string]PolicyRulesList `json:"egressPolicies,omitempty" msgpack:"egressPolicies,omitempty" bson:"-" mapstructure:"egressPolicies,omitempty"`
@@ -1216,11 +1216,11 @@ func (o *SparseRenderedPolicy) ToPlain() elemental.PlainIdentifiable {
 	if o.DefaultPUOutgoingTrafficAction != nil {
 		out.DefaultPUOutgoingTrafficAction = *o.DefaultPUOutgoingTrafficAction
 	}
-	if o.DependendLoadBalancers != nil {
-		out.DependendLoadBalancers = *o.DependendLoadBalancers
-	}
 	if o.DependendServices != nil {
 		out.DependendServices = *o.DependendServices
+	}
+	if o.DependentLoadBalancers != nil {
+		out.DependentLoadBalancers = *o.DependentLoadBalancers
 	}
 	if o.EgressPolicies != nil {
 		out.EgressPolicies = *o.EgressPolicies
