@@ -17960,7 +17960,6 @@ Retrieves the list of TLS certificates.
 Parameters:
 
 - `q` (`string`): Filtering query. Consequent `q` parameters will form an or.
-- `archived` (`boolean`): Also retrieve the objects that have been archived.
 - `propagated` (`boolean`): Also retrieve the objects that propagate down.
 
 ##### `POST /tlscertificates`

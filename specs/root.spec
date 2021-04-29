@@ -1091,7 +1091,6 @@ relations:
     description: Retrieves the list of TLS certificates.
     global_parameters:
     - $filtering
-    - $archivable
     - $propagatable
   create:
     description: Creates a new TLS certificates.

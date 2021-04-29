@@ -5236,10 +5236,6 @@ func init() {
 						Multiple: true,
 					},
 					{
-						Name: "archived",
-						Type: "boolean",
-					},
-					{
 						Name: "propagated",
 						Type: "boolean",
 					},
@@ -5253,10 +5249,6 @@ func init() {
 						Name:     "q",
 						Type:     "string",
 						Multiple: true,
-					},
-					{
-						Name: "archived",
-						Type: "boolean",
 					},
 					{
 						Name: "propagated",
