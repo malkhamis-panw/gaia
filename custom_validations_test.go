@@ -4225,3 +4225,107 @@ func TestValidateCloudGraphQuery(t *testing.T) {
 		})
 	}
 }
+
+func TestValidateIPAddressList(t *testing.T) {
+	type args struct {
+		attribute string
+		ips       []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			"valid ips",
+			args{
+				"attr",
+				[]string{"1.2.3.4", "2.3.4.5"},
+			},
+			false,
+		},
+		{
+			"on invalid ips",
+			args{
+				"attr",
+				[]string{"1.2.3.4", "oh no"},
+			},
+			true,
+		},
+		{
+			"empty",
+			args{
+				"attr",
+				[]string{},
+			},
+			true,
+		},
+		{
+			"nil",
+			args{
+				"attr",
+				nil,
+			},
+			true,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := ValidateIPAddressList(tt.args.attribute, tt.args.ips); (err != nil) != tt.wantErr {
+				t.Errorf("ValidateIPAddressList() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestValidateOptionalIPAddressList(t *testing.T) {
+	type args struct {
+		attribute string
+		ips       []string
+	}
+	tests := []struct {
+		name    string
+		args    args
+		wantErr bool
+	}{
+		{
+			"valid ips",
+			args{
+				"attr",
+				[]string{"1.2.3.4", "2.3.4.5"},
+			},
+			false,
+		},
+		{
+			"on invalid ips",
+			args{
+				"attr",
+				[]string{"1.2.3.4", "oh no"},
+			},
+			true,
+		},
+		{
+			"empty",
+			args{
+				"attr",
+				[]string{},
+			},
+			false,
+		},
+		{
+			"nil",
+			args{
+				"attr",
+				nil,
+			},
+			false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if err := ValidateOptionalIPAddressList(tt.args.attribute, tt.args.ips); (err != nil) != tt.wantErr {
+				t.Errorf("ValidateOptionalIPAddressList() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}

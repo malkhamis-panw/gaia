@@ -270,6 +270,14 @@ func (o *TLSCertificate) Validate() error {
 	errors := elemental.Errors{}
 	requiredErrors := elemental.Errors{}
 
+	if err := ValidatePEM("certificate", o.Certificate); err != nil {
+		errors = errors.Append(err)
+	}
+
+	if err := ValidatePEM("key", o.Key); err != nil {
+		errors = errors.Append(err)
+	}
+
 	if len(requiredErrors) > 0 {
 		return requiredErrors
 	}

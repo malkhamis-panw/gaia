@@ -20,6 +20,25 @@ model:
     description: Deletes the service with the given ID.
     global_parameters:
     - $filtering
+  extends:
+  - '@zoned'
+  - '@migratable'
+  - '@base'
+  - '@namespaced'
+  - '@archivable'
+  - '@described'
+  - '@identifiable-stored'
+  - '@named'
+  - '@metadatable'
+  - '@disabled'
+  - '@timeable'
+  - '@propagated'
+
+# Indexes
+indexes:
+- - allProcessingUnitTags
+- - namespace
+  - allProcessingUnitTags
 
 # Attributes
 attributes:
@@ -33,8 +52,10 @@ attributes:
     exposed: true
     subtype: string
     stored: true
+    validations:
+    - $optionalipaddresslist
 
-  - name: TLSCertificateSelector
+  - name: TLSCertificatesSelector
     description: |-
       A tag or tag expression that identifies the TLS certificates to be used by
       enforcers when exposing the service ran by the processing units.
@@ -43,11 +64,18 @@ attributes:
     subtype: '[][]string'
     stored: true
     example_value:
-    - - $identity=processingunit
+    - - certificate=service-a
     validations:
     - $tagsExpression
 
   - name: allProcessingUnitTags
+    description: This is a set of all selector tags for matching in the database.
+    type: list
+    subtype: string
+    stored: true
+    read_only: true
+
+  - name: allTLSCertificateTags
     description: This is a set of all selector tags for matching in the database.
     type: list
     subtype: string
@@ -72,15 +100,6 @@ attributes:
     description: |-
       Indicates that the exposed service is TLS. This means that the enforcer has to
       initiate a TLS session in order to forward traffic to the service.
-    type: boolean
-    exposed: true
-    stored: true
-    default_value: false
-    filterable: true
-    orderable: true
-
-  - name: external
-    description: Indicates if this is an external service.
     type: boolean
     exposed: true
     stored: true
@@ -120,6 +139,21 @@ attributes:
     validations:
     - $tagsExpression
 
+  - name: proxyProtocolEnabled
+    description: Enable trust in proxy protocols header.
+    type: boolean
+    exposed: true
+    stored: true
+
+  - name: proxyProtocolSubnets
+    description: Only allow proxy protocols from the given subnets .
+    type: list
+    exposed: true
+    subtype: string
+    stored: true
+    validations:
+    - $optionalcidrs
+
   - name: publicApplicationPort
     description: |-
       A new virtual port that the service can be accessed on using HTTPS. Since the
@@ -142,6 +176,8 @@ attributes:
     type: string
     exposed: true
     stored: true
+    validations:
+    - $pem
 
   - name: type
     description: Type of the load balancer.

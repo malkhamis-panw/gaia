@@ -18,6 +18,8 @@ attributes:
     type: string
     exposed: true
     stored: true
+    validations:
+    - $pem
 
   - name: key
     description: |-
@@ -27,3 +29,5 @@ attributes:
     exposed: true
     stored: true
     encrypted: true
+    validations:
+    - $pem
