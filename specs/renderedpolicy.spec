@@ -63,6 +63,14 @@ attributes:
     - Reject
     default_value: Reject
 
+  - name: dependendLoadBalancers
+    description: The list of load balancers this processing unit depends on.
+    type: refList
+    exposed: true
+    subtype: loadbalancer
+    extensions:
+      noInit: true
+
   - name: dependendServices
     description: The list of services that this processing unit depends on.
     type: refList
@@ -81,8 +89,16 @@ attributes:
     deprecated: true
     omit_empty: true
 
+  - name: exposedLoadBalancers
+    description: The list of load balancers this processing unit is implementing.
+    type: refList
+    exposed: true
+    subtype: loadbalancer
+    extensions:
+      noInit: true
+
   - name: exposedServices
-    description: The list of services that this processing unit is implementing.
+    description: The list of services that this processing unit is behind.
     type: refList
     exposed: true
     subtype: service

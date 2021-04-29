@@ -137,13 +137,19 @@ type RenderedPolicy struct {
 	// Describes the default for outgoing traffic.
 	DefaultPUOutgoingTrafficAction RenderedPolicyDefaultPUOutgoingTrafficActionValue `json:"defaultPUOutgoingTrafficAction" msgpack:"defaultPUOutgoingTrafficAction" bson:"-" mapstructure:"defaultPUOutgoingTrafficAction,omitempty"`
 
+	// The list of load balancers this processing unit depends on.
+	DependendLoadBalancers LoadBalancersList `json:"dependendLoadBalancers" msgpack:"dependendLoadBalancers" bson:"-" mapstructure:"dependendLoadBalancers,omitempty"`
+
 	// The list of services that this processing unit depends on.
 	DependendServices ServicesList `json:"dependendServices" msgpack:"dependendServices" bson:"-" mapstructure:"dependendServices,omitempty"`
 
 	// Lists all the egress policies attached to processing unit.
 	EgressPolicies map[string]PolicyRulesList `json:"egressPolicies,omitempty" msgpack:"egressPolicies,omitempty" bson:"-" mapstructure:"egressPolicies,omitempty"`
 
-	// The list of services that this processing unit is implementing.
+	// The list of load balancers this processing unit is implementing.
+	ExposedLoadBalancers LoadBalancersList `json:"exposedLoadBalancers" msgpack:"exposedLoadBalancers" bson:"-" mapstructure:"exposedLoadBalancers,omitempty"`
+
+	// The list of services that this processing unit is behind.
 	ExposedServices ServicesList `json:"exposedServices" msgpack:"exposedServices" bson:"-" mapstructure:"exposedServices,omitempty"`
 
 	// Contains the list of all tags and their hashed that have been used.
@@ -184,19 +190,19 @@ func NewRenderedPolicy() *RenderedPolicy {
 
 	return &RenderedPolicy{
 		ModelVersion: 1,
+		HashedTags:   map[string]string{},
 		IngressPolicies: map[string]PolicyRulesList{
 			string(constants.RenderedPolicyTypeNetwork):   {},
 			string(constants.RenderedPolicyTypeFile):      {},
 			string(constants.RenderedPolicyTypeIsolation): {},
 		},
-		MatchingTags:                   []string{},
 		DefaultPUIncomingTrafficAction: RenderedPolicyDefaultPUIncomingTrafficActionReject,
+		MatchingTags:                   []string{},
 		EgressPolicies: map[string]PolicyRulesList{
 			string(constants.RenderedPolicyTypeNetwork):   {},
 			string(constants.RenderedPolicyTypeFile):      {},
 			string(constants.RenderedPolicyTypeIsolation): {},
 		},
-		HashedTags:                     map[string]string{},
 		DefaultPUOutgoingTrafficAction: RenderedPolicyDefaultPUOutgoingTrafficActionReject,
 		ProcessingUnitTags:             []string{},
 		RuleSetPolicies:                PolicyRulesList{},
@@ -295,8 +301,10 @@ func (o *RenderedPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable
 			DatapathType:                   &o.DatapathType,
 			DefaultPUIncomingTrafficAction: &o.DefaultPUIncomingTrafficAction,
 			DefaultPUOutgoingTrafficAction: &o.DefaultPUOutgoingTrafficAction,
+			DependendLoadBalancers:         &o.DependendLoadBalancers,
 			DependendServices:              &o.DependendServices,
 			EgressPolicies:                 &o.EgressPolicies,
+			ExposedLoadBalancers:           &o.ExposedLoadBalancers,
 			ExposedServices:                &o.ExposedServices,
 			HashedTags:                     &o.HashedTags,
 			IngressPolicies:                &o.IngressPolicies,
@@ -321,10 +329,14 @@ func (o *RenderedPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable
 			sp.DefaultPUIncomingTrafficAction = &(o.DefaultPUIncomingTrafficAction)
 		case "defaultPUOutgoingTrafficAction":
 			sp.DefaultPUOutgoingTrafficAction = &(o.DefaultPUOutgoingTrafficAction)
+		case "dependendLoadBalancers":
+			sp.DependendLoadBalancers = &(o.DependendLoadBalancers)
 		case "dependendServices":
 			sp.DependendServices = &(o.DependendServices)
 		case "egressPolicies":
 			sp.EgressPolicies = &(o.EgressPolicies)
+		case "exposedLoadBalancers":
+			sp.ExposedLoadBalancers = &(o.ExposedLoadBalancers)
 		case "exposedServices":
 			sp.ExposedServices = &(o.ExposedServices)
 		case "hashedTags":
@@ -370,11 +382,17 @@ func (o *RenderedPolicy) Patch(sparse elemental.SparseIdentifiable) {
 	if so.DefaultPUOutgoingTrafficAction != nil {
 		o.DefaultPUOutgoingTrafficAction = *so.DefaultPUOutgoingTrafficAction
 	}
+	if so.DependendLoadBalancers != nil {
+		o.DependendLoadBalancers = *so.DependendLoadBalancers
+	}
 	if so.DependendServices != nil {
 		o.DependendServices = *so.DependendServices
 	}
 	if so.EgressPolicies != nil {
 		o.EgressPolicies = *so.EgressPolicies
+	}
+	if so.ExposedLoadBalancers != nil {
+		o.ExposedLoadBalancers = *so.ExposedLoadBalancers
 	}
 	if so.ExposedServices != nil {
 		o.ExposedServices = *so.ExposedServices
@@ -450,7 +468,27 @@ func (o *RenderedPolicy) Validate() error {
 		errors = errors.Append(err)
 	}
 
+	for _, sub := range o.DependendLoadBalancers {
+		if sub == nil {
+			continue
+		}
+		elemental.ResetDefaultForZeroValues(sub)
+		if err := sub.Validate(); err != nil {
+			errors = errors.Append(err)
+		}
+	}
+
 	for _, sub := range o.DependendServices {
+		if sub == nil {
+			continue
+		}
+		elemental.ResetDefaultForZeroValues(sub)
+		if err := sub.Validate(); err != nil {
+			errors = errors.Append(err)
+		}
+	}
+
+	for _, sub := range o.ExposedLoadBalancers {
 		if sub == nil {
 			continue
 		}
@@ -529,10 +567,14 @@ func (o *RenderedPolicy) ValueForAttribute(name string) interface{} {
 		return o.DefaultPUIncomingTrafficAction
 	case "defaultPUOutgoingTrafficAction":
 		return o.DefaultPUOutgoingTrafficAction
+	case "dependendLoadBalancers":
+		return o.DependendLoadBalancers
 	case "dependendServices":
 		return o.DependendServices
 	case "egressPolicies":
 		return o.EgressPolicies
+	case "exposedLoadBalancers":
+		return o.ExposedLoadBalancers
 	case "exposedServices":
 		return o.ExposedServices
 	case "hashedTags":
@@ -607,6 +649,15 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Name:           "defaultPUOutgoingTrafficAction",
 		Type:           "enum",
 	},
+	"DependendLoadBalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "DependendLoadBalancers",
+		Description:    `The list of load balancers this processing unit depends on.`,
+		Exposed:        true,
+		Name:           "dependendLoadBalancers",
+		SubType:        "loadbalancer",
+		Type:           "refList",
+	},
 	"DependendServices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "DependendServices",
@@ -628,10 +679,19 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		SubType:        "_rendered_policy",
 		Type:           "external",
 	},
+	"ExposedLoadBalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "ExposedLoadBalancers",
+		Description:    `The list of load balancers this processing unit is implementing.`,
+		Exposed:        true,
+		Name:           "exposedLoadBalancers",
+		SubType:        "loadbalancer",
+		Type:           "refList",
+	},
 	"ExposedServices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "ExposedServices",
-		Description:    `The list of services that this processing unit is implementing.`,
+		Description:    `The list of services that this processing unit is behind.`,
 		Exposed:        true,
 		Name:           "exposedServices",
 		SubType:        "service",
@@ -791,6 +851,15 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		Name:           "defaultPUOutgoingTrafficAction",
 		Type:           "enum",
 	},
+	"dependendloadbalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "DependendLoadBalancers",
+		Description:    `The list of load balancers this processing unit depends on.`,
+		Exposed:        true,
+		Name:           "dependendLoadBalancers",
+		SubType:        "loadbalancer",
+		Type:           "refList",
+	},
 	"dependendservices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "DependendServices",
@@ -812,10 +881,19 @@ owning the datapath in this case. It is merely providing an authorizer API.`,
 		SubType:        "_rendered_policy",
 		Type:           "external",
 	},
+	"exposedloadbalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "ExposedLoadBalancers",
+		Description:    `The list of load balancers this processing unit is implementing.`,
+		Exposed:        true,
+		Name:           "exposedLoadBalancers",
+		SubType:        "loadbalancer",
+		Type:           "refList",
+	},
 	"exposedservices": {
 		AllowedChoices: []string{},
 		ConvertedName:  "ExposedServices",
-		Description:    `The list of services that this processing unit is implementing.`,
+		Description:    `The list of services that this processing unit is behind.`,
 		Exposed:        true,
 		Name:           "exposedServices",
 		SubType:        "service",
@@ -1009,13 +1087,19 @@ type SparseRenderedPolicy struct {
 	// Describes the default for outgoing traffic.
 	DefaultPUOutgoingTrafficAction *RenderedPolicyDefaultPUOutgoingTrafficActionValue `json:"defaultPUOutgoingTrafficAction,omitempty" msgpack:"defaultPUOutgoingTrafficAction,omitempty" bson:"-" mapstructure:"defaultPUOutgoingTrafficAction,omitempty"`
 
+	// The list of load balancers this processing unit depends on.
+	DependendLoadBalancers *LoadBalancersList `json:"dependendLoadBalancers,omitempty" msgpack:"dependendLoadBalancers,omitempty" bson:"-" mapstructure:"dependendLoadBalancers,omitempty"`
+
 	// The list of services that this processing unit depends on.
 	DependendServices *ServicesList `json:"dependendServices,omitempty" msgpack:"dependendServices,omitempty" bson:"-" mapstructure:"dependendServices,omitempty"`
 
 	// Lists all the egress policies attached to processing unit.
 	EgressPolicies *map[string]PolicyRulesList `json:"egressPolicies,omitempty" msgpack:"egressPolicies,omitempty" bson:"-" mapstructure:"egressPolicies,omitempty"`
 
-	// The list of services that this processing unit is implementing.
+	// The list of load balancers this processing unit is implementing.
+	ExposedLoadBalancers *LoadBalancersList `json:"exposedLoadBalancers,omitempty" msgpack:"exposedLoadBalancers,omitempty" bson:"-" mapstructure:"exposedLoadBalancers,omitempty"`
+
+	// The list of services that this processing unit is behind.
 	ExposedServices *ServicesList `json:"exposedServices,omitempty" msgpack:"exposedServices,omitempty" bson:"-" mapstructure:"exposedServices,omitempty"`
 
 	// Contains the list of all tags and their hashed that have been used.
@@ -1132,11 +1216,17 @@ func (o *SparseRenderedPolicy) ToPlain() elemental.PlainIdentifiable {
 	if o.DefaultPUOutgoingTrafficAction != nil {
 		out.DefaultPUOutgoingTrafficAction = *o.DefaultPUOutgoingTrafficAction
 	}
+	if o.DependendLoadBalancers != nil {
+		out.DependendLoadBalancers = *o.DependendLoadBalancers
+	}
 	if o.DependendServices != nil {
 		out.DependendServices = *o.DependendServices
 	}
 	if o.EgressPolicies != nil {
 		out.EgressPolicies = *o.EgressPolicies
+	}
+	if o.ExposedLoadBalancers != nil {
+		out.ExposedLoadBalancers = *o.ExposedLoadBalancers
 	}
 	if o.ExposedServices != nil {
 		out.ExposedServices = *o.ExposedServices
