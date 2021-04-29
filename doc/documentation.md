@@ -17085,6 +17085,20 @@ Defines a generic external LoadBalancer that sits between 2 enforcers.
 
 #### Relations
 
+##### `GET /loadbalancers`
+
+Retrieves the list of load balancers.
+
+Parameters:
+
+- `q` (`string`): Filtering query. Consequent `q` parameters will form an or.
+- `archived` (`boolean`): Also retrieve the objects that have been archived.
+- `propagated` (`boolean`): Also retrieve the objects that propagate down.
+
+##### `POST /loadbalancers`
+
+Creates a new load balancers.
+
 ##### `DELETE /loadbalancers/:id`
 
 Deletes the service with the given ID.
@@ -17290,6 +17304,32 @@ Type of the load balancer.
 Type: `time`
 
 Last update date of the object.
+
+### LoadBalancerPublication
+
+Allows api users to publish a LoadBalancer in the namespace. It will create the
+Load Balancer as well as a API Authorization policy giving edit permission on
+the created object.
+
+#### Relations
+
+##### `POST /loadbalancerpublications`
+
+Sends a query to create a load balancer.
+
+#### Attributes
+
+##### `loadBalancer`
+
+Type: [`loadbalancer`](#loadbalancer)
+
+LoadBalancer definition.
+
+##### `loadBalancerID`
+
+Type: `string`
+
+Populated in response to give the newly created object ID.
 
 ### Service
 
@@ -17914,6 +17954,20 @@ Represents a certificate public and private key.
 ```
 
 #### Relations
+
+##### `GET /tlscertificates`
+
+Retrieves the list of TLS certificates.
+
+Parameters:
+
+- `q` (`string`): Filtering query. Consequent `q` parameters will form an or.
+- `archived` (`boolean`): Also retrieve the objects that have been archived.
+- `propagated` (`boolean`): Also retrieve the objects that propagate down.
+
+##### `POST /tlscertificates`
+
+Creates a new TLS certificates.
 
 ##### `DELETE /tlscertificates/:id`
 

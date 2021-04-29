@@ -621,6 +621,20 @@ relations:
   create:
     description: Creates a new LDAP provider.
 
+- rest_name: loadbalancer
+  get:
+    description: Retrieves the list of load balancers.
+    global_parameters:
+    - $filtering
+    - $archivable
+    - $propagatable
+  create:
+    description: Creates a new load balancers.
+
+- rest_name: loadbalancerpublication
+  create:
+    description: Sends a query to create a load balancer.
+
 - rest_name: localca
   get:
     description: Returns the local and SSH certificate authorities of the namespace.
@@ -1071,6 +1085,16 @@ relations:
 - rest_name: tenant
   create:
     description: Creates the tenant's namespace and API authorization policy.
+
+- rest_name: tlscertificate
+  get:
+    description: Retrieves the list of TLS certificates.
+    global_parameters:
+    - $filtering
+    - $archivable
+    - $propagatable
+  create:
+    description: Creates a new TLS certificates.
 
 - rest_name: token
   create:

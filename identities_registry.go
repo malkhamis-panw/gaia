@@ -96,20 +96,21 @@ var (
 		"issue":                    IssueIdentity,
 		"issueservicetoken":        IssueServiceTokenIdentity,
 
-		"ldapprovider":           LDAPProviderIdentity,
-		"loadbalancer":           LoadBalancerIdentity,
-		"localca":                LocalCAIdentity,
-		"log":                    LogIdentity,
-		"logout":                 LogoutIdentity,
-		"message":                MessageIdentity,
-		"metricsquery":           MetricsQueryIdentity,
-		"metricsqueryrange":      MetricsQueryRangeIdentity,
-		"namespace":              NamespaceIdentity,
-		"namespacemappingpolicy": NamespaceMappingPolicyIdentity,
-		"namespacepolicyinfo":    NamespacePolicyInfoIdentity,
-		"namespacerenderer":      NamespaceRendererIdentity,
-		"namespacetype":          NamespaceTypeIdentity,
-		"networkaccesspolicy":    NetworkAccessPolicyIdentity,
+		"ldapprovider":            LDAPProviderIdentity,
+		"loadbalancer":            LoadBalancerIdentity,
+		"loadbalancerpublication": LoadBalancerPublicationIdentity,
+		"localca":                 LocalCAIdentity,
+		"log":                     LogIdentity,
+		"logout":                  LogoutIdentity,
+		"message":                 MessageIdentity,
+		"metricsquery":            MetricsQueryIdentity,
+		"metricsqueryrange":       MetricsQueryRangeIdentity,
+		"namespace":               NamespaceIdentity,
+		"namespacemappingpolicy":  NamespaceMappingPolicyIdentity,
+		"namespacepolicyinfo":     NamespacePolicyInfoIdentity,
+		"namespacerenderer":       NamespaceRendererIdentity,
+		"namespacetype":           NamespaceTypeIdentity,
+		"networkaccesspolicy":     NetworkAccessPolicyIdentity,
 
 		"networkrulesetpolicy":   NetworkRuleSetPolicyIdentity,
 		"oauthinfo":              OAUTHInfoIdentity,
@@ -282,6 +283,7 @@ var (
 
 		"ldapproviders":            LDAPProviderIdentity,
 		"loadbalancers":            LoadBalancerIdentity,
+		"loadbalancerpublications": LoadBalancerPublicationIdentity,
 		"localcas":                 LocalCAIdentity,
 		"logs":                     LogIdentity,
 		"logout":                   LogoutIdentity,
@@ -935,9 +937,10 @@ var (
 			{"allTLSCertificateTags"},
 			{"allProcessingUnitTags"},
 		},
-		"localca": nil,
-		"log":     nil,
-		"logout":  nil,
+		"loadbalancerpublication": nil,
+		"localca":                 nil,
+		"log":                     nil,
+		"logout":                  nil,
 		"message": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -1383,6 +1386,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewLDAPProvider()
 	case LoadBalancerIdentity:
 		return NewLoadBalancer()
+	case LoadBalancerPublicationIdentity:
+		return NewLoadBalancerPublication()
 	case LocalCAIdentity:
 		return NewLocalCA()
 	case LogIdentity:
@@ -1710,6 +1715,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseLDAPProvider()
 	case LoadBalancerIdentity:
 		return NewSparseLoadBalancer()
+	case LoadBalancerPublicationIdentity:
+		return NewSparseLoadBalancerPublication()
 	case LocalCAIdentity:
 		return NewSparseLocalCA()
 	case LogIdentity:
@@ -2045,6 +2052,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &LDAPProvidersList{}
 	case LoadBalancerIdentity:
 		return &LoadBalancersList{}
+	case LoadBalancerPublicationIdentity:
+		return &LoadBalancerPublicationsList{}
 	case LocalCAIdentity:
 		return &LocalCAsList{}
 	case LogIdentity:
@@ -2370,6 +2379,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseLDAPProvidersList{}
 	case LoadBalancerIdentity:
 		return &SparseLoadBalancersList{}
+	case LoadBalancerPublicationIdentity:
+		return &SparseLoadBalancerPublicationsList{}
 	case LocalCAIdentity:
 		return &SparseLocalCAsList{}
 	case LogIdentity:
@@ -2634,6 +2645,7 @@ func AllIdentities() []elemental.Identity {
 		IssueServiceTokenIdentity,
 		LDAPProviderIdentity,
 		LoadBalancerIdentity,
+		LoadBalancerPublicationIdentity,
 		LocalCAIdentity,
 		LogIdentity,
 		LogoutIdentity,
@@ -2957,6 +2969,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 			"lb",
 			"lbs",
 		}
+	case LoadBalancerPublicationIdentity:
+		return []string{}
 	case LocalCAIdentity:
 		return []string{}
 	case LogIdentity:
