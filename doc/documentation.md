@@ -6303,6 +6303,10 @@ Parameters:
 
 - `mode` (`enum(subject | object)`): Matching mode.
 
+##### `GET /loadbalancers/:id/processingunits`
+
+Retrieves the processing units that implement this service.
+
 ##### `GET /networkaccesspolicies/:id/processingunits`
 
 Returns the list of processing units affected by a network policy.
@@ -17048,6 +17052,162 @@ Type: `time`
 
 Last update date of the object.
 
+### LoadBalancer
+
+Defines a generic external LoadBalancer that sits between 2 enforcers.
+
+#### Example
+
+```json
+{
+  "TLSCertificateSelector": [
+    [
+      "$identity=processingunit"
+    ]
+  ],
+  "exposedPort": 443,
+  "exposedServiceIsTLS": false,
+  "external": false,
+  "port": 443,
+  "processingUnitSelector": [
+    [
+      "$identity=processingunit"
+    ]
+  ],
+  "publicApplicationPort": 443
+}
+```
+
+#### Relations
+
+##### `DELETE /loadbalancers/:id`
+
+Deletes the service with the given ID.
+
+Parameters:
+
+- `q` (`string`): Filtering query. Consequent `q` parameters will form an or.
+
+##### `GET /loadbalancers/:id`
+
+Retrieves the Load Balancer with the given ID.
+
+Parameters:
+
+- `archived` (`boolean`): Also retrieve the objects that have been archived.
+- `propagated` (`boolean`): Also retrieve the objects that propagate down.
+
+##### `PUT /loadbalancers/:id`
+
+Updates the service with the given ID.
+
+##### `GET /servicedependencies/:id/loadbalancers`
+
+Returns the list of load balancers that are targets of service dependency.
+
+##### `GET /loadbalancers/:id/processingunits`
+
+Retrieves the processing units that implement this service.
+
+#### Attributes
+
+##### `IPs`
+
+Type: `[]string`
+
+The list of IP addresses where the service can be accessed. This is an optional
+attribute and is only required if no host names are provided. The system will
+automatically resolve IP addresses from host names otherwise.
+
+##### `TLSCertificateSelector`
+
+Type: `[][]string`
+
+A tag or tag expression that identifies the TLS certificates to be used by
+enforcers when exposing the service ran by the processing units.
+
+##### `endpoints` [`read_only`]
+
+Type: [`[]endpoint`](#endpoint)
+
+Resolves the API endpoints that the service is exposing. Only valid during
+policy rendering.
+
+##### `exposedPort` [`required`,`max_value=65535.000000`]
+
+Type: `integer`
+
+The port that the service can be accessed on. Note that this is different from
+the `port` attribute that describes the port that the service is actually
+listening on. For example if a load balancer is used, the `exposedPort` is
+the port that the load balancer is listening for the service, whereas the
+port that the implementation is listening on can be different.
+
+##### `exposedServiceIsTLS`
+
+Type: `boolean`
+
+Indicates that the exposed service is TLS. This means that the enforcer has to
+initiate a TLS session in order to forward traffic to the service.
+
+Default value:
+
+```json
+false
+```
+
+##### `external`
+
+Type: `boolean`
+
+Indicates if this is an external service.
+
+Default value:
+
+```json
+false
+```
+
+##### `hosts`
+
+Type: `[]string`
+
+The host names that the service can be accessed on.
+
+##### `port` [`max_value=65535.000000`]
+
+Type: `integer`
+
+The port that the implementation of the service is listening to. It can be
+different than `exposedPort`. This is needed for port mapping use cases
+where there are private and public ports.
+
+##### `processingUnitSelector`
+
+Type: `[][]string`
+
+Tag expression that identifies the processing unit that implements this
+particular service.
+
+##### `publicApplicationPort` [`max_value=65535.000000`]
+
+Type: `integer`
+
+A new virtual port that the service can be accessed on using HTTPS. Since the
+enforcer transparently inserts TLS in the application path, you might want
+to declare a new port where the enforcer listens for TLS. However, the
+application does not need to be modified and the enforcer will map the
+traffic to the correct application port. This is useful when
+an application is being accessed from a public network.
+
+##### `trustedCertificateAuthorities`
+
+Type: `string`
+
+PEM-encoded certificate authorities to trust when additional hops are needed. It
+must be set if the service must reach a service marked as `external` or must go
+through an additional TLS termination point like a layer 7 load balancer.
+
 ### Service
 
 Defines a generic service object at layer 4 or layer 7 that encapsulates the
@@ -17482,7 +17642,8 @@ Last update date of the object.
 
 ### ServiceDependency
 
-Allows you to define a service dependency where a set of processing units as defined
+Allows you to define a service dependency where a set of processing units as
+defined
 by their tags require access to specific services.
 
 #### Example
@@ -17527,6 +17688,10 @@ Retrieves the object with the given ID.
 ##### `PUT /servicedependencies/:id`
 
 Updates the object with the given ID.
+
+##### `GET /servicedependencies/:id/loadbalancers`
+
+Returns the list of load balancers that are targets of service dependency.
 
 ##### `GET /servicedependencies/:id/processingunits`
 
@@ -17650,6 +17815,26 @@ Subject of the service dependency.
 Type: `time`
 
 Last update date of the object.
+
+### TLSCertificate
+
+Represents a certificate public and private key.
+
+#### Attributes
+
+##### `certificate`
+
+Type: `string`
+
+PEM-encoded certificate to expose to the clients for TLS. Only has effect and
+required if `TLSType` is set to `External`.
+
+##### `key`
+
+Type: `string`
+
+PEM-encoded certificate key associated with `TLSCertificate`. Only has effect
+and required if `TLSType` is set to `External`.
 
 ### TokenScopePolicy
 

@@ -271,7 +271,8 @@ func (o *ServiceDependency) DefaultOrder() []string {
 // Doc returns the documentation for the object
 func (o *ServiceDependency) Doc() string {
 
-	return `Allows you to define a service dependency where a set of processing units as defined
+	return `Allows you to define a service dependency where a set of processing units as
+defined
 by their tags require access to specific services.`
 }
 

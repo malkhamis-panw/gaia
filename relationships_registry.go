@@ -2942,6 +2942,46 @@ func init() {
 		},
 	}
 
+	relationshipsRegistry[LoadBalancerIdentity] = &elemental.Relationship{
+		Update: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Patch: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Delete: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+				},
+			},
+		},
+		Retrieve: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name: "archived",
+						Type: "boolean",
+					},
+					{
+						Name: "propagated",
+						Type: "boolean",
+					},
+				},
+			},
+		},
+		RetrieveMany: map[string]*elemental.RelationshipInfo{
+			"servicedependency": {},
+		},
+		Info: map[string]*elemental.RelationshipInfo{
+			"servicedependency": {},
+		},
+	}
+
 	relationshipsRegistry[LocalCAIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
@@ -4005,6 +4045,7 @@ func init() {
 					},
 				},
 			},
+			"loadbalancer": {},
 			"networkaccesspolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -4064,6 +4105,7 @@ func init() {
 					},
 				},
 			},
+			"loadbalancer": {},
 			"networkaccesspolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -5106,6 +5148,8 @@ func init() {
 			},
 		},
 	}
+
+	relationshipsRegistry[TLSCertificateIdentity] = &elemental.Relationship{}
 
 	relationshipsRegistry[TagIdentity] = &elemental.Relationship{
 		RetrieveMany: map[string]*elemental.RelationshipInfo{

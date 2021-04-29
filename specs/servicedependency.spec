@@ -6,7 +6,8 @@ model:
   package: squall
   group: policy/services
   description: |-
-    Allows you to define a service dependency where a set of processing units as defined
+    Allows you to define a service dependency where a set of processing units as
+    defined
     by their tags require access to specific services.
   aliases:
   - srvdep
@@ -59,6 +60,10 @@ attributes:
 
 # Relations
 relations:
+- rest_name: loadbalancer
+  get:
+    description: Returns the list of load balancers that are targets of service dependency.
+
 - rest_name: processingunit
   get:
     description: Returns the list of processing units that depend on an service.

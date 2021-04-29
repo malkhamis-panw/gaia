@@ -97,6 +97,7 @@ var (
 		"issueservicetoken":        IssueServiceTokenIdentity,
 
 		"ldapprovider":           LDAPProviderIdentity,
+		"loadbalancer":           LoadBalancerIdentity,
 		"localca":                LocalCAIdentity,
 		"log":                    LogIdentity,
 		"logout":                 LogoutIdentity,
@@ -171,6 +172,7 @@ var (
 		"tenant":                 TenantIdentity,
 		"textindex":              TextIndexIdentity,
 
+		"tlscertificate":   TLSCertificateIdentity,
 		"token":            TokenIdentity,
 		"tokenscopepolicy": TokenScopePolicyIdentity,
 
@@ -279,6 +281,7 @@ var (
 		"issueservicetokens":         IssueServiceTokenIdentity,
 
 		"ldapproviders":            LDAPProviderIdentity,
+		"loadbalancers":            LoadBalancerIdentity,
 		"localcas":                 LocalCAIdentity,
 		"logs":                     LogIdentity,
 		"logout":                   LogoutIdentity,
@@ -353,6 +356,7 @@ var (
 		"tenants":                  TenantIdentity,
 		"textindexes":              TextIndexIdentity,
 
+		"tlscertificates":    TLSCertificateIdentity,
 		"tokens":             TokenIdentity,
 		"tokenscopepolicies": TokenScopePolicyIdentity,
 
@@ -417,6 +421,8 @@ var (
 		"iapps":           InstalledAppIdentity,
 		"iapp":            InstalledAppIdentity,
 		"ip":              IsolationProfileIdentity,
+		"lb":              LoadBalancerIdentity,
+		"lbs":             LoadBalancerIdentity,
 		"mess":            MessageIdentity,
 		"mq":              MetricsQueryIdentity,
 		"mqr":             MetricsQueryRangeIdentity,
@@ -911,9 +917,10 @@ var (
 			{"name"},
 			{"createIdempotencyKey"},
 		},
-		"localca": nil,
-		"log":     nil,
-		"logout":  nil,
+		"loadbalancer": nil,
+		"localca":      nil,
+		"log":          nil,
+		"logout":       nil,
 		"message": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -1118,6 +1125,7 @@ var (
 			{"date"},
 			{":shard", ":unique", "zone", "zHash"},
 		},
+		"tlscertificate":   nil,
 		"token":            nil,
 		"tokenscopepolicy": nil,
 		"trigger":          nil,
@@ -1347,6 +1355,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewIssueServiceToken()
 	case LDAPProviderIdentity:
 		return NewLDAPProvider()
+	case LoadBalancerIdentity:
+		return NewLoadBalancer()
 	case LocalCAIdentity:
 		return NewLocalCA()
 	case LogIdentity:
@@ -1483,6 +1493,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewTenant()
 	case TextIndexIdentity:
 		return NewTextIndex()
+	case TLSCertificateIdentity:
+		return NewTLSCertificate()
 	case TokenIdentity:
 		return NewToken()
 	case TokenScopePolicyIdentity:
@@ -1670,6 +1682,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseIssueServiceToken()
 	case LDAPProviderIdentity:
 		return NewSparseLDAPProvider()
+	case LoadBalancerIdentity:
+		return NewSparseLoadBalancer()
 	case LocalCAIdentity:
 		return NewSparseLocalCA()
 	case LogIdentity:
@@ -1804,6 +1818,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseTenant()
 	case TextIndexIdentity:
 		return NewSparseTextIndex()
+	case TLSCertificateIdentity:
+		return NewSparseTLSCertificate()
 	case TokenIdentity:
 		return NewSparseToken()
 	case TokenScopePolicyIdentity:
@@ -2001,6 +2017,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &IssueServiceTokensList{}
 	case LDAPProviderIdentity:
 		return &LDAPProvidersList{}
+	case LoadBalancerIdentity:
+		return &LoadBalancersList{}
 	case LocalCAIdentity:
 		return &LocalCAsList{}
 	case LogIdentity:
@@ -2135,6 +2153,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &TenantsList{}
 	case TextIndexIdentity:
 		return &TextIndexsList{}
+	case TLSCertificateIdentity:
+		return &TLSCertificatesList{}
 	case TokenIdentity:
 		return &TokensList{}
 	case TokenScopePolicyIdentity:
@@ -2322,6 +2342,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseIssueServiceTokensList{}
 	case LDAPProviderIdentity:
 		return &SparseLDAPProvidersList{}
+	case LoadBalancerIdentity:
+		return &SparseLoadBalancersList{}
 	case LocalCAIdentity:
 		return &SparseLocalCAsList{}
 	case LogIdentity:
@@ -2456,6 +2478,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseTenantsList{}
 	case TextIndexIdentity:
 		return &SparseTextIndexsList{}
+	case TLSCertificateIdentity:
+		return &SparseTLSCertificatesList{}
 	case TokenIdentity:
 		return &SparseTokensList{}
 	case TokenScopePolicyIdentity:
@@ -2583,6 +2607,7 @@ func AllIdentities() []elemental.Identity {
 		IssueIdentity,
 		IssueServiceTokenIdentity,
 		LDAPProviderIdentity,
+		LoadBalancerIdentity,
 		LocalCAIdentity,
 		LogIdentity,
 		LogoutIdentity,
@@ -2651,6 +2676,7 @@ func AllIdentities() []elemental.Identity {
 		TagValueIdentity,
 		TenantIdentity,
 		TextIndexIdentity,
+		TLSCertificateIdentity,
 		TokenIdentity,
 		TokenScopePolicyIdentity,
 		TriggerIdentity,
@@ -2900,6 +2926,11 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{}
 	case LDAPProviderIdentity:
 		return []string{}
+	case LoadBalancerIdentity:
+		return []string{
+			"lb",
+			"lbs",
+		}
 	case LocalCAIdentity:
 		return []string{}
 	case LogIdentity:
@@ -3105,6 +3136,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case TenantIdentity:
 		return []string{}
 	case TextIndexIdentity:
+		return []string{}
+	case TLSCertificateIdentity:
 		return []string{}
 	case TokenIdentity:
 		return []string{}
