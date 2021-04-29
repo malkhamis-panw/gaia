@@ -17074,7 +17074,8 @@ Defines a generic external LoadBalancer that sits between 2 enforcers.
       "$identity=processingunit"
     ]
   ],
-  "publicApplicationPort": 443
+  "publicApplicationPort": 443,
+  "type": "HTTP"
 }
 ```
 
@@ -17125,13 +17126,6 @@ Type: `[][]string`
 
 A tag or tag expression that identifies the TLS certificates to be used by
 enforcers when exposing the service ran by the processing units.
-
-##### `endpoints` [`read_only`]
-
-Type: [`[]endpoint`](#endpoint)
-
-Resolves the API endpoints that the service is exposing. Only valid during
-policy rendering.
 
 ##### `exposedPort` [`required`,`max_value=65535.000000`]
 
@@ -17207,6 +17201,12 @@ Type: `string`
 PEM-encoded certificate authorities to trust when additional hops are needed. It
 must be set if the service must reach a service marked as `external` or must go
 through an additional TLS termination point like a layer 7 load balancer.
+
+##### `type`
+
+Type: `enum(HTTP | TCP)`
+
+Type of the load balancer.
 
 ### Service
 

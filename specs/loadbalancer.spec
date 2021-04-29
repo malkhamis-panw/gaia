@@ -47,23 +47,12 @@ attributes:
     validations:
     - $tagsExpression
 
-  - name: allServiceTags
+  - name: allProcessingUnitTags
     description: This is a set of all selector tags for matching in the database.
     type: list
     subtype: string
     stored: true
     read_only: true
-
-  - name: endpoints
-    description: |-
-      Resolves the API endpoints that the service is exposing. Only valid during
-      policy rendering.
-    type: refList
-    exposed: true
-    subtype: endpoint
-    read_only: true
-    extensions:
-      refMode: pointer
 
   - name: exposedPort
     description: |-
@@ -153,6 +142,15 @@ attributes:
     type: string
     exposed: true
     stored: true
+
+  - name: type
+    description: Type of the load balancer.
+    type: enum
+    exposed: true
+    stored: true
+    allowed_choices:
+    - HTTP
+    - TCP
 
 # Relations
 relations:

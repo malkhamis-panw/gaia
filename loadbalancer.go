@@ -8,6 +8,17 @@ import (
 	"go.aporeto.io/elemental"
 )
 
+// LoadBalancerTypeValue represents the possible values for attribute "type".
+type LoadBalancerTypeValue string
+
+const (
+	// LoadBalancerTypeHTTP represents the value HTTP.
+	LoadBalancerTypeHTTP LoadBalancerTypeValue = "HTTP"
+
+	// LoadBalancerTypeTCP represents the value TCP.
+	LoadBalancerTypeTCP LoadBalancerTypeValue = "TCP"
+)
+
 // LoadBalancerIdentity represents the Identity of the object.
 var LoadBalancerIdentity = elemental.Identity{
 	Name:     "loadbalancer",
@@ -90,11 +101,7 @@ type LoadBalancer struct {
 	TLSCertificateSelector [][]string `json:"TLSCertificateSelector" msgpack:"TLSCertificateSelector" bson:"tlscertificateselector" mapstructure:"TLSCertificateSelector,omitempty"`
 
 	// This is a set of all selector tags for matching in the database.
-	AllServiceTags []string `json:"-" msgpack:"-" bson:"allservicetags" mapstructure:"-,omitempty"`
-
-	// Resolves the API endpoints that the service is exposing. Only valid during
-	// policy rendering.
-	Endpoints []*Endpoint `json:"endpoints" msgpack:"endpoints" bson:"-" mapstructure:"endpoints,omitempty"`
+	AllProcessingUnitTags []string `json:"-" msgpack:"-" bson:"allprocessingunittags" mapstructure:"-,omitempty"`
 
 	// The port that the service can be accessed on. Note that this is different from
 	// the `port` attribute that describes the port that the service is actually
@@ -135,6 +142,9 @@ type LoadBalancer struct {
 	// through an additional TLS termination point like a layer 7 load balancer.
 	TrustedCertificateAuthorities string `json:"trustedCertificateAuthorities" msgpack:"trustedCertificateAuthorities" bson:"trustedcertificateauthorities" mapstructure:"trustedCertificateAuthorities,omitempty"`
 
+	// Type of the load balancer.
+	Type LoadBalancerTypeValue `json:"type" msgpack:"type" bson:"type" mapstructure:"type,omitempty"`
+
 	ModelVersion int `json:"-" msgpack:"-" bson:"_modelversion"`
 }
 
@@ -143,11 +153,10 @@ func NewLoadBalancer() *LoadBalancer {
 
 	return &LoadBalancer{
 		ModelVersion:           1,
-		External:               false,
-		AllServiceTags:         []string{},
 		Hosts:                  []string{},
-		Endpoints:              []*Endpoint{},
+		AllProcessingUnitTags:  []string{},
 		ExposedServiceIsTLS:    false,
+		External:               false,
 		IPs:                    []string{},
 		TLSCertificateSelector: [][]string{},
 		ProcessingUnitSelector: [][]string{},
@@ -183,7 +192,7 @@ func (o *LoadBalancer) GetBSON() (interface{}, error) {
 
 	s.IPs = o.IPs
 	s.TLSCertificateSelector = o.TLSCertificateSelector
-	s.AllServiceTags = o.AllServiceTags
+	s.AllProcessingUnitTags = o.AllProcessingUnitTags
 	s.ExposedPort = o.ExposedPort
 	s.ExposedServiceIsTLS = o.ExposedServiceIsTLS
 	s.External = o.External
@@ -192,6 +201,7 @@ func (o *LoadBalancer) GetBSON() (interface{}, error) {
 	s.ProcessingUnitSelector = o.ProcessingUnitSelector
 	s.PublicApplicationPort = o.PublicApplicationPort
 	s.TrustedCertificateAuthorities = o.TrustedCertificateAuthorities
+	s.Type = o.Type
 
 	return s, nil
 }
@@ -211,7 +221,7 @@ func (o *LoadBalancer) SetBSON(raw bson.Raw) error {
 
 	o.IPs = s.IPs
 	o.TLSCertificateSelector = s.TLSCertificateSelector
-	o.AllServiceTags = s.AllServiceTags
+	o.AllProcessingUnitTags = s.AllProcessingUnitTags
 	o.ExposedPort = s.ExposedPort
 	o.ExposedServiceIsTLS = s.ExposedServiceIsTLS
 	o.External = s.External
@@ -220,6 +230,7 @@ func (o *LoadBalancer) SetBSON(raw bson.Raw) error {
 	o.ProcessingUnitSelector = s.ProcessingUnitSelector
 	o.PublicApplicationPort = s.PublicApplicationPort
 	o.TrustedCertificateAuthorities = s.TrustedCertificateAuthorities
+	o.Type = s.Type
 
 	return nil
 }
@@ -262,8 +273,7 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 		return &SparseLoadBalancer{
 			IPs:                           &o.IPs,
 			TLSCertificateSelector:        &o.TLSCertificateSelector,
-			AllServiceTags:                &o.AllServiceTags,
-			Endpoints:                     &o.Endpoints,
+			AllProcessingUnitTags:         &o.AllProcessingUnitTags,
 			ExposedPort:                   &o.ExposedPort,
 			ExposedServiceIsTLS:           &o.ExposedServiceIsTLS,
 			External:                      &o.External,
@@ -272,6 +282,7 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			ProcessingUnitSelector:        &o.ProcessingUnitSelector,
 			PublicApplicationPort:         &o.PublicApplicationPort,
 			TrustedCertificateAuthorities: &o.TrustedCertificateAuthorities,
+			Type:                          &o.Type,
 		}
 	}
 
@@ -282,10 +293,8 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.IPs = &(o.IPs)
 		case "TLSCertificateSelector":
 			sp.TLSCertificateSelector = &(o.TLSCertificateSelector)
-		case "allServiceTags":
-			sp.AllServiceTags = &(o.AllServiceTags)
-		case "endpoints":
-			sp.Endpoints = &(o.Endpoints)
+		case "allProcessingUnitTags":
+			sp.AllProcessingUnitTags = &(o.AllProcessingUnitTags)
 		case "exposedPort":
 			sp.ExposedPort = &(o.ExposedPort)
 		case "exposedServiceIsTLS":
@@ -302,6 +311,8 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.PublicApplicationPort = &(o.PublicApplicationPort)
 		case "trustedCertificateAuthorities":
 			sp.TrustedCertificateAuthorities = &(o.TrustedCertificateAuthorities)
+		case "type":
+			sp.Type = &(o.Type)
 		}
 	}
 
@@ -321,11 +332,8 @@ func (o *LoadBalancer) Patch(sparse elemental.SparseIdentifiable) {
 	if so.TLSCertificateSelector != nil {
 		o.TLSCertificateSelector = *so.TLSCertificateSelector
 	}
-	if so.AllServiceTags != nil {
-		o.AllServiceTags = *so.AllServiceTags
-	}
-	if so.Endpoints != nil {
-		o.Endpoints = *so.Endpoints
+	if so.AllProcessingUnitTags != nil {
+		o.AllProcessingUnitTags = *so.AllProcessingUnitTags
 	}
 	if so.ExposedPort != nil {
 		o.ExposedPort = *so.ExposedPort
@@ -350,6 +358,9 @@ func (o *LoadBalancer) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.TrustedCertificateAuthorities != nil {
 		o.TrustedCertificateAuthorities = *so.TrustedCertificateAuthorities
+	}
+	if so.Type != nil {
+		o.Type = *so.Type
 	}
 }
 
@@ -387,16 +398,6 @@ func (o *LoadBalancer) Validate() error {
 		errors = errors.Append(err)
 	}
 
-	for _, sub := range o.Endpoints {
-		if sub == nil {
-			continue
-		}
-		elemental.ResetDefaultForZeroValues(sub)
-		if err := sub.Validate(); err != nil {
-			errors = errors.Append(err)
-		}
-	}
-
 	if err := elemental.ValidateRequiredInt("exposedPort", o.ExposedPort); err != nil {
 		requiredErrors = requiredErrors.Append(err)
 	}
@@ -414,6 +415,10 @@ func (o *LoadBalancer) Validate() error {
 	}
 
 	if err := elemental.ValidateMaximumInt("publicApplicationPort", o.PublicApplicationPort, int(65535), false); err != nil {
+		errors = errors.Append(err)
+	}
+
+	if err := elemental.ValidateStringInList("type", string(o.Type), []string{"HTTP", "TCP"}, false); err != nil {
 		errors = errors.Append(err)
 	}
 
@@ -455,10 +460,8 @@ func (o *LoadBalancer) ValueForAttribute(name string) interface{} {
 		return o.IPs
 	case "TLSCertificateSelector":
 		return o.TLSCertificateSelector
-	case "allServiceTags":
-		return o.AllServiceTags
-	case "endpoints":
-		return o.Endpoints
+	case "allProcessingUnitTags":
+		return o.AllProcessingUnitTags
 	case "exposedPort":
 		return o.ExposedPort
 	case "exposedServiceIsTLS":
@@ -475,6 +478,8 @@ func (o *LoadBalancer) ValueForAttribute(name string) interface{} {
 		return o.PublicApplicationPort
 	case "trustedCertificateAuthorities":
 		return o.TrustedCertificateAuthorities
+	case "type":
+		return o.Type
 	}
 
 	return nil
@@ -507,27 +512,16 @@ enforcers when exposing the service ran by the processing units.`,
 		SubType: "[][]string",
 		Type:    "external",
 	},
-	"AllServiceTags": {
+	"AllProcessingUnitTags": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "allservicetags",
-		ConvertedName:  "AllServiceTags",
+		BSONFieldName:  "allprocessingunittags",
+		ConvertedName:  "AllProcessingUnitTags",
 		Description:    `This is a set of all selector tags for matching in the database.`,
-		Name:           "allServiceTags",
+		Name:           "allProcessingUnitTags",
 		ReadOnly:       true,
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"Endpoints": {
-		AllowedChoices: []string{},
-		ConvertedName:  "Endpoints",
-		Description: `Resolves the API endpoints that the service is exposing. Only valid during
-policy rendering.`,
-		Exposed:  true,
-		Name:     "endpoints",
-		ReadOnly: true,
-		SubType:  "endpoint",
-		Type:     "refList",
 	},
 	"ExposedPort": {
 		AllowedChoices: []string{},
@@ -635,6 +629,16 @@ through an additional TLS termination point like a layer 7 load balancer.`,
 		Stored:  true,
 		Type:    "string",
 	},
+	"Type": {
+		AllowedChoices: []string{"HTTP", "TCP"},
+		BSONFieldName:  "type",
+		ConvertedName:  "Type",
+		Description:    `Type of the load balancer.`,
+		Exposed:        true,
+		Name:           "type",
+		Stored:         true,
+		Type:           "enum",
+	},
 }
 
 // LoadBalancerLowerCaseAttributesMap represents the map of attribute for LoadBalancer.
@@ -664,27 +668,16 @@ enforcers when exposing the service ran by the processing units.`,
 		SubType: "[][]string",
 		Type:    "external",
 	},
-	"allservicetags": {
+	"allprocessingunittags": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "allservicetags",
-		ConvertedName:  "AllServiceTags",
+		BSONFieldName:  "allprocessingunittags",
+		ConvertedName:  "AllProcessingUnitTags",
 		Description:    `This is a set of all selector tags for matching in the database.`,
-		Name:           "allServiceTags",
+		Name:           "allProcessingUnitTags",
 		ReadOnly:       true,
 		Stored:         true,
 		SubType:        "string",
 		Type:           "list",
-	},
-	"endpoints": {
-		AllowedChoices: []string{},
-		ConvertedName:  "Endpoints",
-		Description: `Resolves the API endpoints that the service is exposing. Only valid during
-policy rendering.`,
-		Exposed:  true,
-		Name:     "endpoints",
-		ReadOnly: true,
-		SubType:  "endpoint",
-		Type:     "refList",
 	},
 	"exposedport": {
 		AllowedChoices: []string{},
@@ -792,6 +785,16 @@ through an additional TLS termination point like a layer 7 load balancer.`,
 		Stored:  true,
 		Type:    "string",
 	},
+	"type": {
+		AllowedChoices: []string{"HTTP", "TCP"},
+		BSONFieldName:  "type",
+		ConvertedName:  "Type",
+		Description:    `Type of the load balancer.`,
+		Exposed:        true,
+		Name:           "type",
+		Stored:         true,
+		Type:           "enum",
+	},
 }
 
 // SparseLoadBalancersList represents a list of SparseLoadBalancers
@@ -867,11 +870,7 @@ type SparseLoadBalancer struct {
 	TLSCertificateSelector *[][]string `json:"TLSCertificateSelector,omitempty" msgpack:"TLSCertificateSelector,omitempty" bson:"tlscertificateselector,omitempty" mapstructure:"TLSCertificateSelector,omitempty"`
 
 	// This is a set of all selector tags for matching in the database.
-	AllServiceTags *[]string `json:"-" msgpack:"-" bson:"allservicetags,omitempty" mapstructure:"-,omitempty"`
-
-	// Resolves the API endpoints that the service is exposing. Only valid during
-	// policy rendering.
-	Endpoints *[]*Endpoint `json:"endpoints,omitempty" msgpack:"endpoints,omitempty" bson:"-" mapstructure:"endpoints,omitempty"`
+	AllProcessingUnitTags *[]string `json:"-" msgpack:"-" bson:"allprocessingunittags,omitempty" mapstructure:"-,omitempty"`
 
 	// The port that the service can be accessed on. Note that this is different from
 	// the `port` attribute that describes the port that the service is actually
@@ -911,6 +910,9 @@ type SparseLoadBalancer struct {
 	// must be set if the service must reach a service marked as `external` or must go
 	// through an additional TLS termination point like a layer 7 load balancer.
 	TrustedCertificateAuthorities *string `json:"trustedCertificateAuthorities,omitempty" msgpack:"trustedCertificateAuthorities,omitempty" bson:"trustedcertificateauthorities,omitempty" mapstructure:"trustedCertificateAuthorities,omitempty"`
+
+	// Type of the load balancer.
+	Type *LoadBalancerTypeValue `json:"type,omitempty" msgpack:"type,omitempty" bson:"type,omitempty" mapstructure:"type,omitempty"`
 
 	ModelVersion int `json:"-" msgpack:"-" bson:"_modelversion"`
 }
@@ -953,8 +955,8 @@ func (o *SparseLoadBalancer) GetBSON() (interface{}, error) {
 	if o.TLSCertificateSelector != nil {
 		s.TLSCertificateSelector = o.TLSCertificateSelector
 	}
-	if o.AllServiceTags != nil {
-		s.AllServiceTags = o.AllServiceTags
+	if o.AllProcessingUnitTags != nil {
+		s.AllProcessingUnitTags = o.AllProcessingUnitTags
 	}
 	if o.ExposedPort != nil {
 		s.ExposedPort = o.ExposedPort
@@ -980,6 +982,9 @@ func (o *SparseLoadBalancer) GetBSON() (interface{}, error) {
 	if o.TrustedCertificateAuthorities != nil {
 		s.TrustedCertificateAuthorities = o.TrustedCertificateAuthorities
 	}
+	if o.Type != nil {
+		s.Type = o.Type
+	}
 
 	return s, nil
 }
@@ -1003,8 +1008,8 @@ func (o *SparseLoadBalancer) SetBSON(raw bson.Raw) error {
 	if s.TLSCertificateSelector != nil {
 		o.TLSCertificateSelector = s.TLSCertificateSelector
 	}
-	if s.AllServiceTags != nil {
-		o.AllServiceTags = s.AllServiceTags
+	if s.AllProcessingUnitTags != nil {
+		o.AllProcessingUnitTags = s.AllProcessingUnitTags
 	}
 	if s.ExposedPort != nil {
 		o.ExposedPort = s.ExposedPort
@@ -1030,6 +1035,9 @@ func (o *SparseLoadBalancer) SetBSON(raw bson.Raw) error {
 	if s.TrustedCertificateAuthorities != nil {
 		o.TrustedCertificateAuthorities = s.TrustedCertificateAuthorities
 	}
+	if s.Type != nil {
+		o.Type = s.Type
+	}
 
 	return nil
 }
@@ -1050,11 +1058,8 @@ func (o *SparseLoadBalancer) ToPlain() elemental.PlainIdentifiable {
 	if o.TLSCertificateSelector != nil {
 		out.TLSCertificateSelector = *o.TLSCertificateSelector
 	}
-	if o.AllServiceTags != nil {
-		out.AllServiceTags = *o.AllServiceTags
-	}
-	if o.Endpoints != nil {
-		out.Endpoints = *o.Endpoints
+	if o.AllProcessingUnitTags != nil {
+		out.AllProcessingUnitTags = *o.AllProcessingUnitTags
 	}
 	if o.ExposedPort != nil {
 		out.ExposedPort = *o.ExposedPort
@@ -1079,6 +1084,9 @@ func (o *SparseLoadBalancer) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.TrustedCertificateAuthorities != nil {
 		out.TrustedCertificateAuthorities = *o.TrustedCertificateAuthorities
+	}
+	if o.Type != nil {
+		out.Type = *o.Type
 	}
 
 	return out
@@ -1109,28 +1117,30 @@ func (o *SparseLoadBalancer) DeepCopyInto(out *SparseLoadBalancer) {
 }
 
 type mongoAttributesLoadBalancer struct {
-	IPs                           []string   `bson:"ips"`
-	TLSCertificateSelector        [][]string `bson:"tlscertificateselector"`
-	AllServiceTags                []string   `bson:"allservicetags"`
-	ExposedPort                   int        `bson:"exposedport"`
-	ExposedServiceIsTLS           bool       `bson:"exposedserviceistls"`
-	External                      bool       `bson:"external"`
-	Hosts                         []string   `bson:"hosts"`
-	Port                          int        `bson:"port"`
-	ProcessingUnitSelector        [][]string `bson:"processingunitselector"`
-	PublicApplicationPort         int        `bson:"publicapplicationport"`
-	TrustedCertificateAuthorities string     `bson:"trustedcertificateauthorities"`
+	IPs                           []string              `bson:"ips"`
+	TLSCertificateSelector        [][]string            `bson:"tlscertificateselector"`
+	AllProcessingUnitTags         []string              `bson:"allprocessingunittags"`
+	ExposedPort                   int                   `bson:"exposedport"`
+	ExposedServiceIsTLS           bool                  `bson:"exposedserviceistls"`
+	External                      bool                  `bson:"external"`
+	Hosts                         []string              `bson:"hosts"`
+	Port                          int                   `bson:"port"`
+	ProcessingUnitSelector        [][]string            `bson:"processingunitselector"`
+	PublicApplicationPort         int                   `bson:"publicapplicationport"`
+	TrustedCertificateAuthorities string                `bson:"trustedcertificateauthorities"`
+	Type                          LoadBalancerTypeValue `bson:"type"`
 }
 type mongoAttributesSparseLoadBalancer struct {
-	IPs                           *[]string   `bson:"ips,omitempty"`
-	TLSCertificateSelector        *[][]string `bson:"tlscertificateselector,omitempty"`
-	AllServiceTags                *[]string   `bson:"allservicetags,omitempty"`
-	ExposedPort                   *int        `bson:"exposedport,omitempty"`
-	ExposedServiceIsTLS           *bool       `bson:"exposedserviceistls,omitempty"`
-	External                      *bool       `bson:"external,omitempty"`
-	Hosts                         *[]string   `bson:"hosts,omitempty"`
-	Port                          *int        `bson:"port,omitempty"`
-	ProcessingUnitSelector        *[][]string `bson:"processingunitselector,omitempty"`
-	PublicApplicationPort         *int        `bson:"publicapplicationport,omitempty"`
-	TrustedCertificateAuthorities *string     `bson:"trustedcertificateauthorities,omitempty"`
+	IPs                           *[]string              `bson:"ips,omitempty"`
+	TLSCertificateSelector        *[][]string            `bson:"tlscertificateselector,omitempty"`
+	AllProcessingUnitTags         *[]string              `bson:"allprocessingunittags,omitempty"`
+	ExposedPort                   *int                   `bson:"exposedport,omitempty"`
+	ExposedServiceIsTLS           *bool                  `bson:"exposedserviceistls,omitempty"`
+	External                      *bool                  `bson:"external,omitempty"`
+	Hosts                         *[]string              `bson:"hosts,omitempty"`
+	Port                          *int                   `bson:"port,omitempty"`
+	ProcessingUnitSelector        *[][]string            `bson:"processingunitselector,omitempty"`
+	PublicApplicationPort         *int                   `bson:"publicapplicationport,omitempty"`
+	TrustedCertificateAuthorities *string                `bson:"trustedcertificateauthorities,omitempty"`
+	Type                          *LoadBalancerTypeValue `bson:"type,omitempty"`
 }
