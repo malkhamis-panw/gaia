@@ -185,6 +185,12 @@ relations:
   create:
     description: Performs a clause matching.
 
+- rest_name: cloudalertrule
+  get:
+    description: Retrieves the list of cloud alert rules.
+    global_parameters:
+    - $filtering
+
 - rest_name: cloudendpoint
   get:
     description: List of endpoints associated with the deployment.
@@ -223,6 +229,10 @@ relations:
   create:
     description: Creates a cloud network query.
 
+- rest_name: cloudnetworkqueryreply
+  create:
+    description: Creates a cloud network query reply for a given cloud network query.
+
 - rest_name: cloudnetworkruleset
   get:
     description: Retrieves the list of cloud network rule set policies.
@@ -235,6 +245,12 @@ relations:
 - rest_name: cloudnode
   get:
     description: Retrieves the list of cloud nodes.
+    global_parameters:
+    - $filtering
+
+- rest_name: cloudpolicy
+  get:
+    description: Retrieves the list of cloud policies.
     global_parameters:
     - $filtering
 

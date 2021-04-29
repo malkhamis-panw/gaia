@@ -1,8 +1,8 @@
 # Model
 model:
-  rest_name: cloudcnqreply
-  resource_name: cloudcnqreplyies
-  entity_name: CloudCNQReply
+  rest_name: cloudnetworkqueryreply
+  resource_name: cloudnetworkqueryreplies
+  entity_name: CloudNetworkQueryReply
   package: vargid
   group: pcn/infrastructure
   description: The reply object for a Cloud Network Query from the Graph Calculator.
