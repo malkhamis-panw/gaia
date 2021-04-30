@@ -8,7 +8,7 @@ model:
   description: Represents a certificate public and private key.
   aliases: []
   get:
-    description: Retrieves the Load Balancer with the given ID.
+    description: Retrieves the certificate with the given ID.
     global_parameters:
     - $archivable
     - $propagatable

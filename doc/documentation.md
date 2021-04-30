@@ -17976,7 +17976,7 @@ Parameters:
 
 ##### `GET /tlscertificates/:id`
 
-Retrieves the Load Balancer with the given ID.
+Retrieves the certificate with the given ID.
 
 Parameters:
 
