@@ -234,10 +234,6 @@ relations:
   create:
     description: Creates a cloud network query.
 
-- rest_name: cloudnetworkqueryreply
-  create:
-    description: Creates a cloud network query reply for a given cloud network query.
-
 - rest_name: cloudnetworkruleset
   get:
     description: Retrieves the list of cloud network rule set policies.
@@ -266,6 +262,10 @@ relations:
     - $filtering
   create:
     description: Creates a new routing table.
+
+- rest_name: cloudschedulednetworkquery
+  create:
+    description: Update the CloudNetworkQuery's last execution timestamp.
 
 - rest_name: cloudsnapshotaccount
   create:

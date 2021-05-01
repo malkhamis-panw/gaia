@@ -762,29 +762,6 @@ func init() {
 		},
 	}
 
-	relationshipsRegistry[CloudAlertRuleCNQIdentity] = &elemental.Relationship{
-		Update: map[string]*elemental.RelationshipInfo{
-			"root": {},
-		},
-		Patch: map[string]*elemental.RelationshipInfo{
-			"root": {},
-		},
-		Delete: map[string]*elemental.RelationshipInfo{
-			"root": {},
-		},
-		Retrieve: map[string]*elemental.RelationshipInfo{
-			"root": {
-				Parameters: []elemental.ParameterDefinition{
-					{
-						Name:     "q",
-						Type:     "string",
-						Multiple: true,
-					},
-				},
-			},
-		},
-	}
-
 	relationshipsRegistry[CloudEndpointIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
@@ -984,12 +961,6 @@ func init() {
 		},
 	}
 
-	relationshipsRegistry[CloudNetworkQueryReplyIdentity] = &elemental.Relationship{
-		Create: map[string]*elemental.RelationshipInfo{
-			"root": {},
-		},
-	}
-
 	relationshipsRegistry[CloudNetworkRuleSetIdentity] = &elemental.Relationship{
 		Create: map[string]*elemental.RelationshipInfo{
 			"root": {},
@@ -1164,6 +1135,12 @@ func init() {
 					},
 				},
 			},
+		},
+	}
+
+	relationshipsRegistry[CloudScheduledNetworkQueryIdentity] = &elemental.Relationship{
+		Create: map[string]*elemental.RelationshipInfo{
+			"root": {},
 		},
 	}
 

@@ -29,7 +29,6 @@ model:
 indexes:
 - - namespace
   - alertRuleID
-  - enabled
 - - :unique
   - alertRuleID
 

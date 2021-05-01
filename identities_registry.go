@@ -29,10 +29,9 @@ var (
 		"claims":       ClaimsIdentity,
 		"clausesmatch": ClauseMatchIdentity,
 
-		"cloudalert":        CloudAlertIdentity,
-		"cloudalertrule":    CloudAlertRuleIdentity,
-		"cloudalertrulecnq": CloudAlertRuleCNQIdentity,
-		"cloudendpoint":     CloudEndpointIdentity,
+		"cloudalert":     CloudAlertIdentity,
+		"cloudalertrule": CloudAlertRuleIdentity,
+		"cloudendpoint":  CloudEndpointIdentity,
 
 		"cloudgraph": CloudGraphIdentity,
 
@@ -40,16 +39,15 @@ var (
 		"cloudnetworkinterface": CloudNetworkInterfaceIdentity,
 		"cloudnetworkquery":     CloudNetworkQueryIdentity,
 
-		"cloudnetworkqueryreply": CloudNetworkQueryReplyIdentity,
-
 		"cloudnetworkruleset": CloudNetworkRuleSetIdentity,
 
 		"cloudnode":   CloudNodeIdentity,
 		"cloudpolicy": CloudPolicyIdentity,
 
-		"cloudroutetable":      CloudRouteTableIdentity,
-		"cloudsnapshotaccount": CloudSnapshotAccountIdentity,
-		"cloudsubnet":          CloudSubnetIdentity,
+		"cloudroutetable":            CloudRouteTableIdentity,
+		"cloudschedulednetworkquery": CloudScheduledNetworkQueryIdentity,
+		"cloudsnapshotaccount":       CloudSnapshotAccountIdentity,
+		"cloudsubnet":                CloudSubnetIdentity,
 
 		"cloudvpc": CloudVPCIdentity,
 
@@ -215,10 +213,9 @@ var (
 		"claims":         ClaimsIdentity,
 		"clausesmatches": ClauseMatchIdentity,
 
-		"cloudalerts":        CloudAlertIdentity,
-		"cloudalertsrule":    CloudAlertRuleIdentity,
-		"cloudalertrulecnqs": CloudAlertRuleCNQIdentity,
-		"cloudendpoints":     CloudEndpointIdentity,
+		"cloudalerts":     CloudAlertIdentity,
+		"cloudalertsrule": CloudAlertRuleIdentity,
+		"cloudendpoints":  CloudEndpointIdentity,
 
 		"cloudgraphs": CloudGraphIdentity,
 
@@ -226,16 +223,15 @@ var (
 		"cloudnetworkinterfaces": CloudNetworkInterfaceIdentity,
 		"cloudnetworkqueries":    CloudNetworkQueryIdentity,
 
-		"cloudnetworkqueryreplies": CloudNetworkQueryReplyIdentity,
-
 		"cloudnetworkrulesets": CloudNetworkRuleSetIdentity,
 
 		"cloudnodes":    CloudNodeIdentity,
 		"cloudpolicies": CloudPolicyIdentity,
 
-		"cloudroutetables":      CloudRouteTableIdentity,
-		"cloudsnapshotaccounts": CloudSnapshotAccountIdentity,
-		"cloudsubnets":          CloudSubnetIdentity,
+		"cloudroutetables":             CloudRouteTableIdentity,
+		"cloudschedulednetworkqueries": CloudScheduledNetworkQueryIdentity,
+		"cloudsnapshotaccounts":        CloudSnapshotAccountIdentity,
+		"cloudsubnets":                 CloudSubnetIdentity,
 
 		"cloudvpcs": CloudVPCIdentity,
 
@@ -598,18 +594,7 @@ var (
 			{"namespace", "name"},
 			{"namespace"},
 			{"namespace", "normalizedTags"},
-			{"namespace", "alertRuleID", "enabled"},
-			{"name"},
-			{"createIdempotencyKey"},
-		},
-		"cloudalertrulecnq": {
-			{":shard", ":unique", "zone", "zHash"},
-			{"updateIdempotencyKey"},
-			{"namespace", "resulttimestamp"},
-			{"namespace", "name"},
-			{"namespace"},
-			{"namespace", "alertruleid", "policyid"},
-			{"namespace", "normalizedTags"},
+			{"namespace", "alertRuleID"},
 			{"name"},
 			{"createIdempotencyKey"},
 		},
@@ -654,12 +639,6 @@ var (
 			{"namespace"},
 			{"namespace", "normalizedTags"},
 			{"name"},
-			{"createIdempotencyKey"},
-		},
-		"cloudnetworkqueryreply": {
-			{"updateIdempotencyKey"},
-			{"namespace"},
-			{"namespace", "normalizedTags"},
 			{"createIdempotencyKey"},
 		},
 		"cloudnetworkruleset": {
@@ -711,6 +690,18 @@ var (
 			{"namespace", "accountid"},
 			{"namespace", "vpcid"},
 			{"createIdempotencyKey"},
+		},
+		"cloudschedulednetworkquery": {
+			{":shard", ":unique", "zone", "zHash"},
+			{"updateIdempotencyKey"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"namespace", "name"},
+			{"name"},
+			{"lastexecutiontimestamp"},
+			{"createIdempotencyKey"},
+			{"alertruleid"},
+			{"alertruleid", "policyid"},
 		},
 		"cloudsnapshotaccount": {
 			{"updateIdempotencyKey"},
@@ -1277,8 +1268,6 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewCloudAlert()
 	case CloudAlertRuleIdentity:
 		return NewCloudAlertRule()
-	case CloudAlertRuleCNQIdentity:
-		return NewCloudAlertRuleCNQ()
 	case CloudEndpointIdentity:
 		return NewCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1289,8 +1278,6 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewCloudNetworkInterface()
 	case CloudNetworkQueryIdentity:
 		return NewCloudNetworkQuery()
-	case CloudNetworkQueryReplyIdentity:
-		return NewCloudNetworkQueryReply()
 	case CloudNetworkRuleSetIdentity:
 		return NewCloudNetworkRuleSet()
 	case CloudNodeIdentity:
@@ -1299,6 +1286,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewCloudPolicy()
 	case CloudRouteTableIdentity:
 		return NewCloudRouteTable()
+	case CloudScheduledNetworkQueryIdentity:
+		return NewCloudScheduledNetworkQuery()
 	case CloudSnapshotAccountIdentity:
 		return NewCloudSnapshotAccount()
 	case CloudSubnetIdentity:
@@ -1606,8 +1595,6 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseCloudAlert()
 	case CloudAlertRuleIdentity:
 		return NewSparseCloudAlertRule()
-	case CloudAlertRuleCNQIdentity:
-		return NewSparseCloudAlertRuleCNQ()
 	case CloudEndpointIdentity:
 		return NewSparseCloudEndpoint()
 	case CloudGraphIdentity:
@@ -1618,8 +1605,6 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseCloudNetworkInterface()
 	case CloudNetworkQueryIdentity:
 		return NewSparseCloudNetworkQuery()
-	case CloudNetworkQueryReplyIdentity:
-		return NewSparseCloudNetworkQueryReply()
 	case CloudNetworkRuleSetIdentity:
 		return NewSparseCloudNetworkRuleSet()
 	case CloudNodeIdentity:
@@ -1628,6 +1613,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseCloudPolicy()
 	case CloudRouteTableIdentity:
 		return NewSparseCloudRouteTable()
+	case CloudScheduledNetworkQueryIdentity:
+		return NewSparseCloudScheduledNetworkQuery()
 	case CloudSnapshotAccountIdentity:
 		return NewSparseCloudSnapshotAccount()
 	case CloudSubnetIdentity:
@@ -1943,8 +1930,6 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &CloudAlertsList{}
 	case CloudAlertRuleIdentity:
 		return &CloudAlertRulesList{}
-	case CloudAlertRuleCNQIdentity:
-		return &CloudAlertRuleCNQsList{}
 	case CloudEndpointIdentity:
 		return &CloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -1955,8 +1940,6 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &CloudNetworkInterfacesList{}
 	case CloudNetworkQueryIdentity:
 		return &CloudNetworkQueriesList{}
-	case CloudNetworkQueryReplyIdentity:
-		return &CloudNetworkQueryRepliesList{}
 	case CloudNetworkRuleSetIdentity:
 		return &CloudNetworkRuleSetsList{}
 	case CloudNodeIdentity:
@@ -1965,6 +1948,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &CloudPoliciesList{}
 	case CloudRouteTableIdentity:
 		return &CloudRouteTablesList{}
+	case CloudScheduledNetworkQueryIdentity:
+		return &CloudScheduledNetworkQueriesList{}
 	case CloudSnapshotAccountIdentity:
 		return &CloudSnapshotAccountsList{}
 	case CloudSubnetIdentity:
@@ -2270,8 +2255,6 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseCloudAlertsList{}
 	case CloudAlertRuleIdentity:
 		return &SparseCloudAlertRulesList{}
-	case CloudAlertRuleCNQIdentity:
-		return &SparseCloudAlertRuleCNQsList{}
 	case CloudEndpointIdentity:
 		return &SparseCloudEndpointsList{}
 	case CloudGraphIdentity:
@@ -2282,8 +2265,6 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseCloudNetworkInterfacesList{}
 	case CloudNetworkQueryIdentity:
 		return &SparseCloudNetworkQueriesList{}
-	case CloudNetworkQueryReplyIdentity:
-		return &SparseCloudNetworkQueryRepliesList{}
 	case CloudNetworkRuleSetIdentity:
 		return &SparseCloudNetworkRuleSetsList{}
 	case CloudNodeIdentity:
@@ -2292,6 +2273,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseCloudPoliciesList{}
 	case CloudRouteTableIdentity:
 		return &SparseCloudRouteTablesList{}
+	case CloudScheduledNetworkQueryIdentity:
+		return &SparseCloudScheduledNetworkQueriesList{}
 	case CloudSnapshotAccountIdentity:
 		return &SparseCloudSnapshotAccountsList{}
 	case CloudSubnetIdentity:
@@ -2591,17 +2574,16 @@ func AllIdentities() []elemental.Identity {
 		ClauseMatchIdentity,
 		CloudAlertIdentity,
 		CloudAlertRuleIdentity,
-		CloudAlertRuleCNQIdentity,
 		CloudEndpointIdentity,
 		CloudGraphIdentity,
 		CloudManagedNetworkIdentity,
 		CloudNetworkInterfaceIdentity,
 		CloudNetworkQueryIdentity,
-		CloudNetworkQueryReplyIdentity,
 		CloudNetworkRuleSetIdentity,
 		CloudNodeIdentity,
 		CloudPolicyIdentity,
 		CloudRouteTableIdentity,
+		CloudScheduledNetworkQueryIdentity,
 		CloudSnapshotAccountIdentity,
 		CloudSubnetIdentity,
 		CloudVPCIdentity,
@@ -2803,8 +2785,6 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{}
 	case CloudAlertRuleIdentity:
 		return []string{}
-	case CloudAlertRuleCNQIdentity:
-		return []string{}
 	case CloudEndpointIdentity:
 		return []string{}
 	case CloudGraphIdentity:
@@ -2815,8 +2795,6 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{}
 	case CloudNetworkQueryIdentity:
 		return []string{}
-	case CloudNetworkQueryReplyIdentity:
-		return []string{}
 	case CloudNetworkRuleSetIdentity:
 		return []string{
 			"crules",
@@ -2826,6 +2804,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case CloudPolicyIdentity:
 		return []string{}
 	case CloudRouteTableIdentity:
+		return []string{}
+	case CloudScheduledNetworkQueryIdentity:
 		return []string{}
 	case CloudSnapshotAccountIdentity:
 		return []string{}
