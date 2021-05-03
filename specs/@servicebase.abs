@@ -58,7 +58,7 @@ attributes:
     example_value: 443
     max_value: 65535
 
-  - name: processingUnitSelector
+  - name: processingUnitsSelector
     description: |-
       Tag expression that identifies the processing unit that implements this
       particular service.

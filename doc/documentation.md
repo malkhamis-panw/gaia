@@ -17081,7 +17081,7 @@ Defines a generic external LoadBalancer that sits between 2 enforcers.
   "exposedPort": 443,
   "name": "the name",
   "port": 443,
-  "processingUnitSelector": [
+  "processingUnitsSelector": [
     [
       "$identity=processingunit"
     ]
@@ -17241,7 +17241,7 @@ The port that the implementation of the service is listening to. It can be
 different than `exposedPort`. This is needed for port mapping use cases
 where there are private and public ports.
 
-##### `processingUnitSelector`
+##### `processingUnitsSelector`
 
 Type: `[][]string`
 

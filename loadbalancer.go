@@ -166,7 +166,7 @@ type LoadBalancer struct {
 
 	// Tag expression that identifies the processing unit that implements this
 	// particular service.
-	ProcessingUnitSelector [][]string `json:"processingUnitSelector" msgpack:"processingUnitSelector" bson:"processingunitselector" mapstructure:"processingUnitSelector,omitempty"`
+	ProcessingUnitsSelector [][]string `json:"processingUnitsSelector" msgpack:"processingUnitsSelector" bson:"processingunitsselector" mapstructure:"processingUnitsSelector,omitempty"`
 
 	// Propagates the policy to all of its children.
 	Propagate bool `json:"propagate" msgpack:"propagate" bson:"propagate" mapstructure:"propagate,omitempty"`
@@ -226,7 +226,7 @@ func NewLoadBalancer() *LoadBalancer {
 		Metadata:                []string{},
 		ProxyProtocolSubnets:    []string{},
 		NormalizedTags:          []string{},
-		ProcessingUnitSelector:  [][]string{},
+		ProcessingUnitsSelector: [][]string{},
 		IPs:                     []string{},
 		MigrationsLog:           map[string]string{},
 	}
@@ -282,7 +282,7 @@ func (o *LoadBalancer) GetBSON() (interface{}, error) {
 	s.Namespace = o.Namespace
 	s.NormalizedTags = o.NormalizedTags
 	s.Port = o.Port
-	s.ProcessingUnitSelector = o.ProcessingUnitSelector
+	s.ProcessingUnitsSelector = o.ProcessingUnitsSelector
 	s.Propagate = o.Propagate
 	s.Protected = o.Protected
 	s.ProxyProtocolEnabled = o.ProxyProtocolEnabled
@@ -331,7 +331,7 @@ func (o *LoadBalancer) SetBSON(raw bson.Raw) error {
 	o.Namespace = s.Namespace
 	o.NormalizedTags = s.NormalizedTags
 	o.Port = s.Port
-	o.ProcessingUnitSelector = s.ProcessingUnitSelector
+	o.ProcessingUnitsSelector = s.ProcessingUnitsSelector
 	o.Propagate = s.Propagate
 	o.Protected = s.Protected
 	o.ProxyProtocolEnabled = s.ProxyProtocolEnabled
@@ -621,7 +621,7 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			Namespace:                     &o.Namespace,
 			NormalizedTags:                &o.NormalizedTags,
 			Port:                          &o.Port,
-			ProcessingUnitSelector:        &o.ProcessingUnitSelector,
+			ProcessingUnitsSelector:       &o.ProcessingUnitsSelector,
 			Propagate:                     &o.Propagate,
 			Protected:                     &o.Protected,
 			ProxyProtocolEnabled:          &o.ProxyProtocolEnabled,
@@ -679,8 +679,8 @@ func (o *LoadBalancer) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.NormalizedTags = &(o.NormalizedTags)
 		case "port":
 			sp.Port = &(o.Port)
-		case "processingUnitSelector":
-			sp.ProcessingUnitSelector = &(o.ProcessingUnitSelector)
+		case "processingUnitsSelector":
+			sp.ProcessingUnitsSelector = &(o.ProcessingUnitsSelector)
 		case "propagate":
 			sp.Propagate = &(o.Propagate)
 		case "protected":
@@ -776,8 +776,8 @@ func (o *LoadBalancer) Patch(sparse elemental.SparseIdentifiable) {
 	if so.Port != nil {
 		o.Port = *so.Port
 	}
-	if so.ProcessingUnitSelector != nil {
-		o.ProcessingUnitSelector = *so.ProcessingUnitSelector
+	if so.ProcessingUnitsSelector != nil {
+		o.ProcessingUnitsSelector = *so.ProcessingUnitsSelector
 	}
 	if so.Propagate != nil {
 		o.Propagate = *so.Propagate
@@ -884,7 +884,7 @@ func (o *LoadBalancer) Validate() error {
 		errors = errors.Append(err)
 	}
 
-	if err := ValidateTagsExpression("processingUnitSelector", o.ProcessingUnitSelector); err != nil {
+	if err := ValidateTagsExpression("processingUnitsSelector", o.ProcessingUnitsSelector); err != nil {
 		errors = errors.Append(err)
 	}
 
@@ -978,8 +978,8 @@ func (o *LoadBalancer) ValueForAttribute(name string) interface{} {
 		return o.NormalizedTags
 	case "port":
 		return o.Port
-	case "processingUnitSelector":
-		return o.ProcessingUnitSelector
+	case "processingUnitsSelector":
+		return o.ProcessingUnitsSelector
 	case "propagate":
 		return o.Propagate
 	case "protected":
@@ -1278,14 +1278,14 @@ where there are private and public ports.`,
 		Stored:   true,
 		Type:     "integer",
 	},
-	"ProcessingUnitSelector": {
+	"ProcessingUnitsSelector": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "processingunitselector",
-		ConvertedName:  "ProcessingUnitSelector",
+		BSONFieldName:  "processingunitsselector",
+		ConvertedName:  "ProcessingUnitsSelector",
 		Description: `Tag expression that identifies the processing unit that implements this
 particular service.`,
 		Exposed: true,
-		Name:    "processingUnitSelector",
+		Name:    "processingUnitsSelector",
 		Stored:  true,
 		SubType: "[][]string",
 		Type:    "external",
@@ -1704,14 +1704,14 @@ where there are private and public ports.`,
 		Stored:   true,
 		Type:     "integer",
 	},
-	"processingunitselector": {
+	"processingunitsselector": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "processingunitselector",
-		ConvertedName:  "ProcessingUnitSelector",
+		BSONFieldName:  "processingunitsselector",
+		ConvertedName:  "ProcessingUnitsSelector",
 		Description: `Tag expression that identifies the processing unit that implements this
 particular service.`,
 		Exposed: true,
-		Name:    "processingUnitSelector",
+		Name:    "processingUnitsSelector",
 		Stored:  true,
 		SubType: "[][]string",
 		Type:    "external",
@@ -1996,7 +1996,7 @@ type SparseLoadBalancer struct {
 
 	// Tag expression that identifies the processing unit that implements this
 	// particular service.
-	ProcessingUnitSelector *[][]string `json:"processingUnitSelector,omitempty" msgpack:"processingUnitSelector,omitempty" bson:"processingunitselector,omitempty" mapstructure:"processingUnitSelector,omitempty"`
+	ProcessingUnitsSelector *[][]string `json:"processingUnitsSelector,omitempty" msgpack:"processingUnitsSelector,omitempty" bson:"processingunitsselector,omitempty" mapstructure:"processingUnitsSelector,omitempty"`
 
 	// Propagates the policy to all of its children.
 	Propagate *bool `json:"propagate,omitempty" msgpack:"propagate,omitempty" bson:"propagate,omitempty" mapstructure:"propagate,omitempty"`
@@ -2142,8 +2142,8 @@ func (o *SparseLoadBalancer) GetBSON() (interface{}, error) {
 	if o.Port != nil {
 		s.Port = o.Port
 	}
-	if o.ProcessingUnitSelector != nil {
-		s.ProcessingUnitSelector = o.ProcessingUnitSelector
+	if o.ProcessingUnitsSelector != nil {
+		s.ProcessingUnitsSelector = o.ProcessingUnitsSelector
 	}
 	if o.Propagate != nil {
 		s.Propagate = o.Propagate
@@ -2254,8 +2254,8 @@ func (o *SparseLoadBalancer) SetBSON(raw bson.Raw) error {
 	if s.Port != nil {
 		o.Port = s.Port
 	}
-	if s.ProcessingUnitSelector != nil {
-		o.ProcessingUnitSelector = s.ProcessingUnitSelector
+	if s.ProcessingUnitsSelector != nil {
+		o.ProcessingUnitsSelector = s.ProcessingUnitsSelector
 	}
 	if s.Propagate != nil {
 		o.Propagate = s.Propagate
@@ -2364,8 +2364,8 @@ func (o *SparseLoadBalancer) ToPlain() elemental.PlainIdentifiable {
 	if o.Port != nil {
 		out.Port = *o.Port
 	}
-	if o.ProcessingUnitSelector != nil {
-		out.ProcessingUnitSelector = *o.ProcessingUnitSelector
+	if o.ProcessingUnitsSelector != nil {
+		out.ProcessingUnitsSelector = *o.ProcessingUnitsSelector
 	}
 	if o.Propagate != nil {
 		out.Propagate = *o.Propagate
@@ -2737,7 +2737,7 @@ type mongoAttributesLoadBalancer struct {
 	Namespace                     string                `bson:"namespace"`
 	NormalizedTags                []string              `bson:"normalizedtags"`
 	Port                          int                   `bson:"port"`
-	ProcessingUnitSelector        [][]string            `bson:"processingunitselector"`
+	ProcessingUnitsSelector       [][]string            `bson:"processingunitsselector"`
 	Propagate                     bool                  `bson:"propagate"`
 	Protected                     bool                  `bson:"protected"`
 	ProxyProtocolEnabled          bool                  `bson:"proxyprotocolenabled"`
@@ -2771,7 +2771,7 @@ type mongoAttributesSparseLoadBalancer struct {
 	Namespace                     *string                `bson:"namespace,omitempty"`
 	NormalizedTags                *[]string              `bson:"normalizedtags,omitempty"`
 	Port                          *int                   `bson:"port,omitempty"`
-	ProcessingUnitSelector        *[][]string            `bson:"processingunitselector,omitempty"`
+	ProcessingUnitsSelector       *[][]string            `bson:"processingunitsselector,omitempty"`
 	Propagate                     *bool                  `bson:"propagate,omitempty"`
 	Protected                     *bool                  `bson:"protected,omitempty"`
 	ProxyProtocolEnabled          *bool                  `bson:"proxyprotocolenabled,omitempty"`
