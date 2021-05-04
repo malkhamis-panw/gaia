@@ -83,6 +83,15 @@ attributes:
     extensions:
       noInit: true
 
+  - name: loadBalancers
+    description: Provides the load balancers of this policy rule.
+    type: refList
+    exposed: true
+    subtype: loadbalancer
+    omit_empty: true
+    extensions:
+      noInit: true
+
   - name: namespaces
     description: The namespace that the policy targets.
     type: refList

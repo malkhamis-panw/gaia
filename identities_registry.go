@@ -96,21 +96,22 @@ var (
 		"issue":                    IssueIdentity,
 		"issueservicetoken":        IssueServiceTokenIdentity,
 
-		"ldapprovider":            LDAPProviderIdentity,
-		"loadbalancer":            LoadBalancerIdentity,
-		"loadbalancerpublication": LoadBalancerPublicationIdentity,
-		"localca":                 LocalCAIdentity,
-		"log":                     LogIdentity,
-		"logout":                  LogoutIdentity,
-		"message":                 MessageIdentity,
-		"metricsquery":            MetricsQueryIdentity,
-		"metricsqueryrange":       MetricsQueryRangeIdentity,
-		"namespace":               NamespaceIdentity,
-		"namespacemappingpolicy":  NamespaceMappingPolicyIdentity,
-		"namespacepolicyinfo":     NamespacePolicyInfoIdentity,
-		"namespacerenderer":       NamespaceRendererIdentity,
-		"namespacetype":           NamespaceTypeIdentity,
-		"networkaccesspolicy":     NetworkAccessPolicyIdentity,
+		"ldapprovider":                 LDAPProviderIdentity,
+		"loadbalancer":                 LoadBalancerIdentity,
+		"loadbalancerdependencypolicy": LoadBalancerDependencyPolicyIdentity,
+		"loadbalancerpublication":      LoadBalancerPublicationIdentity,
+		"localca":                      LocalCAIdentity,
+		"log":                          LogIdentity,
+		"logout":                       LogoutIdentity,
+		"message":                      MessageIdentity,
+		"metricsquery":                 MetricsQueryIdentity,
+		"metricsqueryrange":            MetricsQueryRangeIdentity,
+		"namespace":                    NamespaceIdentity,
+		"namespacemappingpolicy":       NamespaceMappingPolicyIdentity,
+		"namespacepolicyinfo":          NamespacePolicyInfoIdentity,
+		"namespacerenderer":            NamespaceRendererIdentity,
+		"namespacetype":                NamespaceTypeIdentity,
+		"networkaccesspolicy":          NetworkAccessPolicyIdentity,
 
 		"networkrulesetpolicy":   NetworkRuleSetPolicyIdentity,
 		"oauthinfo":              OAUTHInfoIdentity,
@@ -281,21 +282,22 @@ var (
 		"issue":                      IssueIdentity,
 		"issueservicetokens":         IssueServiceTokenIdentity,
 
-		"ldapproviders":            LDAPProviderIdentity,
-		"loadbalancers":            LoadBalancerIdentity,
-		"loadbalancerpublications": LoadBalancerPublicationIdentity,
-		"localcas":                 LocalCAIdentity,
-		"logs":                     LogIdentity,
-		"logout":                   LogoutIdentity,
-		"messages":                 MessageIdentity,
-		"metricsquery":             MetricsQueryIdentity,
-		"metricsqueryrange":        MetricsQueryRangeIdentity,
-		"namespaces":               NamespaceIdentity,
-		"namespacemappingpolicies": NamespaceMappingPolicyIdentity,
-		"namespacepolicyinfo":      NamespacePolicyInfoIdentity,
-		"namespacerenderers":       NamespaceRendererIdentity,
-		"namespacetypes":           NamespaceTypeIdentity,
-		"networkaccesspolicies":    NetworkAccessPolicyIdentity,
+		"ldapproviders":                  LDAPProviderIdentity,
+		"loadbalancers":                  LoadBalancerIdentity,
+		"loadbalancerdependencypolicies": LoadBalancerDependencyPolicyIdentity,
+		"loadbalancerpublications":       LoadBalancerPublicationIdentity,
+		"localcas":                       LocalCAIdentity,
+		"logs":                           LogIdentity,
+		"logout":                         LogoutIdentity,
+		"messages":                       MessageIdentity,
+		"metricsquery":                   MetricsQueryIdentity,
+		"metricsqueryrange":              MetricsQueryRangeIdentity,
+		"namespaces":                     NamespaceIdentity,
+		"namespacemappingpolicies":       NamespaceMappingPolicyIdentity,
+		"namespacepolicyinfo":            NamespacePolicyInfoIdentity,
+		"namespacerenderers":             NamespaceRendererIdentity,
+		"namespacetypes":                 NamespaceTypeIdentity,
+		"networkaccesspolicies":          NetworkAccessPolicyIdentity,
 
 		"networkrulesetpolicies": NetworkRuleSetPolicyIdentity,
 		"oauthinfo":              OAUTHInfoIdentity,
@@ -425,6 +427,8 @@ var (
 		"ip":              IsolationProfileIdentity,
 		"lb":              LoadBalancerIdentity,
 		"lbs":             LoadBalancerIdentity,
+		"lbdep":           LoadBalancerDependencyPolicyIdentity,
+		"lbdeps":          LoadBalancerDependencyPolicyIdentity,
 		"mess":            MessageIdentity,
 		"mq":              MetricsQueryIdentity,
 		"mqr":             MetricsQueryRangeIdentity,
@@ -937,10 +941,11 @@ var (
 			{"allTLSCertificateTags"},
 			{"allProcessingUnitTags"},
 		},
-		"loadbalancerpublication": nil,
-		"localca":                 nil,
-		"log":                     nil,
-		"logout":                  nil,
+		"loadbalancerdependencypolicy": nil,
+		"loadbalancerpublication":      nil,
+		"localca":                      nil,
+		"log":                          nil,
+		"logout":                       nil,
 		"message": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -1386,6 +1391,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewLDAPProvider()
 	case LoadBalancerIdentity:
 		return NewLoadBalancer()
+	case LoadBalancerDependencyPolicyIdentity:
+		return NewLoadBalancerDependencyPolicy()
 	case LoadBalancerPublicationIdentity:
 		return NewLoadBalancerPublication()
 	case LocalCAIdentity:
@@ -1715,6 +1722,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseLDAPProvider()
 	case LoadBalancerIdentity:
 		return NewSparseLoadBalancer()
+	case LoadBalancerDependencyPolicyIdentity:
+		return NewSparseLoadBalancerDependencyPolicy()
 	case LoadBalancerPublicationIdentity:
 		return NewSparseLoadBalancerPublication()
 	case LocalCAIdentity:
@@ -2052,6 +2061,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &LDAPProvidersList{}
 	case LoadBalancerIdentity:
 		return &LoadBalancersList{}
+	case LoadBalancerDependencyPolicyIdentity:
+		return &LoadBalancerDependencyPoliciesList{}
 	case LoadBalancerPublicationIdentity:
 		return &LoadBalancerPublicationsList{}
 	case LocalCAIdentity:
@@ -2379,6 +2390,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseLDAPProvidersList{}
 	case LoadBalancerIdentity:
 		return &SparseLoadBalancersList{}
+	case LoadBalancerDependencyPolicyIdentity:
+		return &SparseLoadBalancerDependencyPoliciesList{}
 	case LoadBalancerPublicationIdentity:
 		return &SparseLoadBalancerPublicationsList{}
 	case LocalCAIdentity:
@@ -2645,6 +2658,7 @@ func AllIdentities() []elemental.Identity {
 		IssueServiceTokenIdentity,
 		LDAPProviderIdentity,
 		LoadBalancerIdentity,
+		LoadBalancerDependencyPolicyIdentity,
 		LoadBalancerPublicationIdentity,
 		LocalCAIdentity,
 		LogIdentity,
@@ -2968,6 +2982,11 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{
 			"lb",
 			"lbs",
+		}
+	case LoadBalancerDependencyPolicyIdentity:
+		return []string{
+			"lbdep",
+			"lbdeps",
 		}
 	case LoadBalancerPublicationIdentity:
 		return []string{}

@@ -2978,6 +2978,7 @@ func init() {
 			},
 		},
 		RetrieveMany: map[string]*elemental.RelationshipInfo{
+			"loadbalancerdependencypolicy": {},
 			"root": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -2995,9 +2996,9 @@ func init() {
 					},
 				},
 			},
-			"servicedependency": {},
 		},
 		Info: map[string]*elemental.RelationshipInfo{
+			"loadbalancerdependencypolicy": {},
 			"root": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -3015,7 +3016,29 @@ func init() {
 					},
 				},
 			},
-			"servicedependency": {},
+		},
+	}
+
+	relationshipsRegistry[LoadBalancerDependencyPolicyIdentity] = &elemental.Relationship{
+		Update: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Patch: map[string]*elemental.RelationshipInfo{
+			"root": {},
+		},
+		Delete: map[string]*elemental.RelationshipInfo{
+			"root": {
+				Parameters: []elemental.ParameterDefinition{
+					{
+						Name:     "q",
+						Type:     "string",
+						Multiple: true,
+					},
+				},
+			},
+		},
+		Retrieve: map[string]*elemental.RelationshipInfo{
+			"root": {},
 		},
 	}
 
@@ -4088,7 +4111,8 @@ func init() {
 					},
 				},
 			},
-			"loadbalancer": {},
+			"loadbalancer":                 {},
+			"loadbalancerdependencypolicy": {},
 			"networkaccesspolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{
@@ -4148,7 +4172,8 @@ func init() {
 					},
 				},
 			},
-			"loadbalancer": {},
+			"loadbalancer":                 {},
+			"loadbalancerdependencypolicy": {},
 			"networkaccesspolicy": {
 				Parameters: []elemental.ParameterDefinition{
 					{

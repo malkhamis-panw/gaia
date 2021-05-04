@@ -107,6 +107,9 @@ type PolicyRule struct {
 	// Provides the isolation profiles of the rule.
 	IsolationProfiles IsolationProfilesList `json:"isolationProfiles,omitempty" msgpack:"isolationProfiles,omitempty" bson:"-" mapstructure:"isolationProfiles,omitempty"`
 
+	// Provides the load balancers of this policy rule.
+	LoadBalancers LoadBalancersList `json:"loadBalancers,omitempty" msgpack:"loadBalancers,omitempty" bson:"-" mapstructure:"loadBalancers,omitempty"`
+
 	// Name of the entity.
 	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
 
@@ -253,6 +256,7 @@ func (o *PolicyRule) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			FilePaths:         &o.FilePaths,
 			HostServices:      &o.HostServices,
 			IsolationProfiles: &o.IsolationProfiles,
+			LoadBalancers:     &o.LoadBalancers,
 			Name:              &o.Name,
 			Namespaces:        &o.Namespaces,
 			PolicyNamespace:   &o.PolicyNamespace,
@@ -283,6 +287,8 @@ func (o *PolicyRule) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.HostServices = &(o.HostServices)
 		case "isolationProfiles":
 			sp.IsolationProfiles = &(o.IsolationProfiles)
+		case "loadBalancers":
+			sp.LoadBalancers = &(o.LoadBalancers)
 		case "name":
 			sp.Name = &(o.Name)
 		case "namespaces":
@@ -335,6 +341,9 @@ func (o *PolicyRule) Patch(sparse elemental.SparseIdentifiable) {
 	}
 	if so.IsolationProfiles != nil {
 		o.IsolationProfiles = *so.IsolationProfiles
+	}
+	if so.LoadBalancers != nil {
+		o.LoadBalancers = *so.LoadBalancers
 	}
 	if so.Name != nil {
 		o.Name = *so.Name
@@ -452,6 +461,16 @@ func (o *PolicyRule) Validate() error {
 		}
 	}
 
+	for _, sub := range o.LoadBalancers {
+		if sub == nil {
+			continue
+		}
+		elemental.ResetDefaultForZeroValues(sub)
+		if err := sub.Validate(); err != nil {
+			errors = errors.Append(err)
+		}
+	}
+
 	if err := elemental.ValidateRequiredString("name", o.Name); err != nil {
 		requiredErrors = requiredErrors.Append(err)
 	}
@@ -534,6 +553,8 @@ func (o *PolicyRule) ValueForAttribute(name string) interface{} {
 		return o.HostServices
 	case "isolationProfiles":
 		return o.IsolationProfiles
+	case "loadBalancers":
+		return o.LoadBalancers
 	case "name":
 		return o.Name
 	case "namespaces":
@@ -634,6 +655,15 @@ var PolicyRuleAttributesMap = map[string]elemental.AttributeSpecification{
 		Exposed:        true,
 		Name:           "isolationProfiles",
 		SubType:        "isolationprofile",
+		Type:           "refList",
+	},
+	"LoadBalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "LoadBalancers",
+		Description:    `Provides the load balancers of this policy rule.`,
+		Exposed:        true,
+		Name:           "loadBalancers",
+		SubType:        "loadbalancer",
 		Type:           "refList",
 	},
 	"Name": {
@@ -793,6 +823,15 @@ var PolicyRuleLowerCaseAttributesMap = map[string]elemental.AttributeSpecificati
 		Exposed:        true,
 		Name:           "isolationProfiles",
 		SubType:        "isolationprofile",
+		Type:           "refList",
+	},
+	"loadbalancers": {
+		AllowedChoices: []string{},
+		ConvertedName:  "LoadBalancers",
+		Description:    `Provides the load balancers of this policy rule.`,
+		Exposed:        true,
+		Name:           "loadBalancers",
+		SubType:        "loadbalancer",
 		Type:           "refList",
 	},
 	"name": {
@@ -962,6 +1001,9 @@ type SparsePolicyRule struct {
 	// Provides the isolation profiles of the rule.
 	IsolationProfiles *IsolationProfilesList `json:"isolationProfiles,omitempty" msgpack:"isolationProfiles,omitempty" bson:"-" mapstructure:"isolationProfiles,omitempty"`
 
+	// Provides the load balancers of this policy rule.
+	LoadBalancers *LoadBalancersList `json:"loadBalancers,omitempty" msgpack:"loadBalancers,omitempty" bson:"-" mapstructure:"loadBalancers,omitempty"`
+
 	// Name of the entity.
 	Name *string `json:"name,omitempty" msgpack:"name,omitempty" bson:"name,omitempty" mapstructure:"name,omitempty"`
 
@@ -1089,6 +1131,9 @@ func (o *SparsePolicyRule) ToPlain() elemental.PlainIdentifiable {
 	}
 	if o.IsolationProfiles != nil {
 		out.IsolationProfiles = *o.IsolationProfiles
+	}
+	if o.LoadBalancers != nil {
+		out.LoadBalancers = *o.LoadBalancers
 	}
 	if o.Name != nil {
 		out.Name = *o.Name

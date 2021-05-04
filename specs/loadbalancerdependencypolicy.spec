@@ -1,17 +1,17 @@
 # Model
 model:
-  rest_name: servicedependency
-  resource_name: servicedependencies
-  entity_name: ServiceDependency
+  rest_name: loadbalancerdependencypolicy
+  resource_name: loadbalancerdependencypolicies
+  entity_name: LoadBalancerDependencyPolicy
   package: squall
   group: policy/services
   description: |-
-    Allows you to define a service dependency where a set of processing units as
-    defined
+    Allows you to define a load balancer dependency where a set of processing units
+    as defined
     by their tags require access to specific services.
   aliases:
-  - srvdep
-  - srvdeps
+  - lbdep
+  - lbdeps
   get:
     description: Retrieves the object with the given ID.
   update:
@@ -60,11 +60,10 @@ attributes:
 
 # Relations
 relations:
+- rest_name: loadbalancer
+  get:
+    description: Returns the list of load balancers that are targets of service dependency.
+
 - rest_name: processingunit
   get:
     description: Returns the list of processing units that depend on an service.
-
-- rest_name: service
-  get:
-    description: Returns the list of external services that are targets of service
-      dependency.

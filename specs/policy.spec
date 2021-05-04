@@ -147,4 +147,5 @@ attributes:
     - TokenScope
     - SSHAuthorization
     - UserAccess
+    - LoadBalancerDependency
     filterable: true
