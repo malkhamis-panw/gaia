@@ -12687,7 +12687,7 @@ Identifier of the object.
 
 ##### `action` [`required`]
 
-Type: `enum(Accept | Reject)`
+Type: `enum(Accept | Fail | Reject | Resolve)`
 
 Action of the DNS request.
 
@@ -12729,6 +12729,18 @@ Type: `string`
 
 This field is only set when the lookup fails. It specifies the reason for the
 failure.
+
+##### `resolvedCNAMEs`
+
+Type: `[]string`
+
+CNAME aliases.
+
+##### `resolvedIPs`
+
+Type: `[]string`
+
+resolved IP addresses.
 
 ##### `resolvedName` [`required`]
 
