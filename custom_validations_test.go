@@ -4098,6 +4098,19 @@ func TestValidateCloudGraphQuery(t *testing.T) {
 			true,
 		},
 		{
+			"private source IP set",
+			args{
+				"invalid",
+				&CloudNetworkQuery{
+					SourceIP: "10.1.1.0/24",
+					DestinationSelector: &CloudNetworkQueryFilter{
+						VPCIDs: []string{"vpc1"},
+					},
+				},
+			},
+			true,
+		},
+		{
 			"source ip and selector set",
 			args{
 				"invalid",
@@ -4141,6 +4154,19 @@ func TestValidateCloudGraphQuery(t *testing.T) {
 				"invalid",
 				&CloudNetworkQuery{
 					SourceIP: "0.0.0.0/0",
+				},
+			},
+			true,
+		},
+		{
+			"private destination IP",
+			args{
+				"invalid",
+				&CloudNetworkQuery{
+					DestinationIP: "10.1.1.0/24",
+					SourceSelector: &CloudNetworkQueryFilter{
+						VPCIDs: []string{"vpc1"},
+					},
 				},
 			},
 			true,
@@ -4297,6 +4323,7 @@ func TestValidateOptionalIPAddressList(t *testing.T) {
 		attribute string
 		ips       []string
 	}
+
 	tests := []struct {
 		name    string
 		args    args
@@ -4339,6 +4366,43 @@ func TestValidateOptionalIPAddressList(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			if err := ValidateOptionalIPAddressList(tt.args.attribute, tt.args.ips); (err != nil) != tt.wantErr {
 				t.Errorf("ValidateOptionalIPAddressList() error = %v, wantErr %v", err, tt.wantErr)
+			}
+		})
+	}
+}
+
+func TestIsAddressPrivate(t *testing.T) {
+
+	tests := []struct {
+		name    string
+		args    string
+		want    bool
+		wantErr bool
+	}{
+		{
+			"private address",
+			"127.0.0.0/10",
+			true,
+			false,
+		},
+		{
+			"public address",
+			"135.20.0.0/24",
+			false,
+			false,
+		},
+		{
+			"public address",
+			"badIP",
+			false,
+			true,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if private, err := IsAddressPrivate(tt.args); (private != tt.want) || (err == nil) == tt.wantErr {
+				t.Errorf("IsAddressPrivate() got wrong response %v for %+v with error %s", private, tt.args, err)
 			}
 		})
 	}
