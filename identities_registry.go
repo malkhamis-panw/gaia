@@ -26,8 +26,9 @@ var (
 		"cachedflowreport":          CachedFlowReportIdentity,
 		"category":                  CategoryIdentity,
 
-		"claims":       ClaimsIdentity,
-		"clausesmatch": ClauseMatchIdentity,
+		"claims":              ClaimsIdentity,
+		"clausesmatch":        ClauseMatchIdentity,
+		"cloudaccountcleaner": CloudAccountCleanerIdentity,
 
 		"cloudalert":     CloudAlertIdentity,
 		"cloudalertrule": CloudAlertRuleIdentity,
@@ -140,38 +141,39 @@ var (
 		"processingunitpolicy":  ProcessingUnitPolicyIdentity,
 		"processingunitrefresh": ProcessingUnitRefreshIdentity,
 
-		"quotacheck":  QuotaCheckIdentity,
-		"quotapolicy": QuotaPolicyIdentity,
-		"recipe":      RecipeIdentity,
+		"putrafficaction": PUTrafficActionIdentity,
+		"quotacheck":      QuotaCheckIdentity,
+		"quotapolicy":     QuotaPolicyIdentity,
+		"recipe":          RecipeIdentity,
 
-		"remoteprocessor":        RemoteProcessorIdentity,
-		"renderedpolicy":         RenderedPolicyIdentity,
-		"rendertemplate":         RenderTemplateIdentity,
-		"report":                 ReportIdentity,
-		"reportsquery":           ReportsQueryIdentity,
-		"revocation":             RevocationIdentity,
-		"role":                   RoleIdentity,
-		"root":                   RootIdentity,
-		"samlprovider":           SAMLProviderIdentity,
-		"sandbox":                SandboxIdentity,
-		"search":                 SearchIdentity,
-		"service":                ServiceIdentity,
-		"servicedependency":      ServiceDependencyIdentity,
-		"servicetoken":           ServiceTokenIdentity,
-		"squalltag":              SquallTagIdentity,
-		"sshauthority":           SSHAuthorityIdentity,
-		"sshauthorizationpolicy": SSHAuthorizationPolicyIdentity,
-		"sshcertificate":         SSHCertificateIdentity,
-		"sshidentity":            SSHIdentityIdentity,
-		"statsinfo":              StatsInfoIdentity,
-		"statsquery":             StatsQueryIdentity,
-		"suggestedpolicy":        SuggestedPolicyIdentity,
-		"tag":                    TagIdentity,
-		"taginject":              TagInjectIdentity,
-		"tagprefix":              TagPrefixIdentity,
-		"tagvalue":               TagValueIdentity,
-		"tenant":                 TenantIdentity,
-		"textindex":              TextIndexIdentity,
+		"remoteprocessor":         RemoteProcessorIdentity,
+		"renderedpolicy":          RenderedPolicyIdentity,
+		"rendertemplate":          RenderTemplateIdentity,
+		"report":                  ReportIdentity,
+		"reportsquery":            ReportsQueryIdentity,
+		"revocation":              RevocationIdentity,
+		"role":                    RoleIdentity,
+		"root":                    RootIdentity,
+		"samlprovider":            SAMLProviderIdentity,
+		"sandbox":                 SandboxIdentity,
+		"search":                  SearchIdentity,
+		"service":                 ServiceIdentity,
+		"servicedependencypolicy": ServiceDependencyPolicyIdentity,
+		"servicetoken":            ServiceTokenIdentity,
+		"squalltag":               SquallTagIdentity,
+		"sshauthority":            SSHAuthorityIdentity,
+		"sshauthorizationpolicy":  SSHAuthorizationPolicyIdentity,
+		"sshcertificate":          SSHCertificateIdentity,
+		"sshidentity":             SSHIdentityIdentity,
+		"statsinfo":               StatsInfoIdentity,
+		"statsquery":              StatsQueryIdentity,
+		"suggestedpolicy":         SuggestedPolicyIdentity,
+		"tag":                     TagIdentity,
+		"taginject":               TagInjectIdentity,
+		"tagprefix":               TagPrefixIdentity,
+		"tagvalue":                TagValueIdentity,
+		"tenant":                  TenantIdentity,
+		"textindex":               TextIndexIdentity,
 
 		"token":            TokenIdentity,
 		"tokenscopepolicy": TokenScopePolicyIdentity,
@@ -210,8 +212,9 @@ var (
 		"cachedflowreports":           CachedFlowReportIdentity,
 		"categories":                  CategoryIdentity,
 
-		"claims":         ClaimsIdentity,
-		"clausesmatches": ClauseMatchIdentity,
+		"claims":              ClaimsIdentity,
+		"clausesmatches":      ClauseMatchIdentity,
+		"cloudaccountcleaner": CloudAccountCleanerIdentity,
 
 		"cloudalerts":     CloudAlertIdentity,
 		"cloudalertsrule": CloudAlertRuleIdentity,
@@ -324,38 +327,39 @@ var (
 		"processingunitpolicies":  ProcessingUnitPolicyIdentity,
 		"processingunitrefreshes": ProcessingUnitRefreshIdentity,
 
-		"quotacheck":    QuotaCheckIdentity,
-		"quotapolicies": QuotaPolicyIdentity,
-		"recipes":       RecipeIdentity,
+		"putrafficactions": PUTrafficActionIdentity,
+		"quotacheck":       QuotaCheckIdentity,
+		"quotapolicies":    QuotaPolicyIdentity,
+		"recipes":          RecipeIdentity,
 
-		"remoteprocessors":         RemoteProcessorIdentity,
-		"renderedpolicies":         RenderedPolicyIdentity,
-		"rendertemplates":          RenderTemplateIdentity,
-		"reports":                  ReportIdentity,
-		"reportsqueries":           ReportsQueryIdentity,
-		"revocations":              RevocationIdentity,
-		"roles":                    RoleIdentity,
-		"root":                     RootIdentity,
-		"samlproviders":            SAMLProviderIdentity,
-		"sandboxes":                SandboxIdentity,
-		"search":                   SearchIdentity,
-		"services":                 ServiceIdentity,
-		"servicedependencies":      ServiceDependencyIdentity,
-		"servicetoken":             ServiceTokenIdentity,
-		"squalltags":               SquallTagIdentity,
-		"sshauthorities":           SSHAuthorityIdentity,
-		"sshauthorizationpolicies": SSHAuthorizationPolicyIdentity,
-		"sshcertificates":          SSHCertificateIdentity,
-		"sshidentities":            SSHIdentityIdentity,
-		"statsinfo":                StatsInfoIdentity,
-		"statsqueries":             StatsQueryIdentity,
-		"suggestedpolicies":        SuggestedPolicyIdentity,
-		"tags":                     TagIdentity,
-		"taginjects":               TagInjectIdentity,
-		"tagprefixes":              TagPrefixIdentity,
-		"tagvalues":                TagValueIdentity,
-		"tenants":                  TenantIdentity,
-		"textindexes":              TextIndexIdentity,
+		"remoteprocessors":          RemoteProcessorIdentity,
+		"renderedpolicies":          RenderedPolicyIdentity,
+		"rendertemplates":           RenderTemplateIdentity,
+		"reports":                   ReportIdentity,
+		"reportsqueries":            ReportsQueryIdentity,
+		"revocations":               RevocationIdentity,
+		"roles":                     RoleIdentity,
+		"root":                      RootIdentity,
+		"samlproviders":             SAMLProviderIdentity,
+		"sandboxes":                 SandboxIdentity,
+		"search":                    SearchIdentity,
+		"services":                  ServiceIdentity,
+		"servicedependencypolicies": ServiceDependencyPolicyIdentity,
+		"servicetoken":              ServiceTokenIdentity,
+		"squalltags":                SquallTagIdentity,
+		"sshauthorities":            SSHAuthorityIdentity,
+		"sshauthorizationpolicies":  SSHAuthorizationPolicyIdentity,
+		"sshcertificates":           SSHCertificateIdentity,
+		"sshidentities":             SSHIdentityIdentity,
+		"statsinfo":                 StatsInfoIdentity,
+		"statsqueries":              StatsQueryIdentity,
+		"suggestedpolicies":         SuggestedPolicyIdentity,
+		"tags":                      TagIdentity,
+		"taginjects":                TagInjectIdentity,
+		"tagprefixes":               TagPrefixIdentity,
+		"tagvalues":                 TagValueIdentity,
+		"tenants":                   TenantIdentity,
+		"textindexes":               TextIndexIdentity,
 
 		"tokens":             TokenIdentity,
 		"tokenscopepolicies": TokenScopePolicyIdentity,
@@ -457,8 +461,8 @@ var (
 		"rtpl":            RenderTemplateIdentity,
 		"rq":              ReportsQueryIdentity,
 		"srv":             ServiceIdentity,
-		"srvdep":          ServiceDependencyIdentity,
-		"srvdeps":         ServiceDependencyIdentity,
+		"srvdep":          ServiceDependencyPolicyIdentity,
+		"srvdeps":         ServiceDependencyPolicyIdentity,
 		"sshpol":          SSHAuthorizationPolicyIdentity,
 		"sshpols":         SSHAuthorizationPolicyIdentity,
 		"si":              StatsInfoIdentity,
@@ -577,7 +581,8 @@ var (
 			{"namespace"},
 			{"namespace", "normalizedTags"},
 		},
-		"clausesmatch": nil,
+		"clausesmatch":        nil,
+		"cloudaccountcleaner": nil,
 		"cloudalert": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"updateIdempotencyKey"},
@@ -661,13 +666,14 @@ var (
 			{"namespace", "vpcid", "type"},
 			{"namespace", "vpcid", "parameters"},
 			{"namespace", "type", "parameters"},
+			{"namespace", "nativeID"},
 			{"namespace", "vpcid"},
 			{"namespace"},
-			{"namespace", "normalizedTags"},
-			{"namespace", "nativeID"},
-			{"namespace", "type", "subtype"},
 			{"namespace", "accountid"},
+			{"namespace", "type", "subtype"},
+			{"namespace", "normalizedTags"},
 			{"key"},
+			{"createTime"},
 			{"createIdempotencyKey"},
 		},
 		"cloudpolicy": {
@@ -1066,6 +1072,7 @@ var (
 		},
 		"processingunitpolicy":  nil,
 		"processingunitrefresh": nil,
+		"putrafficaction":       nil,
 		"quotacheck":            nil,
 		"quotapolicy":           nil,
 		"recipe": {
@@ -1106,7 +1113,7 @@ var (
 			{"namespace", "allAPITags"},
 			{"namespace"},
 			{"namespace", "archived"},
-			{"namespace", "allServiceTags"},
+			{"namespace", "allProcessingUnitsTags"},
 			{"namespace", "normalizedTags"},
 			{"namespace", "disabled"},
 			{"namespace", "name"},
@@ -1114,12 +1121,12 @@ var (
 			{"disabled"},
 			{"createIdempotencyKey"},
 			{"archived"},
-			{"allServiceTags"},
+			{"allProcessingUnitsTags"},
 			{"allAPITags"},
 		},
-		"servicedependency": nil,
-		"servicetoken":      nil,
-		"squalltag":         nil,
+		"servicedependencypolicy": nil,
+		"servicetoken":            nil,
+		"squalltag":               nil,
 		"sshauthority": {
 			{":shard", ":unique", "zone", "zHash"},
 			{"namespace", "name"},
@@ -1264,6 +1271,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewClaims()
 	case ClauseMatchIdentity:
 		return NewClauseMatch()
+	case CloudAccountCleanerIdentity:
+		return NewCloudAccountCleaner()
 	case CloudAlertIdentity:
 		return NewCloudAlert()
 	case CloudAlertRuleIdentity:
@@ -1454,6 +1463,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewProcessingUnitPolicy()
 	case ProcessingUnitRefreshIdentity:
 		return NewProcessingUnitRefresh()
+	case PUTrafficActionIdentity:
+		return NewPUTrafficAction()
 	case QuotaCheckIdentity:
 		return NewQuotaCheck()
 	case QuotaPolicyIdentity:
@@ -1484,8 +1495,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewSearch()
 	case ServiceIdentity:
 		return NewService()
-	case ServiceDependencyIdentity:
-		return NewServiceDependency()
+	case ServiceDependencyPolicyIdentity:
+		return NewServiceDependencyPolicy()
 	case ServiceTokenIdentity:
 		return NewServiceToken()
 	case SquallTagIdentity:
@@ -1591,6 +1602,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseClaims()
 	case ClauseMatchIdentity:
 		return NewSparseClauseMatch()
+	case CloudAccountCleanerIdentity:
+		return NewSparseCloudAccountCleaner()
 	case CloudAlertIdentity:
 		return NewSparseCloudAlert()
 	case CloudAlertRuleIdentity:
@@ -1781,6 +1794,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseProcessingUnitPolicy()
 	case ProcessingUnitRefreshIdentity:
 		return NewSparseProcessingUnitRefresh()
+	case PUTrafficActionIdentity:
+		return NewSparsePUTrafficAction()
 	case QuotaCheckIdentity:
 		return NewSparseQuotaCheck()
 	case QuotaPolicyIdentity:
@@ -1809,8 +1824,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseSearch()
 	case ServiceIdentity:
 		return NewSparseService()
-	case ServiceDependencyIdentity:
-		return NewSparseServiceDependency()
+	case ServiceDependencyPolicyIdentity:
+		return NewSparseServiceDependencyPolicy()
 	case ServiceTokenIdentity:
 		return NewSparseServiceToken()
 	case SquallTagIdentity:
@@ -1926,6 +1941,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ClaimsList{}
 	case ClauseMatchIdentity:
 		return &ClauseMatchesList{}
+	case CloudAccountCleanerIdentity:
+		return &CloudAccountCleanersList{}
 	case CloudAlertIdentity:
 		return &CloudAlertsList{}
 	case CloudAlertRuleIdentity:
@@ -2116,6 +2133,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ProcessingUnitPoliciesList{}
 	case ProcessingUnitRefreshIdentity:
 		return &ProcessingUnitRefreshsList{}
+	case PUTrafficActionIdentity:
+		return &PUTrafficActionsList{}
 	case QuotaCheckIdentity:
 		return &QuotaChecksList{}
 	case QuotaPolicyIdentity:
@@ -2144,8 +2163,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &SearchesList{}
 	case ServiceIdentity:
 		return &ServicesList{}
-	case ServiceDependencyIdentity:
-		return &ServiceDependenciesList{}
+	case ServiceDependencyPolicyIdentity:
+		return &ServiceDependencyPoliciesList{}
 	case ServiceTokenIdentity:
 		return &ServiceTokensList{}
 	case SquallTagIdentity:
@@ -2251,6 +2270,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseClaimsList{}
 	case ClauseMatchIdentity:
 		return &SparseClauseMatchesList{}
+	case CloudAccountCleanerIdentity:
+		return &SparseCloudAccountCleanersList{}
 	case CloudAlertIdentity:
 		return &SparseCloudAlertsList{}
 	case CloudAlertRuleIdentity:
@@ -2441,6 +2462,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseProcessingUnitPoliciesList{}
 	case ProcessingUnitRefreshIdentity:
 		return &SparseProcessingUnitRefreshsList{}
+	case PUTrafficActionIdentity:
+		return &SparsePUTrafficActionsList{}
 	case QuotaCheckIdentity:
 		return &SparseQuotaChecksList{}
 	case QuotaPolicyIdentity:
@@ -2469,8 +2492,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseSearchesList{}
 	case ServiceIdentity:
 		return &SparseServicesList{}
-	case ServiceDependencyIdentity:
-		return &SparseServiceDependenciesList{}
+	case ServiceDependencyPolicyIdentity:
+		return &SparseServiceDependencyPoliciesList{}
 	case ServiceTokenIdentity:
 		return &SparseServiceTokensList{}
 	case SquallTagIdentity:
@@ -2572,6 +2595,7 @@ func AllIdentities() []elemental.Identity {
 		CategoryIdentity,
 		ClaimsIdentity,
 		ClauseMatchIdentity,
+		CloudAccountCleanerIdentity,
 		CloudAlertIdentity,
 		CloudAlertRuleIdentity,
 		CloudEndpointIdentity,
@@ -2667,6 +2691,7 @@ func AllIdentities() []elemental.Identity {
 		ProcessingUnitIdentity,
 		ProcessingUnitPolicyIdentity,
 		ProcessingUnitRefreshIdentity,
+		PUTrafficActionIdentity,
 		QuotaCheckIdentity,
 		QuotaPolicyIdentity,
 		RecipeIdentity,
@@ -2682,7 +2707,7 @@ func AllIdentities() []elemental.Identity {
 		SandboxIdentity,
 		SearchIdentity,
 		ServiceIdentity,
-		ServiceDependencyIdentity,
+		ServiceDependencyPolicyIdentity,
 		ServiceTokenIdentity,
 		SquallTagIdentity,
 		SSHAuthorityIdentity,
@@ -2780,6 +2805,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 	case ClaimsIdentity:
 		return []string{}
 	case ClauseMatchIdentity:
+		return []string{}
+	case CloudAccountCleanerIdentity:
 		return []string{}
 	case CloudAlertIdentity:
 		return []string{}
@@ -3060,6 +3087,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		}
 	case ProcessingUnitRefreshIdentity:
 		return []string{}
+	case PUTrafficActionIdentity:
+		return []string{}
 	case QuotaCheckIdentity:
 		return []string{}
 	case QuotaPolicyIdentity:
@@ -3110,7 +3139,7 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{
 			"srv",
 		}
-	case ServiceDependencyIdentity:
+	case ServiceDependencyPolicyIdentity:
 		return []string{
 			"srvdep",
 			"srvdeps",

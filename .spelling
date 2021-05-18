@@ -232,6 +232,7 @@ PCTimeRange
 PEM-encoded
 PKI-based
 PKIXName
+PUTrafficAction
 PacketReport
 PacketReports
 PasswordReset
@@ -298,7 +299,7 @@ SAMLProvider
 ScopesSupported
 searchable
 SerialNumber
-ServiceDependency
+ServiceDependencyPolicy
 ServiceToken
 sharded
 sharding
@@ -516,16 +517,17 @@ CloudVPCData
 CloudManagedNetwork
 CloudSnapshotAccount
 CloudEndpointDataProductInfo
-productInfoType 
+CloudAccountCleaner
+productInfoType
 productInfoValue
 imageID
 imageIDs
 resourceType
 
-nativeID 
+nativeID
 ObjectIDs
-ruleset 
-VPCs 
+ruleset
+VPCs
 VPC
 prisma
 infrastructure

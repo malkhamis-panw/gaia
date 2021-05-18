@@ -190,6 +190,10 @@ relations:
   create:
     description: Performs a clause matching.
 
+- rest_name: cloudaccountcleaner
+  create:
+    description: Initiates a cloud account clean up process for all stale objects.
+
 - rest_name: cloudalertrule
   get:
     description: Retrieves the list of cloud alert rules.
@@ -867,6 +871,12 @@ relations:
   create:
     description: Creates a new processing unit policy.
 
+- rest_name: putrafficaction
+  get:
+    description: Returns the processing unit traffic actions of the specified namespace.
+  create:
+    description: Modifies the processing unit traffic actions of the specified namespace.
+
 - rest_name: quotacheck
   create:
     description: Verifies if the quota is exceeded for a particular object.
@@ -970,9 +980,9 @@ relations:
   create:
     description: Creates a new service.
 
-- rest_name: servicedependency
+- rest_name: servicedependencypolicy
   get:
-    description: Retrieves the list of service dependencies.
+    description: Retrieves the list of service dependency policies.
     global_parameters:
     - $filtering
     - $propagatable
