@@ -52,6 +52,13 @@ attributes:
     extensions:
       refMode: pointer
 
+  - name: disabled
+    description: Represents whether the associated policy was disabled.
+    type: boolean
+    stored: true
+    getter: true
+    setter: true
+
   - name: lastExecutionTimestamp
     description: Result of the last successfully run query.
     type: time

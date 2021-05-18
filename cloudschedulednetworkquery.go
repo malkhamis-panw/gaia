@@ -107,6 +107,9 @@ type CloudScheduledNetworkQuery struct {
 	// Description of the object.
 	Description string `json:"description" msgpack:"description" bson:"description" mapstructure:"description,omitempty"`
 
+	// Represents whether the associated policy was disabled.
+	Disabled bool `json:"-" msgpack:"-" bson:"disabled" mapstructure:"-,omitempty"`
+
 	// Result of the last successfully run query.
 	LastExecutionTimestamp time.Time `json:"lastExecutionTimestamp" msgpack:"lastExecutionTimestamp" bson:"lastexecutiontimestamp" mapstructure:"lastExecutionTimestamp,omitempty"`
 
@@ -192,6 +195,7 @@ func (o *CloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	s.CloudNetworkQuery = o.CloudNetworkQuery
 	s.CreateIdempotencyKey = o.CreateIdempotencyKey
 	s.Description = o.Description
+	s.Disabled = o.Disabled
 	s.LastExecutionTimestamp = o.LastExecutionTimestamp
 	s.MigrationsLog = o.MigrationsLog
 	s.Name = o.Name
@@ -226,6 +230,7 @@ func (o *CloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	o.CloudNetworkQuery = s.CloudNetworkQuery
 	o.CreateIdempotencyKey = s.CreateIdempotencyKey
 	o.Description = s.Description
+	o.Disabled = s.Disabled
 	o.LastExecutionTimestamp = s.LastExecutionTimestamp
 	o.MigrationsLog = s.MigrationsLog
 	o.Name = s.Name
@@ -318,6 +323,18 @@ func (o *CloudScheduledNetworkQuery) GetDescription() string {
 func (o *CloudScheduledNetworkQuery) SetDescription(description string) {
 
 	o.Description = description
+}
+
+// GetDisabled returns the Disabled of the receiver.
+func (o *CloudScheduledNetworkQuery) GetDisabled() bool {
+
+	return o.Disabled
+}
+
+// SetDisabled sets the property Disabled of the receiver using the given value.
+func (o *CloudScheduledNetworkQuery) SetDisabled(disabled bool) {
+
+	o.Disabled = disabled
 }
 
 // GetMigrationsLog returns the MigrationsLog of the receiver.
@@ -431,6 +448,7 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			CloudNetworkQuery:      o.CloudNetworkQuery,
 			CreateIdempotencyKey:   &o.CreateIdempotencyKey,
 			Description:            &o.Description,
+			Disabled:               &o.Disabled,
 			LastExecutionTimestamp: &o.LastExecutionTimestamp,
 			MigrationsLog:          &o.MigrationsLog,
 			Name:                   &o.Name,
@@ -463,6 +481,8 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			sp.CreateIdempotencyKey = &(o.CreateIdempotencyKey)
 		case "description":
 			sp.Description = &(o.Description)
+		case "disabled":
+			sp.Disabled = &(o.Disabled)
 		case "lastExecutionTimestamp":
 			sp.LastExecutionTimestamp = &(o.LastExecutionTimestamp)
 		case "migrationsLog":
@@ -519,6 +539,9 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	}
 	if so.Description != nil {
 		o.Description = *so.Description
+	}
+	if so.Disabled != nil {
+		o.Disabled = *so.Disabled
 	}
 	if so.LastExecutionTimestamp != nil {
 		o.LastExecutionTimestamp = *so.LastExecutionTimestamp
@@ -662,6 +685,8 @@ func (o *CloudScheduledNetworkQuery) ValueForAttribute(name string) interface{} 
 		return o.CreateIdempotencyKey
 	case "description":
 		return o.Description
+	case "disabled":
+		return o.Disabled
 	case "lastExecutionTimestamp":
 		return o.LastExecutionTimestamp
 	case "migrationsLog":
@@ -787,6 +812,17 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Setter:         true,
 		Stored:         true,
 		Type:           "string",
+	},
+	"Disabled": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "disabled",
+		ConvertedName:  "Disabled",
+		Description:    `Represents whether the associated policy was disabled.`,
+		Getter:         true,
+		Name:           "disabled",
+		Setter:         true,
+		Stored:         true,
+		Type:           "boolean",
 	},
 	"LastExecutionTimestamp": {
 		AllowedChoices: []string{},
@@ -1027,6 +1063,17 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		Stored:         true,
 		Type:           "string",
 	},
+	"disabled": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "disabled",
+		ConvertedName:  "Disabled",
+		Description:    `Represents whether the associated policy was disabled.`,
+		Getter:         true,
+		Name:           "disabled",
+		Setter:         true,
+		Stored:         true,
+		Type:           "boolean",
+	},
 	"lastexecutiontimestamp": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "lastexecutiontimestamp",
@@ -1254,6 +1301,9 @@ type SparseCloudScheduledNetworkQuery struct {
 	// Description of the object.
 	Description *string `json:"description,omitempty" msgpack:"description,omitempty" bson:"description,omitempty" mapstructure:"description,omitempty"`
 
+	// Represents whether the associated policy was disabled.
+	Disabled *bool `json:"-" msgpack:"-" bson:"disabled,omitempty" mapstructure:"-,omitempty"`
+
 	// Result of the last successfully run query.
 	LastExecutionTimestamp *time.Time `json:"lastExecutionTimestamp,omitempty" msgpack:"lastExecutionTimestamp,omitempty" bson:"lastexecutiontimestamp,omitempty" mapstructure:"lastExecutionTimestamp,omitempty"`
 
@@ -1349,6 +1399,9 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.Description != nil {
 		s.Description = o.Description
 	}
+	if o.Disabled != nil {
+		s.Disabled = o.Disabled
+	}
 	if o.LastExecutionTimestamp != nil {
 		s.LastExecutionTimestamp = o.LastExecutionTimestamp
 	}
@@ -1415,6 +1468,9 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	}
 	if s.Description != nil {
 		o.Description = s.Description
+	}
+	if s.Disabled != nil {
+		o.Disabled = s.Disabled
 	}
 	if s.LastExecutionTimestamp != nil {
 		o.LastExecutionTimestamp = s.LastExecutionTimestamp
@@ -1483,6 +1539,9 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	}
 	if o.Description != nil {
 		out.Description = *o.Description
+	}
+	if o.Disabled != nil {
+		out.Disabled = *o.Disabled
 	}
 	if o.LastExecutionTimestamp != nil {
 		out.LastExecutionTimestamp = *o.LastExecutionTimestamp
@@ -1580,6 +1639,22 @@ func (o *SparseCloudScheduledNetworkQuery) GetDescription() (out string) {
 func (o *SparseCloudScheduledNetworkQuery) SetDescription(description string) {
 
 	o.Description = &description
+}
+
+// GetDisabled returns the Disabled of the receiver.
+func (o *SparseCloudScheduledNetworkQuery) GetDisabled() (out bool) {
+
+	if o.Disabled == nil {
+		return
+	}
+
+	return *o.Disabled
+}
+
+// SetDisabled sets the property Disabled of the receiver using the address of the given value.
+func (o *SparseCloudScheduledNetworkQuery) SetDisabled(disabled bool) {
+
+	o.Disabled = &disabled
 }
 
 // GetMigrationsLog returns the MigrationsLog of the receiver.
@@ -1742,6 +1817,7 @@ type mongoAttributesCloudScheduledNetworkQuery struct {
 	CloudNetworkQuery      *CloudNetworkQuery  `bson:"cloudnetworkquery"`
 	CreateIdempotencyKey   string              `bson:"createidempotencykey"`
 	Description            string              `bson:"description"`
+	Disabled               bool                `bson:"disabled"`
 	LastExecutionTimestamp time.Time           `bson:"lastexecutiontimestamp"`
 	MigrationsLog          map[string]string   `bson:"migrationslog,omitempty"`
 	Name                   string              `bson:"name"`
@@ -1761,6 +1837,7 @@ type mongoAttributesSparseCloudScheduledNetworkQuery struct {
 	CloudNetworkQuery      *CloudNetworkQuery   `bson:"cloudnetworkquery,omitempty"`
 	CreateIdempotencyKey   *string              `bson:"createidempotencykey,omitempty"`
 	Description            *string              `bson:"description,omitempty"`
+	Disabled               *bool                `bson:"disabled,omitempty"`
 	LastExecutionTimestamp *time.Time           `bson:"lastexecutiontimestamp,omitempty"`
 	MigrationsLog          *map[string]string   `bson:"migrationslog,omitempty"`
 	Name                   *string              `bson:"name,omitempty"`
