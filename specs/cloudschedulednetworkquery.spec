@@ -12,11 +12,8 @@ model:
   extends:
   - '@zoned'
   - '@migratable'
-  - '@base'
   - '@namespaced'
-  - '@described'
   - '@identifiable-stored'
-  - '@named'
 
 # Indexes
 indexes:
@@ -55,9 +52,8 @@ attributes:
   - name: disabled
     description: Represents whether the associated policy was disabled.
     type: boolean
+    exposed: true
     stored: true
-    getter: true
-    setter: true
 
   - name: lastExecutionTimestamp
     description: Result of the last successfully run query.

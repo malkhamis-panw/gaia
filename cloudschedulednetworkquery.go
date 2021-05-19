@@ -58,9 +58,7 @@ func (o CloudScheduledNetworkQueriesList) List() elemental.IdentifiablesList {
 // DefaultOrder returns the default ordering fields of the content.
 func (o CloudScheduledNetworkQueriesList) DefaultOrder() []string {
 
-	return []string{
-		"name",
-	}
+	return []string{}
 }
 
 // ToSparse returns the CloudScheduledNetworkQueriesList converted to SparseCloudScheduledNetworkQueriesList.
@@ -89,26 +87,14 @@ type CloudScheduledNetworkQuery struct {
 	// Prisma Cloud Alert Rule ID.
 	AlertRuleID string `json:"alertRuleID" msgpack:"alertRuleID" bson:"alertruleid" mapstructure:"alertRuleID,omitempty"`
 
-	// Stores additional information about an entity.
-	Annotations map[string][]string `json:"annotations" msgpack:"annotations" bson:"annotations" mapstructure:"annotations,omitempty"`
-
-	// List of tags attached to an entity.
-	AssociatedTags []string `json:"associatedTags" msgpack:"associatedTags" bson:"associatedtags" mapstructure:"associatedTags,omitempty"`
-
 	// The result of the cloud network query.
 	CloudGraphResult *CloudGraph `json:"cloudGraphResult" msgpack:"cloudGraphResult" bson:"-" mapstructure:"cloudGraphResult,omitempty"`
 
 	// The cloud network query that should be used.
 	CloudNetworkQuery *CloudNetworkQuery `json:"cloudNetworkQuery" msgpack:"cloudNetworkQuery" bson:"cloudnetworkquery" mapstructure:"cloudNetworkQuery,omitempty"`
 
-	// internal idempotency key for a create operation.
-	CreateIdempotencyKey string `json:"-" msgpack:"-" bson:"createidempotencykey" mapstructure:"-,omitempty"`
-
-	// Description of the object.
-	Description string `json:"description" msgpack:"description" bson:"description" mapstructure:"description,omitempty"`
-
 	// Represents whether the associated policy was disabled.
-	Disabled bool `json:"-" msgpack:"-" bson:"disabled" mapstructure:"-,omitempty"`
+	Disabled bool `json:"disabled" msgpack:"disabled" bson:"disabled" mapstructure:"disabled,omitempty"`
 
 	// Result of the last successfully run query.
 	LastExecutionTimestamp time.Time `json:"lastExecutionTimestamp" msgpack:"lastExecutionTimestamp" bson:"lastexecutiontimestamp" mapstructure:"lastExecutionTimestamp,omitempty"`
@@ -116,23 +102,11 @@ type CloudScheduledNetworkQuery struct {
 	// Internal property maintaining migrations information.
 	MigrationsLog map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
-	// Name of the entity.
-	Name string `json:"name" msgpack:"name" bson:"name" mapstructure:"name,omitempty"`
-
 	// Namespace tag attached to an entity.
 	Namespace string `json:"namespace" msgpack:"namespace" bson:"namespace" mapstructure:"namespace,omitempty"`
 
-	// Contains the list of normalized tags of the entities.
-	NormalizedTags []string `json:"normalizedTags" msgpack:"normalizedTags" bson:"normalizedtags" mapstructure:"normalizedTags,omitempty"`
-
 	// Prisma Cloud Policy ID.
 	PolicyID string `json:"policyID" msgpack:"policyID" bson:"policyid" mapstructure:"policyID,omitempty"`
-
-	// Defines if the object is protected.
-	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
-
-	// internal idempotency key for a update operation.
-	UpdateIdempotencyKey string `json:"-" msgpack:"-" bson:"updateidempotencykey" mapstructure:"-,omitempty"`
 
 	// geographical hash of the data. This is used for sharding and
 	// georedundancy.
@@ -149,12 +123,9 @@ func NewCloudScheduledNetworkQuery() *CloudScheduledNetworkQuery {
 
 	return &CloudScheduledNetworkQuery{
 		ModelVersion:      1,
-		Annotations:       map[string][]string{},
-		AssociatedTags:    []string{},
 		CloudGraphResult:  NewCloudGraph(),
 		CloudNetworkQuery: NewCloudNetworkQuery(),
 		MigrationsLog:     map[string]string{},
-		NormalizedTags:    []string{},
 	}
 }
 
@@ -190,20 +161,12 @@ func (o *CloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 		s.ID = bson.ObjectIdHex(o.ID)
 	}
 	s.AlertRuleID = o.AlertRuleID
-	s.Annotations = o.Annotations
-	s.AssociatedTags = o.AssociatedTags
 	s.CloudNetworkQuery = o.CloudNetworkQuery
-	s.CreateIdempotencyKey = o.CreateIdempotencyKey
-	s.Description = o.Description
 	s.Disabled = o.Disabled
 	s.LastExecutionTimestamp = o.LastExecutionTimestamp
 	s.MigrationsLog = o.MigrationsLog
-	s.Name = o.Name
 	s.Namespace = o.Namespace
-	s.NormalizedTags = o.NormalizedTags
 	s.PolicyID = o.PolicyID
-	s.Protected = o.Protected
-	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.ZHash = o.ZHash
 	s.Zone = o.Zone
 
@@ -225,20 +188,12 @@ func (o *CloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 
 	o.ID = s.ID.Hex()
 	o.AlertRuleID = s.AlertRuleID
-	o.Annotations = s.Annotations
-	o.AssociatedTags = s.AssociatedTags
 	o.CloudNetworkQuery = s.CloudNetworkQuery
-	o.CreateIdempotencyKey = s.CreateIdempotencyKey
-	o.Description = s.Description
 	o.Disabled = s.Disabled
 	o.LastExecutionTimestamp = s.LastExecutionTimestamp
 	o.MigrationsLog = s.MigrationsLog
-	o.Name = s.Name
 	o.Namespace = s.Namespace
-	o.NormalizedTags = s.NormalizedTags
 	o.PolicyID = s.PolicyID
-	o.Protected = s.Protected
-	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.ZHash = s.ZHash
 	o.Zone = s.Zone
 
@@ -260,9 +215,7 @@ func (o *CloudScheduledNetworkQuery) BleveType() string {
 // DefaultOrder returns the list of default ordering fields.
 func (o *CloudScheduledNetworkQuery) DefaultOrder() []string {
 
-	return []string{
-		"name",
-	}
+	return []string{}
 }
 
 // Doc returns the documentation for the object
@@ -277,66 +230,6 @@ func (o *CloudScheduledNetworkQuery) String() string {
 	return fmt.Sprintf("<%s:%s>", o.Identity().Name, o.Identifier())
 }
 
-// GetAnnotations returns the Annotations of the receiver.
-func (o *CloudScheduledNetworkQuery) GetAnnotations() map[string][]string {
-
-	return o.Annotations
-}
-
-// SetAnnotations sets the property Annotations of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetAnnotations(annotations map[string][]string) {
-
-	o.Annotations = annotations
-}
-
-// GetAssociatedTags returns the AssociatedTags of the receiver.
-func (o *CloudScheduledNetworkQuery) GetAssociatedTags() []string {
-
-	return o.AssociatedTags
-}
-
-// SetAssociatedTags sets the property AssociatedTags of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetAssociatedTags(associatedTags []string) {
-
-	o.AssociatedTags = associatedTags
-}
-
-// GetCreateIdempotencyKey returns the CreateIdempotencyKey of the receiver.
-func (o *CloudScheduledNetworkQuery) GetCreateIdempotencyKey() string {
-
-	return o.CreateIdempotencyKey
-}
-
-// SetCreateIdempotencyKey sets the property CreateIdempotencyKey of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetCreateIdempotencyKey(createIdempotencyKey string) {
-
-	o.CreateIdempotencyKey = createIdempotencyKey
-}
-
-// GetDescription returns the Description of the receiver.
-func (o *CloudScheduledNetworkQuery) GetDescription() string {
-
-	return o.Description
-}
-
-// SetDescription sets the property Description of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetDescription(description string) {
-
-	o.Description = description
-}
-
-// GetDisabled returns the Disabled of the receiver.
-func (o *CloudScheduledNetworkQuery) GetDisabled() bool {
-
-	return o.Disabled
-}
-
-// SetDisabled sets the property Disabled of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetDisabled(disabled bool) {
-
-	o.Disabled = disabled
-}
-
 // GetMigrationsLog returns the MigrationsLog of the receiver.
 func (o *CloudScheduledNetworkQuery) GetMigrationsLog() map[string]string {
 
@@ -349,18 +242,6 @@ func (o *CloudScheduledNetworkQuery) SetMigrationsLog(migrationsLog map[string]s
 	o.MigrationsLog = migrationsLog
 }
 
-// GetName returns the Name of the receiver.
-func (o *CloudScheduledNetworkQuery) GetName() string {
-
-	return o.Name
-}
-
-// SetName sets the property Name of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetName(name string) {
-
-	o.Name = name
-}
-
 // GetNamespace returns the Namespace of the receiver.
 func (o *CloudScheduledNetworkQuery) GetNamespace() string {
 
@@ -371,42 +252,6 @@ func (o *CloudScheduledNetworkQuery) GetNamespace() string {
 func (o *CloudScheduledNetworkQuery) SetNamespace(namespace string) {
 
 	o.Namespace = namespace
-}
-
-// GetNormalizedTags returns the NormalizedTags of the receiver.
-func (o *CloudScheduledNetworkQuery) GetNormalizedTags() []string {
-
-	return o.NormalizedTags
-}
-
-// SetNormalizedTags sets the property NormalizedTags of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetNormalizedTags(normalizedTags []string) {
-
-	o.NormalizedTags = normalizedTags
-}
-
-// GetProtected returns the Protected of the receiver.
-func (o *CloudScheduledNetworkQuery) GetProtected() bool {
-
-	return o.Protected
-}
-
-// SetProtected sets the property Protected of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetProtected(protected bool) {
-
-	o.Protected = protected
-}
-
-// GetUpdateIdempotencyKey returns the UpdateIdempotencyKey of the receiver.
-func (o *CloudScheduledNetworkQuery) GetUpdateIdempotencyKey() string {
-
-	return o.UpdateIdempotencyKey
-}
-
-// SetUpdateIdempotencyKey sets the property UpdateIdempotencyKey of the receiver using the given value.
-func (o *CloudScheduledNetworkQuery) SetUpdateIdempotencyKey(updateIdempotencyKey string) {
-
-	o.UpdateIdempotencyKey = updateIdempotencyKey
 }
 
 // GetZHash returns the ZHash of the receiver.
@@ -442,21 +287,13 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 		return &SparseCloudScheduledNetworkQuery{
 			ID:                     &o.ID,
 			AlertRuleID:            &o.AlertRuleID,
-			Annotations:            &o.Annotations,
-			AssociatedTags:         &o.AssociatedTags,
 			CloudGraphResult:       o.CloudGraphResult,
 			CloudNetworkQuery:      o.CloudNetworkQuery,
-			CreateIdempotencyKey:   &o.CreateIdempotencyKey,
-			Description:            &o.Description,
 			Disabled:               &o.Disabled,
 			LastExecutionTimestamp: &o.LastExecutionTimestamp,
 			MigrationsLog:          &o.MigrationsLog,
-			Name:                   &o.Name,
 			Namespace:              &o.Namespace,
-			NormalizedTags:         &o.NormalizedTags,
 			PolicyID:               &o.PolicyID,
-			Protected:              &o.Protected,
-			UpdateIdempotencyKey:   &o.UpdateIdempotencyKey,
 			ZHash:                  &o.ZHash,
 			Zone:                   &o.Zone,
 		}
@@ -469,36 +306,20 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			sp.ID = &(o.ID)
 		case "alertRuleID":
 			sp.AlertRuleID = &(o.AlertRuleID)
-		case "annotations":
-			sp.Annotations = &(o.Annotations)
-		case "associatedTags":
-			sp.AssociatedTags = &(o.AssociatedTags)
 		case "cloudGraphResult":
 			sp.CloudGraphResult = o.CloudGraphResult
 		case "cloudNetworkQuery":
 			sp.CloudNetworkQuery = o.CloudNetworkQuery
-		case "createIdempotencyKey":
-			sp.CreateIdempotencyKey = &(o.CreateIdempotencyKey)
-		case "description":
-			sp.Description = &(o.Description)
 		case "disabled":
 			sp.Disabled = &(o.Disabled)
 		case "lastExecutionTimestamp":
 			sp.LastExecutionTimestamp = &(o.LastExecutionTimestamp)
 		case "migrationsLog":
 			sp.MigrationsLog = &(o.MigrationsLog)
-		case "name":
-			sp.Name = &(o.Name)
 		case "namespace":
 			sp.Namespace = &(o.Namespace)
-		case "normalizedTags":
-			sp.NormalizedTags = &(o.NormalizedTags)
 		case "policyID":
 			sp.PolicyID = &(o.PolicyID)
-		case "protected":
-			sp.Protected = &(o.Protected)
-		case "updateIdempotencyKey":
-			sp.UpdateIdempotencyKey = &(o.UpdateIdempotencyKey)
 		case "zHash":
 			sp.ZHash = &(o.ZHash)
 		case "zone":
@@ -522,23 +343,11 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	if so.AlertRuleID != nil {
 		o.AlertRuleID = *so.AlertRuleID
 	}
-	if so.Annotations != nil {
-		o.Annotations = *so.Annotations
-	}
-	if so.AssociatedTags != nil {
-		o.AssociatedTags = *so.AssociatedTags
-	}
 	if so.CloudGraphResult != nil {
 		o.CloudGraphResult = so.CloudGraphResult
 	}
 	if so.CloudNetworkQuery != nil {
 		o.CloudNetworkQuery = so.CloudNetworkQuery
-	}
-	if so.CreateIdempotencyKey != nil {
-		o.CreateIdempotencyKey = *so.CreateIdempotencyKey
-	}
-	if so.Description != nil {
-		o.Description = *so.Description
 	}
 	if so.Disabled != nil {
 		o.Disabled = *so.Disabled
@@ -549,23 +358,11 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	if so.MigrationsLog != nil {
 		o.MigrationsLog = *so.MigrationsLog
 	}
-	if so.Name != nil {
-		o.Name = *so.Name
-	}
 	if so.Namespace != nil {
 		o.Namespace = *so.Namespace
 	}
-	if so.NormalizedTags != nil {
-		o.NormalizedTags = *so.NormalizedTags
-	}
 	if so.PolicyID != nil {
 		o.PolicyID = *so.PolicyID
-	}
-	if so.Protected != nil {
-		o.Protected = *so.Protected
-	}
-	if so.UpdateIdempotencyKey != nil {
-		o.UpdateIdempotencyKey = *so.UpdateIdempotencyKey
 	}
 	if so.ZHash != nil {
 		o.ZHash = *so.ZHash
@@ -605,10 +402,6 @@ func (o *CloudScheduledNetworkQuery) Validate() error {
 	errors := elemental.Errors{}
 	requiredErrors := elemental.Errors{}
 
-	if err := ValidateTagsWithoutReservedPrefixes("associatedTags", o.AssociatedTags); err != nil {
-		errors = errors.Append(err)
-	}
-
 	if o.CloudGraphResult != nil {
 		elemental.ResetDefaultForZeroValues(o.CloudGraphResult)
 		if err := o.CloudGraphResult.Validate(); err != nil {
@@ -621,18 +414,6 @@ func (o *CloudScheduledNetworkQuery) Validate() error {
 		if err := o.CloudNetworkQuery.Validate(); err != nil {
 			errors = errors.Append(err)
 		}
-	}
-
-	if err := elemental.ValidateMaximumLength("description", o.Description, 1024, false); err != nil {
-		errors = errors.Append(err)
-	}
-
-	if err := elemental.ValidateRequiredString("name", o.Name); err != nil {
-		requiredErrors = requiredErrors.Append(err)
-	}
-
-	if err := elemental.ValidateMaximumLength("name", o.Name, 256, false); err != nil {
-		errors = errors.Append(err)
 	}
 
 	if len(requiredErrors) > 0 {
@@ -673,36 +454,20 @@ func (o *CloudScheduledNetworkQuery) ValueForAttribute(name string) interface{} 
 		return o.ID
 	case "alertRuleID":
 		return o.AlertRuleID
-	case "annotations":
-		return o.Annotations
-	case "associatedTags":
-		return o.AssociatedTags
 	case "cloudGraphResult":
 		return o.CloudGraphResult
 	case "cloudNetworkQuery":
 		return o.CloudNetworkQuery
-	case "createIdempotencyKey":
-		return o.CreateIdempotencyKey
-	case "description":
-		return o.Description
 	case "disabled":
 		return o.Disabled
 	case "lastExecutionTimestamp":
 		return o.LastExecutionTimestamp
 	case "migrationsLog":
 		return o.MigrationsLog
-	case "name":
-		return o.Name
 	case "namespace":
 		return o.Namespace
-	case "normalizedTags":
-		return o.NormalizedTags
 	case "policyID":
 		return o.PolicyID
-	case "protected":
-		return o.Protected
-	case "updateIdempotencyKey":
-		return o.UpdateIdempotencyKey
 	case "zHash":
 		return o.ZHash
 	case "zone":
@@ -740,32 +505,6 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		SubType:        "string",
 		Type:           "string",
 	},
-	"Annotations": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "annotations",
-		ConvertedName:  "Annotations",
-		Description:    `Stores additional information about an entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "annotations",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "map[string][]string",
-		Type:           "external",
-	},
-	"AssociatedTags": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "associatedtags",
-		ConvertedName:  "AssociatedTags",
-		Description:    `List of tags attached to an entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "associatedTags",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
 	"CloudGraphResult": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CloudGraphResult",
@@ -786,41 +525,13 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		SubType:        "cloudnetworkquery",
 		Type:           "ref",
 	},
-	"CreateIdempotencyKey": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "createidempotencykey",
-		ConvertedName:  "CreateIdempotencyKey",
-		Description:    `internal idempotency key for a create operation.`,
-		Getter:         true,
-		Name:           "createIdempotencyKey",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"Description": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "description",
-		ConvertedName:  "Description",
-		Description:    `Description of the object.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      1024,
-		Name:           "description",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"Disabled": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "disabled",
 		ConvertedName:  "Disabled",
 		Description:    `Represents whether the associated policy was disabled.`,
-		Getter:         true,
+		Exposed:        true,
 		Name:           "disabled",
-		Setter:         true,
 		Stored:         true,
 		Type:           "boolean",
 	},
@@ -847,22 +558,6 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		SubType:        "map[string]string",
 		Type:           "external",
 	},
-	"Name": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "name",
-		ConvertedName:  "Name",
-		Description:    `Name of the entity.`,
-		Exposed:        true,
-		Filterable:     true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "name",
-		Orderable:      true,
-		Required:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"Namespace": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -879,22 +574,6 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		Type:           "string",
 	},
-	"NormalizedTags": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "normalizedtags",
-		ConvertedName:  "NormalizedTags",
-		Description:    `Contains the list of normalized tags of the entities.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "normalizedTags",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Transient:      true,
-		Type:           "list",
-	},
 	"PolicyID": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "policyid",
@@ -904,32 +583,6 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Name:           "policyID",
 		Stored:         true,
 		SubType:        "string",
-		Type:           "string",
-	},
-	"Protected": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "protected",
-		ConvertedName:  "Protected",
-		Description:    `Defines if the object is protected.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "protected",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "boolean",
-	},
-	"UpdateIdempotencyKey": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "updateidempotencykey",
-		ConvertedName:  "UpdateIdempotencyKey",
-		Description:    `internal idempotency key for a update operation.`,
-		Getter:         true,
-		Name:           "updateIdempotencyKey",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
 		Type:           "string",
 	},
 	"ZHash": {
@@ -990,32 +643,6 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		SubType:        "string",
 		Type:           "string",
 	},
-	"annotations": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "annotations",
-		ConvertedName:  "Annotations",
-		Description:    `Stores additional information about an entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "annotations",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "map[string][]string",
-		Type:           "external",
-	},
-	"associatedtags": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "associatedtags",
-		ConvertedName:  "AssociatedTags",
-		Description:    `List of tags attached to an entity.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "associatedTags",
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Type:           "list",
-	},
 	"cloudgraphresult": {
 		AllowedChoices: []string{},
 		ConvertedName:  "CloudGraphResult",
@@ -1036,41 +663,13 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		SubType:        "cloudnetworkquery",
 		Type:           "ref",
 	},
-	"createidempotencykey": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "createidempotencykey",
-		ConvertedName:  "CreateIdempotencyKey",
-		Description:    `internal idempotency key for a create operation.`,
-		Getter:         true,
-		Name:           "createIdempotencyKey",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
-	"description": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "description",
-		ConvertedName:  "Description",
-		Description:    `Description of the object.`,
-		Exposed:        true,
-		Getter:         true,
-		MaxLength:      1024,
-		Name:           "description",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"disabled": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "disabled",
 		ConvertedName:  "Disabled",
 		Description:    `Represents whether the associated policy was disabled.`,
-		Getter:         true,
+		Exposed:        true,
 		Name:           "disabled",
-		Setter:         true,
 		Stored:         true,
 		Type:           "boolean",
 	},
@@ -1097,22 +696,6 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		SubType:        "map[string]string",
 		Type:           "external",
 	},
-	"name": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "name",
-		ConvertedName:  "Name",
-		Description:    `Name of the entity.`,
-		Exposed:        true,
-		Filterable:     true,
-		Getter:         true,
-		MaxLength:      256,
-		Name:           "name",
-		Orderable:      true,
-		Required:       true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "string",
-	},
 	"namespace": {
 		AllowedChoices: []string{},
 		Autogenerated:  true,
@@ -1129,22 +712,6 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		Stored:         true,
 		Type:           "string",
 	},
-	"normalizedtags": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "normalizedtags",
-		ConvertedName:  "NormalizedTags",
-		Description:    `Contains the list of normalized tags of the entities.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "normalizedTags",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
-		SubType:        "string",
-		Transient:      true,
-		Type:           "list",
-	},
 	"policyid": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "policyid",
@@ -1154,32 +721,6 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		Name:           "policyID",
 		Stored:         true,
 		SubType:        "string",
-		Type:           "string",
-	},
-	"protected": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "protected",
-		ConvertedName:  "Protected",
-		Description:    `Defines if the object is protected.`,
-		Exposed:        true,
-		Getter:         true,
-		Name:           "protected",
-		Orderable:      true,
-		Setter:         true,
-		Stored:         true,
-		Type:           "boolean",
-	},
-	"updateidempotencykey": {
-		AllowedChoices: []string{},
-		Autogenerated:  true,
-		BSONFieldName:  "updateidempotencykey",
-		ConvertedName:  "UpdateIdempotencyKey",
-		Description:    `internal idempotency key for a update operation.`,
-		Getter:         true,
-		Name:           "updateIdempotencyKey",
-		ReadOnly:       true,
-		Setter:         true,
-		Stored:         true,
 		Type:           "string",
 	},
 	"zhash": {
@@ -1253,9 +794,7 @@ func (o SparseCloudScheduledNetworkQueriesList) List() elemental.IdentifiablesLi
 // DefaultOrder returns the default ordering fields of the content.
 func (o SparseCloudScheduledNetworkQueriesList) DefaultOrder() []string {
 
-	return []string{
-		"name",
-	}
+	return []string{}
 }
 
 // ToPlain returns the SparseCloudScheduledNetworkQueriesList converted to CloudScheduledNetworkQueriesList.
@@ -1283,26 +822,14 @@ type SparseCloudScheduledNetworkQuery struct {
 	// Prisma Cloud Alert Rule ID.
 	AlertRuleID *string `json:"alertRuleID,omitempty" msgpack:"alertRuleID,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertRuleID,omitempty"`
 
-	// Stores additional information about an entity.
-	Annotations *map[string][]string `json:"annotations,omitempty" msgpack:"annotations,omitempty" bson:"annotations,omitempty" mapstructure:"annotations,omitempty"`
-
-	// List of tags attached to an entity.
-	AssociatedTags *[]string `json:"associatedTags,omitempty" msgpack:"associatedTags,omitempty" bson:"associatedtags,omitempty" mapstructure:"associatedTags,omitempty"`
-
 	// The result of the cloud network query.
 	CloudGraphResult *CloudGraph `json:"cloudGraphResult,omitempty" msgpack:"cloudGraphResult,omitempty" bson:"-" mapstructure:"cloudGraphResult,omitempty"`
 
 	// The cloud network query that should be used.
 	CloudNetworkQuery *CloudNetworkQuery `json:"cloudNetworkQuery,omitempty" msgpack:"cloudNetworkQuery,omitempty" bson:"cloudnetworkquery,omitempty" mapstructure:"cloudNetworkQuery,omitempty"`
 
-	// internal idempotency key for a create operation.
-	CreateIdempotencyKey *string `json:"-" msgpack:"-" bson:"createidempotencykey,omitempty" mapstructure:"-,omitempty"`
-
-	// Description of the object.
-	Description *string `json:"description,omitempty" msgpack:"description,omitempty" bson:"description,omitempty" mapstructure:"description,omitempty"`
-
 	// Represents whether the associated policy was disabled.
-	Disabled *bool `json:"-" msgpack:"-" bson:"disabled,omitempty" mapstructure:"-,omitempty"`
+	Disabled *bool `json:"disabled,omitempty" msgpack:"disabled,omitempty" bson:"disabled,omitempty" mapstructure:"disabled,omitempty"`
 
 	// Result of the last successfully run query.
 	LastExecutionTimestamp *time.Time `json:"lastExecutionTimestamp,omitempty" msgpack:"lastExecutionTimestamp,omitempty" bson:"lastexecutiontimestamp,omitempty" mapstructure:"lastExecutionTimestamp,omitempty"`
@@ -1310,23 +837,11 @@ type SparseCloudScheduledNetworkQuery struct {
 	// Internal property maintaining migrations information.
 	MigrationsLog *map[string]string `json:"-" msgpack:"-" bson:"migrationslog,omitempty" mapstructure:"-,omitempty"`
 
-	// Name of the entity.
-	Name *string `json:"name,omitempty" msgpack:"name,omitempty" bson:"name,omitempty" mapstructure:"name,omitempty"`
-
 	// Namespace tag attached to an entity.
 	Namespace *string `json:"namespace,omitempty" msgpack:"namespace,omitempty" bson:"namespace,omitempty" mapstructure:"namespace,omitempty"`
 
-	// Contains the list of normalized tags of the entities.
-	NormalizedTags *[]string `json:"normalizedTags,omitempty" msgpack:"normalizedTags,omitempty" bson:"normalizedtags,omitempty" mapstructure:"normalizedTags,omitempty"`
-
 	// Prisma Cloud Policy ID.
 	PolicyID *string `json:"policyID,omitempty" msgpack:"policyID,omitempty" bson:"policyid,omitempty" mapstructure:"policyID,omitempty"`
-
-	// Defines if the object is protected.
-	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
-
-	// internal idempotency key for a update operation.
-	UpdateIdempotencyKey *string `json:"-" msgpack:"-" bson:"updateidempotencykey,omitempty" mapstructure:"-,omitempty"`
 
 	// geographical hash of the data. This is used for sharding and
 	// georedundancy.
@@ -1384,20 +899,8 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.AlertRuleID != nil {
 		s.AlertRuleID = o.AlertRuleID
 	}
-	if o.Annotations != nil {
-		s.Annotations = o.Annotations
-	}
-	if o.AssociatedTags != nil {
-		s.AssociatedTags = o.AssociatedTags
-	}
 	if o.CloudNetworkQuery != nil {
 		s.CloudNetworkQuery = o.CloudNetworkQuery
-	}
-	if o.CreateIdempotencyKey != nil {
-		s.CreateIdempotencyKey = o.CreateIdempotencyKey
-	}
-	if o.Description != nil {
-		s.Description = o.Description
 	}
 	if o.Disabled != nil {
 		s.Disabled = o.Disabled
@@ -1408,23 +911,11 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.MigrationsLog != nil {
 		s.MigrationsLog = o.MigrationsLog
 	}
-	if o.Name != nil {
-		s.Name = o.Name
-	}
 	if o.Namespace != nil {
 		s.Namespace = o.Namespace
 	}
-	if o.NormalizedTags != nil {
-		s.NormalizedTags = o.NormalizedTags
-	}
 	if o.PolicyID != nil {
 		s.PolicyID = o.PolicyID
-	}
-	if o.Protected != nil {
-		s.Protected = o.Protected
-	}
-	if o.UpdateIdempotencyKey != nil {
-		s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	}
 	if o.ZHash != nil {
 		s.ZHash = o.ZHash
@@ -1454,20 +945,8 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	if s.AlertRuleID != nil {
 		o.AlertRuleID = s.AlertRuleID
 	}
-	if s.Annotations != nil {
-		o.Annotations = s.Annotations
-	}
-	if s.AssociatedTags != nil {
-		o.AssociatedTags = s.AssociatedTags
-	}
 	if s.CloudNetworkQuery != nil {
 		o.CloudNetworkQuery = s.CloudNetworkQuery
-	}
-	if s.CreateIdempotencyKey != nil {
-		o.CreateIdempotencyKey = s.CreateIdempotencyKey
-	}
-	if s.Description != nil {
-		o.Description = s.Description
 	}
 	if s.Disabled != nil {
 		o.Disabled = s.Disabled
@@ -1478,23 +957,11 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	if s.MigrationsLog != nil {
 		o.MigrationsLog = s.MigrationsLog
 	}
-	if s.Name != nil {
-		o.Name = s.Name
-	}
 	if s.Namespace != nil {
 		o.Namespace = s.Namespace
 	}
-	if s.NormalizedTags != nil {
-		o.NormalizedTags = s.NormalizedTags
-	}
 	if s.PolicyID != nil {
 		o.PolicyID = s.PolicyID
-	}
-	if s.Protected != nil {
-		o.Protected = s.Protected
-	}
-	if s.UpdateIdempotencyKey != nil {
-		o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	}
 	if s.ZHash != nil {
 		o.ZHash = s.ZHash
@@ -1522,23 +989,11 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	if o.AlertRuleID != nil {
 		out.AlertRuleID = *o.AlertRuleID
 	}
-	if o.Annotations != nil {
-		out.Annotations = *o.Annotations
-	}
-	if o.AssociatedTags != nil {
-		out.AssociatedTags = *o.AssociatedTags
-	}
 	if o.CloudGraphResult != nil {
 		out.CloudGraphResult = o.CloudGraphResult
 	}
 	if o.CloudNetworkQuery != nil {
 		out.CloudNetworkQuery = o.CloudNetworkQuery
-	}
-	if o.CreateIdempotencyKey != nil {
-		out.CreateIdempotencyKey = *o.CreateIdempotencyKey
-	}
-	if o.Description != nil {
-		out.Description = *o.Description
 	}
 	if o.Disabled != nil {
 		out.Disabled = *o.Disabled
@@ -1549,23 +1004,11 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	if o.MigrationsLog != nil {
 		out.MigrationsLog = *o.MigrationsLog
 	}
-	if o.Name != nil {
-		out.Name = *o.Name
-	}
 	if o.Namespace != nil {
 		out.Namespace = *o.Namespace
 	}
-	if o.NormalizedTags != nil {
-		out.NormalizedTags = *o.NormalizedTags
-	}
 	if o.PolicyID != nil {
 		out.PolicyID = *o.PolicyID
-	}
-	if o.Protected != nil {
-		out.Protected = *o.Protected
-	}
-	if o.UpdateIdempotencyKey != nil {
-		out.UpdateIdempotencyKey = *o.UpdateIdempotencyKey
 	}
 	if o.ZHash != nil {
 		out.ZHash = *o.ZHash
@@ -1575,86 +1018,6 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	}
 
 	return out
-}
-
-// GetAnnotations returns the Annotations of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetAnnotations() (out map[string][]string) {
-
-	if o.Annotations == nil {
-		return
-	}
-
-	return *o.Annotations
-}
-
-// SetAnnotations sets the property Annotations of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetAnnotations(annotations map[string][]string) {
-
-	o.Annotations = &annotations
-}
-
-// GetAssociatedTags returns the AssociatedTags of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetAssociatedTags() (out []string) {
-
-	if o.AssociatedTags == nil {
-		return
-	}
-
-	return *o.AssociatedTags
-}
-
-// SetAssociatedTags sets the property AssociatedTags of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetAssociatedTags(associatedTags []string) {
-
-	o.AssociatedTags = &associatedTags
-}
-
-// GetCreateIdempotencyKey returns the CreateIdempotencyKey of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetCreateIdempotencyKey() (out string) {
-
-	if o.CreateIdempotencyKey == nil {
-		return
-	}
-
-	return *o.CreateIdempotencyKey
-}
-
-// SetCreateIdempotencyKey sets the property CreateIdempotencyKey of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetCreateIdempotencyKey(createIdempotencyKey string) {
-
-	o.CreateIdempotencyKey = &createIdempotencyKey
-}
-
-// GetDescription returns the Description of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetDescription() (out string) {
-
-	if o.Description == nil {
-		return
-	}
-
-	return *o.Description
-}
-
-// SetDescription sets the property Description of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetDescription(description string) {
-
-	o.Description = &description
-}
-
-// GetDisabled returns the Disabled of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetDisabled() (out bool) {
-
-	if o.Disabled == nil {
-		return
-	}
-
-	return *o.Disabled
-}
-
-// SetDisabled sets the property Disabled of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetDisabled(disabled bool) {
-
-	o.Disabled = &disabled
 }
 
 // GetMigrationsLog returns the MigrationsLog of the receiver.
@@ -1673,22 +1036,6 @@ func (o *SparseCloudScheduledNetworkQuery) SetMigrationsLog(migrationsLog map[st
 	o.MigrationsLog = &migrationsLog
 }
 
-// GetName returns the Name of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetName() (out string) {
-
-	if o.Name == nil {
-		return
-	}
-
-	return *o.Name
-}
-
-// SetName sets the property Name of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetName(name string) {
-
-	o.Name = &name
-}
-
 // GetNamespace returns the Namespace of the receiver.
 func (o *SparseCloudScheduledNetworkQuery) GetNamespace() (out string) {
 
@@ -1703,54 +1050,6 @@ func (o *SparseCloudScheduledNetworkQuery) GetNamespace() (out string) {
 func (o *SparseCloudScheduledNetworkQuery) SetNamespace(namespace string) {
 
 	o.Namespace = &namespace
-}
-
-// GetNormalizedTags returns the NormalizedTags of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetNormalizedTags() (out []string) {
-
-	if o.NormalizedTags == nil {
-		return
-	}
-
-	return *o.NormalizedTags
-}
-
-// SetNormalizedTags sets the property NormalizedTags of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetNormalizedTags(normalizedTags []string) {
-
-	o.NormalizedTags = &normalizedTags
-}
-
-// GetProtected returns the Protected of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetProtected() (out bool) {
-
-	if o.Protected == nil {
-		return
-	}
-
-	return *o.Protected
-}
-
-// SetProtected sets the property Protected of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetProtected(protected bool) {
-
-	o.Protected = &protected
-}
-
-// GetUpdateIdempotencyKey returns the UpdateIdempotencyKey of the receiver.
-func (o *SparseCloudScheduledNetworkQuery) GetUpdateIdempotencyKey() (out string) {
-
-	if o.UpdateIdempotencyKey == nil {
-		return
-	}
-
-	return *o.UpdateIdempotencyKey
-}
-
-// SetUpdateIdempotencyKey sets the property UpdateIdempotencyKey of the receiver using the address of the given value.
-func (o *SparseCloudScheduledNetworkQuery) SetUpdateIdempotencyKey(updateIdempotencyKey string) {
-
-	o.UpdateIdempotencyKey = &updateIdempotencyKey
 }
 
 // GetZHash returns the ZHash of the receiver.
@@ -1810,42 +1109,26 @@ func (o *SparseCloudScheduledNetworkQuery) DeepCopyInto(out *SparseCloudSchedule
 }
 
 type mongoAttributesCloudScheduledNetworkQuery struct {
-	ID                     bson.ObjectId       `bson:"_id,omitempty"`
-	AlertRuleID            string              `bson:"alertruleid"`
-	Annotations            map[string][]string `bson:"annotations"`
-	AssociatedTags         []string            `bson:"associatedtags"`
-	CloudNetworkQuery      *CloudNetworkQuery  `bson:"cloudnetworkquery"`
-	CreateIdempotencyKey   string              `bson:"createidempotencykey"`
-	Description            string              `bson:"description"`
-	Disabled               bool                `bson:"disabled"`
-	LastExecutionTimestamp time.Time           `bson:"lastexecutiontimestamp"`
-	MigrationsLog          map[string]string   `bson:"migrationslog,omitempty"`
-	Name                   string              `bson:"name"`
-	Namespace              string              `bson:"namespace"`
-	NormalizedTags         []string            `bson:"normalizedtags"`
-	PolicyID               string              `bson:"policyid"`
-	Protected              bool                `bson:"protected"`
-	UpdateIdempotencyKey   string              `bson:"updateidempotencykey"`
-	ZHash                  int                 `bson:"zhash"`
-	Zone                   int                 `bson:"zone"`
+	ID                     bson.ObjectId      `bson:"_id,omitempty"`
+	AlertRuleID            string             `bson:"alertruleid"`
+	CloudNetworkQuery      *CloudNetworkQuery `bson:"cloudnetworkquery"`
+	Disabled               bool               `bson:"disabled"`
+	LastExecutionTimestamp time.Time          `bson:"lastexecutiontimestamp"`
+	MigrationsLog          map[string]string  `bson:"migrationslog,omitempty"`
+	Namespace              string             `bson:"namespace"`
+	PolicyID               string             `bson:"policyid"`
+	ZHash                  int                `bson:"zhash"`
+	Zone                   int                `bson:"zone"`
 }
 type mongoAttributesSparseCloudScheduledNetworkQuery struct {
-	ID                     bson.ObjectId        `bson:"_id,omitempty"`
-	AlertRuleID            *string              `bson:"alertruleid,omitempty"`
-	Annotations            *map[string][]string `bson:"annotations,omitempty"`
-	AssociatedTags         *[]string            `bson:"associatedtags,omitempty"`
-	CloudNetworkQuery      *CloudNetworkQuery   `bson:"cloudnetworkquery,omitempty"`
-	CreateIdempotencyKey   *string              `bson:"createidempotencykey,omitempty"`
-	Description            *string              `bson:"description,omitempty"`
-	Disabled               *bool                `bson:"disabled,omitempty"`
-	LastExecutionTimestamp *time.Time           `bson:"lastexecutiontimestamp,omitempty"`
-	MigrationsLog          *map[string]string   `bson:"migrationslog,omitempty"`
-	Name                   *string              `bson:"name,omitempty"`
-	Namespace              *string              `bson:"namespace,omitempty"`
-	NormalizedTags         *[]string            `bson:"normalizedtags,omitempty"`
-	PolicyID               *string              `bson:"policyid,omitempty"`
-	Protected              *bool                `bson:"protected,omitempty"`
-	UpdateIdempotencyKey   *string              `bson:"updateidempotencykey,omitempty"`
-	ZHash                  *int                 `bson:"zhash,omitempty"`
-	Zone                   *int                 `bson:"zone,omitempty"`
+	ID                     bson.ObjectId      `bson:"_id,omitempty"`
+	AlertRuleID            *string            `bson:"alertruleid,omitempty"`
+	CloudNetworkQuery      *CloudNetworkQuery `bson:"cloudnetworkquery,omitempty"`
+	Disabled               *bool              `bson:"disabled,omitempty"`
+	LastExecutionTimestamp *time.Time         `bson:"lastexecutiontimestamp,omitempty"`
+	MigrationsLog          *map[string]string `bson:"migrationslog,omitempty"`
+	Namespace              *string            `bson:"namespace,omitempty"`
+	PolicyID               *string            `bson:"policyid,omitempty"`
+	ZHash                  *int               `bson:"zhash,omitempty"`
+	Zone                   *int               `bson:"zone,omitempty"`
 }

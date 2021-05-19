@@ -53,6 +53,7 @@ ClaimMapping
 claims_supported
 ClaimsSupported
 ClauseMatch
+CloudAlertRule
 CNSSuggestion
 CNSSearch
 clientLocalID

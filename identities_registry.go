@@ -699,13 +699,9 @@ var (
 		},
 		"cloudschedulednetworkquery": {
 			{":shard", ":unique", "zone", "zHash"},
-			{"updateIdempotencyKey"},
 			{"namespace"},
 			{"namespace", "normalizedTags"},
-			{"namespace", "name"},
-			{"name"},
 			{"lastexecutiontimestamp"},
-			{"createIdempotencyKey"},
 			{"alertruleid"},
 			{"alertruleid", "policyid"},
 		},
