@@ -62,7 +62,7 @@ attributes:
     stored: true
     orderable: true
 
-  - name: policyID
+  - name: prismaCloudPolicyID
     description: Prisma Cloud Policy ID.
     type: string
     exposed: true

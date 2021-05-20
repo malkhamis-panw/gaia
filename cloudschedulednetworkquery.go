@@ -106,7 +106,7 @@ type CloudScheduledNetworkQuery struct {
 	Namespace string `json:"namespace" msgpack:"namespace" bson:"namespace" mapstructure:"namespace,omitempty"`
 
 	// Prisma Cloud Policy ID.
-	PolicyID string `json:"policyID" msgpack:"policyID" bson:"policyid" mapstructure:"policyID,omitempty"`
+	PrismaCloudPolicyID string `json:"prismaCloudPolicyID" msgpack:"prismaCloudPolicyID" bson:"prismacloudpolicyid" mapstructure:"prismaCloudPolicyID,omitempty"`
 
 	// geographical hash of the data. This is used for sharding and
 	// georedundancy.
@@ -166,7 +166,7 @@ func (o *CloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	s.LastExecutionTimestamp = o.LastExecutionTimestamp
 	s.MigrationsLog = o.MigrationsLog
 	s.Namespace = o.Namespace
-	s.PolicyID = o.PolicyID
+	s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
 	s.ZHash = o.ZHash
 	s.Zone = o.Zone
 
@@ -193,7 +193,7 @@ func (o *CloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	o.LastExecutionTimestamp = s.LastExecutionTimestamp
 	o.MigrationsLog = s.MigrationsLog
 	o.Namespace = s.Namespace
-	o.PolicyID = s.PolicyID
+	o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
 	o.ZHash = s.ZHash
 	o.Zone = s.Zone
 
@@ -293,7 +293,7 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			LastExecutionTimestamp: &o.LastExecutionTimestamp,
 			MigrationsLog:          &o.MigrationsLog,
 			Namespace:              &o.Namespace,
-			PolicyID:               &o.PolicyID,
+			PrismaCloudPolicyID:    &o.PrismaCloudPolicyID,
 			ZHash:                  &o.ZHash,
 			Zone:                   &o.Zone,
 		}
@@ -318,8 +318,8 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			sp.MigrationsLog = &(o.MigrationsLog)
 		case "namespace":
 			sp.Namespace = &(o.Namespace)
-		case "policyID":
-			sp.PolicyID = &(o.PolicyID)
+		case "prismaCloudPolicyID":
+			sp.PrismaCloudPolicyID = &(o.PrismaCloudPolicyID)
 		case "zHash":
 			sp.ZHash = &(o.ZHash)
 		case "zone":
@@ -361,8 +361,8 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	if so.Namespace != nil {
 		o.Namespace = *so.Namespace
 	}
-	if so.PolicyID != nil {
-		o.PolicyID = *so.PolicyID
+	if so.PrismaCloudPolicyID != nil {
+		o.PrismaCloudPolicyID = *so.PrismaCloudPolicyID
 	}
 	if so.ZHash != nil {
 		o.ZHash = *so.ZHash
@@ -466,8 +466,8 @@ func (o *CloudScheduledNetworkQuery) ValueForAttribute(name string) interface{} 
 		return o.MigrationsLog
 	case "namespace":
 		return o.Namespace
-	case "policyID":
-		return o.PolicyID
+	case "prismaCloudPolicyID":
+		return o.PrismaCloudPolicyID
 	case "zHash":
 		return o.ZHash
 	case "zone":
@@ -574,13 +574,13 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		Type:           "string",
 	},
-	"PolicyID": {
+	"PrismaCloudPolicyID": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "policyid",
-		ConvertedName:  "PolicyID",
+		BSONFieldName:  "prismacloudpolicyid",
+		ConvertedName:  "PrismaCloudPolicyID",
 		Description:    `Prisma Cloud Policy ID.`,
 		Exposed:        true,
-		Name:           "policyID",
+		Name:           "prismaCloudPolicyID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -712,13 +712,13 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		Stored:         true,
 		Type:           "string",
 	},
-	"policyid": {
+	"prismacloudpolicyid": {
 		AllowedChoices: []string{},
-		BSONFieldName:  "policyid",
-		ConvertedName:  "PolicyID",
+		BSONFieldName:  "prismacloudpolicyid",
+		ConvertedName:  "PrismaCloudPolicyID",
 		Description:    `Prisma Cloud Policy ID.`,
 		Exposed:        true,
-		Name:           "policyID",
+		Name:           "prismaCloudPolicyID",
 		Stored:         true,
 		SubType:        "string",
 		Type:           "string",
@@ -841,7 +841,7 @@ type SparseCloudScheduledNetworkQuery struct {
 	Namespace *string `json:"namespace,omitempty" msgpack:"namespace,omitempty" bson:"namespace,omitempty" mapstructure:"namespace,omitempty"`
 
 	// Prisma Cloud Policy ID.
-	PolicyID *string `json:"policyID,omitempty" msgpack:"policyID,omitempty" bson:"policyid,omitempty" mapstructure:"policyID,omitempty"`
+	PrismaCloudPolicyID *string `json:"prismaCloudPolicyID,omitempty" msgpack:"prismaCloudPolicyID,omitempty" bson:"prismacloudpolicyid,omitempty" mapstructure:"prismaCloudPolicyID,omitempty"`
 
 	// geographical hash of the data. This is used for sharding and
 	// georedundancy.
@@ -914,8 +914,8 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.Namespace != nil {
 		s.Namespace = o.Namespace
 	}
-	if o.PolicyID != nil {
-		s.PolicyID = o.PolicyID
+	if o.PrismaCloudPolicyID != nil {
+		s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
 	}
 	if o.ZHash != nil {
 		s.ZHash = o.ZHash
@@ -960,8 +960,8 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	if s.Namespace != nil {
 		o.Namespace = s.Namespace
 	}
-	if s.PolicyID != nil {
-		o.PolicyID = s.PolicyID
+	if s.PrismaCloudPolicyID != nil {
+		o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
 	}
 	if s.ZHash != nil {
 		o.ZHash = s.ZHash
@@ -1007,8 +1007,8 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	if o.Namespace != nil {
 		out.Namespace = *o.Namespace
 	}
-	if o.PolicyID != nil {
-		out.PolicyID = *o.PolicyID
+	if o.PrismaCloudPolicyID != nil {
+		out.PrismaCloudPolicyID = *o.PrismaCloudPolicyID
 	}
 	if o.ZHash != nil {
 		out.ZHash = *o.ZHash
@@ -1116,7 +1116,7 @@ type mongoAttributesCloudScheduledNetworkQuery struct {
 	LastExecutionTimestamp time.Time          `bson:"lastexecutiontimestamp"`
 	MigrationsLog          map[string]string  `bson:"migrationslog,omitempty"`
 	Namespace              string             `bson:"namespace"`
-	PolicyID               string             `bson:"policyid"`
+	PrismaCloudPolicyID    string             `bson:"prismacloudpolicyid"`
 	ZHash                  int                `bson:"zhash"`
 	Zone                   int                `bson:"zone"`
 }
@@ -1128,7 +1128,7 @@ type mongoAttributesSparseCloudScheduledNetworkQuery struct {
 	LastExecutionTimestamp *time.Time         `bson:"lastexecutiontimestamp,omitempty"`
 	MigrationsLog          *map[string]string `bson:"migrationslog,omitempty"`
 	Namespace              *string            `bson:"namespace,omitempty"`
-	PolicyID               *string            `bson:"policyid,omitempty"`
+	PrismaCloudPolicyID    *string            `bson:"prismacloudpolicyid,omitempty"`
 	ZHash                  *int               `bson:"zhash,omitempty"`
 	Zone                   *int               `bson:"zone,omitempty"`
 }

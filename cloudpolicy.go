@@ -100,6 +100,9 @@ type CloudPolicy struct {
 	// Identifier of the object.
 	ID string `json:"ID" msgpack:"ID" bson:"-" mapstructure:"ID,omitempty"`
 
+	// The actual RQL query that is associated to the policy.
+	RQLQuery string `json:"RQLQuery" msgpack:"RQLQuery" bson:"rqlquery" mapstructure:"RQLQuery,omitempty"`
+
 	// Stores additional information about an entity.
 	Annotations map[string][]string `json:"annotations" msgpack:"annotations" bson:"annotations" mapstructure:"annotations,omitempty"`
 
@@ -130,15 +133,12 @@ type CloudPolicy struct {
 	// Reference to the corresponding Prisma Cloud Policy ID.
 	PrismaCloudPolicyID string `json:"prismaCloudPolicyID" msgpack:"prismaCloudPolicyID" bson:"prismacloudpolicyid" mapstructure:"prismaCloudPolicyID,omitempty"`
 
-	// Defines if the object is protected.
-	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
-
 	// The query ID that this policy refers to. This is auto-calculated since it is
 	// derived from the parent.
-	QueryID string `json:"queryID" msgpack:"queryID" bson:"-" mapstructure:"queryID,omitempty"`
+	PrismaCloudQueryID string `json:"prismaCloudQueryID" msgpack:"prismaCloudQueryID" bson:"-" mapstructure:"prismaCloudQueryID,omitempty"`
 
-	// The actual RQL query that is associated to the policy.
-	RqlQuery string `json:"rqlQuery" msgpack:"rqlQuery" bson:"rqlquery" mapstructure:"rqlQuery,omitempty"`
+	// Defines if the object is protected.
+	Protected bool `json:"protected" msgpack:"protected" bson:"protected" mapstructure:"protected,omitempty"`
 
 	// The severity of a policy violation.
 	Severity CloudPolicySeverityValue `json:"severity" msgpack:"severity" bson:"severity" mapstructure:"severity,omitempty"`
@@ -166,8 +166,8 @@ func NewCloudPolicy() *CloudPolicy {
 		ModelVersion:   1,
 		Annotations:    map[string][]string{},
 		AssociatedTags: []string{},
-		NormalizedTags: []string{},
 		MigrationsLog:  map[string]string{},
+		NormalizedTags: []string{},
 	}
 }
 
@@ -202,6 +202,7 @@ func (o *CloudPolicy) GetBSON() (interface{}, error) {
 	if o.ID != "" {
 		s.ID = bson.ObjectIdHex(o.ID)
 	}
+	s.RQLQuery = o.RQLQuery
 	s.Annotations = o.Annotations
 	s.AssociatedTags = o.AssociatedTags
 	s.CreateIdempotencyKey = o.CreateIdempotencyKey
@@ -213,7 +214,6 @@ func (o *CloudPolicy) GetBSON() (interface{}, error) {
 	s.NormalizedTags = o.NormalizedTags
 	s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
 	s.Protected = o.Protected
-	s.RqlQuery = o.RqlQuery
 	s.Severity = o.Severity
 	s.UpdateIdempotencyKey = o.UpdateIdempotencyKey
 	s.UpdateTime = o.UpdateTime
@@ -237,6 +237,7 @@ func (o *CloudPolicy) SetBSON(raw bson.Raw) error {
 	}
 
 	o.ID = s.ID.Hex()
+	o.RQLQuery = s.RQLQuery
 	o.Annotations = s.Annotations
 	o.AssociatedTags = s.AssociatedTags
 	o.CreateIdempotencyKey = s.CreateIdempotencyKey
@@ -248,7 +249,6 @@ func (o *CloudPolicy) SetBSON(raw bson.Raw) error {
 	o.NormalizedTags = s.NormalizedTags
 	o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
 	o.Protected = s.Protected
-	o.RqlQuery = s.RqlQuery
 	o.Severity = s.Severity
 	o.UpdateIdempotencyKey = s.UpdateIdempotencyKey
 	o.UpdateTime = s.UpdateTime
@@ -465,6 +465,7 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 		// nolint: goimports
 		return &SparseCloudPolicy{
 			ID:                   &o.ID,
+			RQLQuery:             &o.RQLQuery,
 			Annotations:          &o.Annotations,
 			AssociatedTags:       &o.AssociatedTags,
 			CreateIdempotencyKey: &o.CreateIdempotencyKey,
@@ -475,9 +476,8 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			Namespace:            &o.Namespace,
 			NormalizedTags:       &o.NormalizedTags,
 			PrismaCloudPolicyID:  &o.PrismaCloudPolicyID,
+			PrismaCloudQueryID:   &o.PrismaCloudQueryID,
 			Protected:            &o.Protected,
-			QueryID:              &o.QueryID,
-			RqlQuery:             &o.RqlQuery,
 			Severity:             &o.Severity,
 			UpdateIdempotencyKey: &o.UpdateIdempotencyKey,
 			UpdateTime:           &o.UpdateTime,
@@ -491,6 +491,8 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 		switch f {
 		case "ID":
 			sp.ID = &(o.ID)
+		case "RQLQuery":
+			sp.RQLQuery = &(o.RQLQuery)
 		case "annotations":
 			sp.Annotations = &(o.Annotations)
 		case "associatedTags":
@@ -511,12 +513,10 @@ func (o *CloudPolicy) ToSparse(fields ...string) elemental.SparseIdentifiable {
 			sp.NormalizedTags = &(o.NormalizedTags)
 		case "prismaCloudPolicyID":
 			sp.PrismaCloudPolicyID = &(o.PrismaCloudPolicyID)
+		case "prismaCloudQueryID":
+			sp.PrismaCloudQueryID = &(o.PrismaCloudQueryID)
 		case "protected":
 			sp.Protected = &(o.Protected)
-		case "queryID":
-			sp.QueryID = &(o.QueryID)
-		case "rqlQuery":
-			sp.RqlQuery = &(o.RqlQuery)
 		case "severity":
 			sp.Severity = &(o.Severity)
 		case "updateIdempotencyKey":
@@ -542,6 +542,9 @@ func (o *CloudPolicy) Patch(sparse elemental.SparseIdentifiable) {
 	so := sparse.(*SparseCloudPolicy)
 	if so.ID != nil {
 		o.ID = *so.ID
+	}
+	if so.RQLQuery != nil {
+		o.RQLQuery = *so.RQLQuery
 	}
 	if so.Annotations != nil {
 		o.Annotations = *so.Annotations
@@ -573,14 +576,11 @@ func (o *CloudPolicy) Patch(sparse elemental.SparseIdentifiable) {
 	if so.PrismaCloudPolicyID != nil {
 		o.PrismaCloudPolicyID = *so.PrismaCloudPolicyID
 	}
+	if so.PrismaCloudQueryID != nil {
+		o.PrismaCloudQueryID = *so.PrismaCloudQueryID
+	}
 	if so.Protected != nil {
 		o.Protected = *so.Protected
-	}
-	if so.QueryID != nil {
-		o.QueryID = *so.QueryID
-	}
-	if so.RqlQuery != nil {
-		o.RqlQuery = *so.RqlQuery
 	}
 	if so.Severity != nil {
 		o.Severity = *so.Severity
@@ -689,6 +689,8 @@ func (o *CloudPolicy) ValueForAttribute(name string) interface{} {
 	switch name {
 	case "ID":
 		return o.ID
+	case "RQLQuery":
+		return o.RQLQuery
 	case "annotations":
 		return o.Annotations
 	case "associatedTags":
@@ -709,12 +711,10 @@ func (o *CloudPolicy) ValueForAttribute(name string) interface{} {
 		return o.NormalizedTags
 	case "prismaCloudPolicyID":
 		return o.PrismaCloudPolicyID
+	case "prismaCloudQueryID":
+		return o.PrismaCloudQueryID
 	case "protected":
 		return o.Protected
-	case "queryID":
-		return o.QueryID
-	case "rqlQuery":
-		return o.RqlQuery
 	case "severity":
 		return o.Severity
 	case "updateIdempotencyKey":
@@ -743,6 +743,17 @@ var CloudPolicyAttributesMap = map[string]elemental.AttributeSpecification{
 		Identifier:     true,
 		Name:           "ID",
 		Orderable:      true,
+		ReadOnly:       true,
+		Stored:         true,
+		Type:           "string",
+	},
+	"RQLQuery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "rqlquery",
+		ConvertedName:  "RQLQuery",
+		Description:    `The actual RQL query that is associated to the policy.`,
+		Exposed:        true,
+		Name:           "RQLQuery",
 		ReadOnly:       true,
 		Stored:         true,
 		Type:           "string",
@@ -885,6 +896,16 @@ var CloudPolicyAttributesMap = map[string]elemental.AttributeSpecification{
 		Stored:         true,
 		Type:           "string",
 	},
+	"PrismaCloudQueryID": {
+		AllowedChoices: []string{},
+		ConvertedName:  "PrismaCloudQueryID",
+		Description: `The query ID that this policy refers to. This is auto-calculated since it is
+derived from the parent.`,
+		Exposed:  true,
+		Name:     "prismaCloudQueryID",
+		ReadOnly: true,
+		Type:     "string",
+	},
 	"Protected": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "protected",
@@ -897,27 +918,6 @@ var CloudPolicyAttributesMap = map[string]elemental.AttributeSpecification{
 		Setter:         true,
 		Stored:         true,
 		Type:           "boolean",
-	},
-	"QueryID": {
-		AllowedChoices: []string{},
-		ConvertedName:  "QueryID",
-		Description: `The query ID that this policy refers to. This is auto-calculated since it is
-derived from the parent.`,
-		Exposed:  true,
-		Name:     "queryID",
-		ReadOnly: true,
-		Type:     "string",
-	},
-	"RqlQuery": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "rqlquery",
-		ConvertedName:  "RqlQuery",
-		Description:    `The actual RQL query that is associated to the policy.`,
-		Exposed:        true,
-		Name:           "rqlQuery",
-		ReadOnly:       true,
-		Stored:         true,
-		Type:           "string",
 	},
 	"Severity": {
 		AllowedChoices: []string{"Low", "Medium", "High"},
@@ -1001,6 +1001,17 @@ var CloudPolicyLowerCaseAttributesMap = map[string]elemental.AttributeSpecificat
 		Identifier:     true,
 		Name:           "ID",
 		Orderable:      true,
+		ReadOnly:       true,
+		Stored:         true,
+		Type:           "string",
+	},
+	"rqlquery": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "rqlquery",
+		ConvertedName:  "RQLQuery",
+		Description:    `The actual RQL query that is associated to the policy.`,
+		Exposed:        true,
+		Name:           "RQLQuery",
 		ReadOnly:       true,
 		Stored:         true,
 		Type:           "string",
@@ -1143,6 +1154,16 @@ var CloudPolicyLowerCaseAttributesMap = map[string]elemental.AttributeSpecificat
 		Stored:         true,
 		Type:           "string",
 	},
+	"prismacloudqueryid": {
+		AllowedChoices: []string{},
+		ConvertedName:  "PrismaCloudQueryID",
+		Description: `The query ID that this policy refers to. This is auto-calculated since it is
+derived from the parent.`,
+		Exposed:  true,
+		Name:     "prismaCloudQueryID",
+		ReadOnly: true,
+		Type:     "string",
+	},
 	"protected": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "protected",
@@ -1155,27 +1176,6 @@ var CloudPolicyLowerCaseAttributesMap = map[string]elemental.AttributeSpecificat
 		Setter:         true,
 		Stored:         true,
 		Type:           "boolean",
-	},
-	"queryid": {
-		AllowedChoices: []string{},
-		ConvertedName:  "QueryID",
-		Description: `The query ID that this policy refers to. This is auto-calculated since it is
-derived from the parent.`,
-		Exposed:  true,
-		Name:     "queryID",
-		ReadOnly: true,
-		Type:     "string",
-	},
-	"rqlquery": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "rqlquery",
-		ConvertedName:  "RqlQuery",
-		Description:    `The actual RQL query that is associated to the policy.`,
-		Exposed:        true,
-		Name:           "rqlQuery",
-		ReadOnly:       true,
-		Stored:         true,
-		Type:           "string",
 	},
 	"severity": {
 		AllowedChoices: []string{"Low", "Medium", "High"},
@@ -1314,6 +1314,9 @@ type SparseCloudPolicy struct {
 	// Identifier of the object.
 	ID *string `json:"ID,omitempty" msgpack:"ID,omitempty" bson:"-" mapstructure:"ID,omitempty"`
 
+	// The actual RQL query that is associated to the policy.
+	RQLQuery *string `json:"RQLQuery,omitempty" msgpack:"RQLQuery,omitempty" bson:"rqlquery,omitempty" mapstructure:"RQLQuery,omitempty"`
+
 	// Stores additional information about an entity.
 	Annotations *map[string][]string `json:"annotations,omitempty" msgpack:"annotations,omitempty" bson:"annotations,omitempty" mapstructure:"annotations,omitempty"`
 
@@ -1344,15 +1347,12 @@ type SparseCloudPolicy struct {
 	// Reference to the corresponding Prisma Cloud Policy ID.
 	PrismaCloudPolicyID *string `json:"prismaCloudPolicyID,omitempty" msgpack:"prismaCloudPolicyID,omitempty" bson:"prismacloudpolicyid,omitempty" mapstructure:"prismaCloudPolicyID,omitempty"`
 
-	// Defines if the object is protected.
-	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
-
 	// The query ID that this policy refers to. This is auto-calculated since it is
 	// derived from the parent.
-	QueryID *string `json:"queryID,omitempty" msgpack:"queryID,omitempty" bson:"-" mapstructure:"queryID,omitempty"`
+	PrismaCloudQueryID *string `json:"prismaCloudQueryID,omitempty" msgpack:"prismaCloudQueryID,omitempty" bson:"-" mapstructure:"prismaCloudQueryID,omitempty"`
 
-	// The actual RQL query that is associated to the policy.
-	RqlQuery *string `json:"rqlQuery,omitempty" msgpack:"rqlQuery,omitempty" bson:"rqlquery,omitempty" mapstructure:"rqlQuery,omitempty"`
+	// Defines if the object is protected.
+	Protected *bool `json:"protected,omitempty" msgpack:"protected,omitempty" bson:"protected,omitempty" mapstructure:"protected,omitempty"`
 
 	// The severity of a policy violation.
 	Severity *CloudPolicySeverityValue `json:"severity,omitempty" msgpack:"severity,omitempty" bson:"severity,omitempty" mapstructure:"severity,omitempty"`
@@ -1416,6 +1416,9 @@ func (o *SparseCloudPolicy) GetBSON() (interface{}, error) {
 	if o.ID != nil {
 		s.ID = bson.ObjectIdHex(*o.ID)
 	}
+	if o.RQLQuery != nil {
+		s.RQLQuery = o.RQLQuery
+	}
 	if o.Annotations != nil {
 		s.Annotations = o.Annotations
 	}
@@ -1448,9 +1451,6 @@ func (o *SparseCloudPolicy) GetBSON() (interface{}, error) {
 	}
 	if o.Protected != nil {
 		s.Protected = o.Protected
-	}
-	if o.RqlQuery != nil {
-		s.RqlQuery = o.RqlQuery
 	}
 	if o.Severity != nil {
 		s.Severity = o.Severity
@@ -1486,6 +1486,9 @@ func (o *SparseCloudPolicy) SetBSON(raw bson.Raw) error {
 
 	id := s.ID.Hex()
 	o.ID = &id
+	if s.RQLQuery != nil {
+		o.RQLQuery = s.RQLQuery
+	}
 	if s.Annotations != nil {
 		o.Annotations = s.Annotations
 	}
@@ -1519,9 +1522,6 @@ func (o *SparseCloudPolicy) SetBSON(raw bson.Raw) error {
 	if s.Protected != nil {
 		o.Protected = s.Protected
 	}
-	if s.RqlQuery != nil {
-		o.RqlQuery = s.RqlQuery
-	}
 	if s.Severity != nil {
 		o.Severity = s.Severity
 	}
@@ -1554,6 +1554,9 @@ func (o *SparseCloudPolicy) ToPlain() elemental.PlainIdentifiable {
 	if o.ID != nil {
 		out.ID = *o.ID
 	}
+	if o.RQLQuery != nil {
+		out.RQLQuery = *o.RQLQuery
+	}
 	if o.Annotations != nil {
 		out.Annotations = *o.Annotations
 	}
@@ -1584,14 +1587,11 @@ func (o *SparseCloudPolicy) ToPlain() elemental.PlainIdentifiable {
 	if o.PrismaCloudPolicyID != nil {
 		out.PrismaCloudPolicyID = *o.PrismaCloudPolicyID
 	}
+	if o.PrismaCloudQueryID != nil {
+		out.PrismaCloudQueryID = *o.PrismaCloudQueryID
+	}
 	if o.Protected != nil {
 		out.Protected = *o.Protected
-	}
-	if o.QueryID != nil {
-		out.QueryID = *o.QueryID
-	}
-	if o.RqlQuery != nil {
-		out.RqlQuery = *o.RqlQuery
 	}
 	if o.Severity != nil {
 		out.Severity = *o.Severity
@@ -1862,6 +1862,7 @@ func (o *SparseCloudPolicy) DeepCopyInto(out *SparseCloudPolicy) {
 
 type mongoAttributesCloudPolicy struct {
 	ID                   bson.ObjectId            `bson:"_id,omitempty"`
+	RQLQuery             string                   `bson:"rqlquery"`
 	Annotations          map[string][]string      `bson:"annotations"`
 	AssociatedTags       []string                 `bson:"associatedtags"`
 	CreateIdempotencyKey string                   `bson:"createidempotencykey"`
@@ -1873,7 +1874,6 @@ type mongoAttributesCloudPolicy struct {
 	NormalizedTags       []string                 `bson:"normalizedtags"`
 	PrismaCloudPolicyID  string                   `bson:"prismacloudpolicyid"`
 	Protected            bool                     `bson:"protected"`
-	RqlQuery             string                   `bson:"rqlquery"`
 	Severity             CloudPolicySeverityValue `bson:"severity"`
 	UpdateIdempotencyKey string                   `bson:"updateidempotencykey"`
 	UpdateTime           time.Time                `bson:"updatetime"`
@@ -1882,6 +1882,7 @@ type mongoAttributesCloudPolicy struct {
 }
 type mongoAttributesSparseCloudPolicy struct {
 	ID                   bson.ObjectId             `bson:"_id,omitempty"`
+	RQLQuery             *string                   `bson:"rqlquery,omitempty"`
 	Annotations          *map[string][]string      `bson:"annotations,omitempty"`
 	AssociatedTags       *[]string                 `bson:"associatedtags,omitempty"`
 	CreateIdempotencyKey *string                   `bson:"createidempotencykey,omitempty"`
@@ -1893,7 +1894,6 @@ type mongoAttributesSparseCloudPolicy struct {
 	NormalizedTags       *[]string                 `bson:"normalizedtags,omitempty"`
 	PrismaCloudPolicyID  *string                   `bson:"prismacloudpolicyid,omitempty"`
 	Protected            *bool                     `bson:"protected,omitempty"`
-	RqlQuery             *string                   `bson:"rqlquery,omitempty"`
 	Severity             *CloudPolicySeverityValue `bson:"severity,omitempty"`
 	UpdateIdempotencyKey *string                   `bson:"updateidempotencykey,omitempty"`
 	UpdateTime           *time.Time                `bson:"updatetime,omitempty"`

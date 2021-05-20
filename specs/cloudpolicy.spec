@@ -34,25 +34,25 @@ indexes:
 # Attributes
 attributes:
   v1:
+  - name: RQLQuery
+    description: The actual RQL query that is associated to the policy.
+    type: string
+    exposed: true
+    stored: true
+    read_only: true
+
   - name: prismaCloudPolicyID
     description: Reference to the corresponding Prisma Cloud Policy ID.
     type: string
     exposed: true
     stored: true
 
-  - name: queryID
+  - name: prismaCloudQueryID
     description: |-
       The query ID that this policy refers to. This is auto-calculated since it is
       derived from the parent.
     type: string
     exposed: true
-    read_only: true
-
-  - name: rqlQuery
-    description: The actual RQL query that is associated to the policy.
-    type: string
-    exposed: true
-    stored: true
     read_only: true
 
   - name: severity
