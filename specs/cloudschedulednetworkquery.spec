@@ -25,13 +25,6 @@ indexes:
 # Attributes
 attributes:
   v1:
-  - name: alertRuleID
-    description: Prisma Cloud Alert Rule ID.
-    type: string
-    exposed: true
-    subtype: string
-    stored: true
-
   - name: cloudGraphResult
     description: The result of the cloud network query.
     type: ref
@@ -61,6 +54,13 @@ attributes:
     exposed: true
     stored: true
     orderable: true
+
+  - name: prismaCloudAlertRuleID
+    description: Prisma Cloud Alert Rule ID.
+    type: string
+    exposed: true
+    subtype: string
+    stored: true
 
   - name: prismaCloudPolicyID
     description: Prisma Cloud Policy ID.

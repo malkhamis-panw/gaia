@@ -84,9 +84,6 @@ type CloudScheduledNetworkQuery struct {
 	// Identifier of the object.
 	ID string `json:"ID" msgpack:"ID" bson:"-" mapstructure:"ID,omitempty"`
 
-	// Prisma Cloud Alert Rule ID.
-	AlertRuleID string `json:"alertRuleID" msgpack:"alertRuleID" bson:"alertruleid" mapstructure:"alertRuleID,omitempty"`
-
 	// The result of the cloud network query.
 	CloudGraphResult *CloudGraph `json:"cloudGraphResult" msgpack:"cloudGraphResult" bson:"-" mapstructure:"cloudGraphResult,omitempty"`
 
@@ -104,6 +101,9 @@ type CloudScheduledNetworkQuery struct {
 
 	// Namespace tag attached to an entity.
 	Namespace string `json:"namespace" msgpack:"namespace" bson:"namespace" mapstructure:"namespace,omitempty"`
+
+	// Prisma Cloud Alert Rule ID.
+	PrismaCloudAlertRuleID string `json:"prismaCloudAlertRuleID" msgpack:"prismaCloudAlertRuleID" bson:"prismacloudalertruleid" mapstructure:"prismaCloudAlertRuleID,omitempty"`
 
 	// Prisma Cloud Policy ID.
 	PrismaCloudPolicyID string `json:"prismaCloudPolicyID" msgpack:"prismaCloudPolicyID" bson:"prismacloudpolicyid" mapstructure:"prismaCloudPolicyID,omitempty"`
@@ -160,12 +160,12 @@ func (o *CloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.ID != "" {
 		s.ID = bson.ObjectIdHex(o.ID)
 	}
-	s.AlertRuleID = o.AlertRuleID
 	s.CloudNetworkQuery = o.CloudNetworkQuery
 	s.Disabled = o.Disabled
 	s.LastExecutionTimestamp = o.LastExecutionTimestamp
 	s.MigrationsLog = o.MigrationsLog
 	s.Namespace = o.Namespace
+	s.PrismaCloudAlertRuleID = o.PrismaCloudAlertRuleID
 	s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
 	s.ZHash = o.ZHash
 	s.Zone = o.Zone
@@ -187,12 +187,12 @@ func (o *CloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	}
 
 	o.ID = s.ID.Hex()
-	o.AlertRuleID = s.AlertRuleID
 	o.CloudNetworkQuery = s.CloudNetworkQuery
 	o.Disabled = s.Disabled
 	o.LastExecutionTimestamp = s.LastExecutionTimestamp
 	o.MigrationsLog = s.MigrationsLog
 	o.Namespace = s.Namespace
+	o.PrismaCloudAlertRuleID = s.PrismaCloudAlertRuleID
 	o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
 	o.ZHash = s.ZHash
 	o.Zone = s.Zone
@@ -286,13 +286,13 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 		// nolint: goimports
 		return &SparseCloudScheduledNetworkQuery{
 			ID:                     &o.ID,
-			AlertRuleID:            &o.AlertRuleID,
 			CloudGraphResult:       o.CloudGraphResult,
 			CloudNetworkQuery:      o.CloudNetworkQuery,
 			Disabled:               &o.Disabled,
 			LastExecutionTimestamp: &o.LastExecutionTimestamp,
 			MigrationsLog:          &o.MigrationsLog,
 			Namespace:              &o.Namespace,
+			PrismaCloudAlertRuleID: &o.PrismaCloudAlertRuleID,
 			PrismaCloudPolicyID:    &o.PrismaCloudPolicyID,
 			ZHash:                  &o.ZHash,
 			Zone:                   &o.Zone,
@@ -304,8 +304,6 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 		switch f {
 		case "ID":
 			sp.ID = &(o.ID)
-		case "alertRuleID":
-			sp.AlertRuleID = &(o.AlertRuleID)
 		case "cloudGraphResult":
 			sp.CloudGraphResult = o.CloudGraphResult
 		case "cloudNetworkQuery":
@@ -318,6 +316,8 @@ func (o *CloudScheduledNetworkQuery) ToSparse(fields ...string) elemental.Sparse
 			sp.MigrationsLog = &(o.MigrationsLog)
 		case "namespace":
 			sp.Namespace = &(o.Namespace)
+		case "prismaCloudAlertRuleID":
+			sp.PrismaCloudAlertRuleID = &(o.PrismaCloudAlertRuleID)
 		case "prismaCloudPolicyID":
 			sp.PrismaCloudPolicyID = &(o.PrismaCloudPolicyID)
 		case "zHash":
@@ -340,9 +340,6 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	if so.ID != nil {
 		o.ID = *so.ID
 	}
-	if so.AlertRuleID != nil {
-		o.AlertRuleID = *so.AlertRuleID
-	}
 	if so.CloudGraphResult != nil {
 		o.CloudGraphResult = so.CloudGraphResult
 	}
@@ -360,6 +357,9 @@ func (o *CloudScheduledNetworkQuery) Patch(sparse elemental.SparseIdentifiable) 
 	}
 	if so.Namespace != nil {
 		o.Namespace = *so.Namespace
+	}
+	if so.PrismaCloudAlertRuleID != nil {
+		o.PrismaCloudAlertRuleID = *so.PrismaCloudAlertRuleID
 	}
 	if so.PrismaCloudPolicyID != nil {
 		o.PrismaCloudPolicyID = *so.PrismaCloudPolicyID
@@ -452,8 +452,6 @@ func (o *CloudScheduledNetworkQuery) ValueForAttribute(name string) interface{} 
 	switch name {
 	case "ID":
 		return o.ID
-	case "alertRuleID":
-		return o.AlertRuleID
 	case "cloudGraphResult":
 		return o.CloudGraphResult
 	case "cloudNetworkQuery":
@@ -466,6 +464,8 @@ func (o *CloudScheduledNetworkQuery) ValueForAttribute(name string) interface{} 
 		return o.MigrationsLog
 	case "namespace":
 		return o.Namespace
+	case "prismaCloudAlertRuleID":
+		return o.PrismaCloudAlertRuleID
 	case "prismaCloudPolicyID":
 		return o.PrismaCloudPolicyID
 	case "zHash":
@@ -492,17 +492,6 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Orderable:      true,
 		ReadOnly:       true,
 		Stored:         true,
-		Type:           "string",
-	},
-	"AlertRuleID": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "alertruleid",
-		ConvertedName:  "AlertRuleID",
-		Description:    `Prisma Cloud Alert Rule ID.`,
-		Exposed:        true,
-		Name:           "alertRuleID",
-		Stored:         true,
-		SubType:        "string",
 		Type:           "string",
 	},
 	"CloudGraphResult": {
@@ -574,6 +563,17 @@ var CloudScheduledNetworkQueryAttributesMap = map[string]elemental.AttributeSpec
 		Stored:         true,
 		Type:           "string",
 	},
+	"PrismaCloudAlertRuleID": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "prismacloudalertruleid",
+		ConvertedName:  "PrismaCloudAlertRuleID",
+		Description:    `Prisma Cloud Alert Rule ID.`,
+		Exposed:        true,
+		Name:           "prismaCloudAlertRuleID",
+		Stored:         true,
+		SubType:        "string",
+		Type:           "string",
+	},
 	"PrismaCloudPolicyID": {
 		AllowedChoices: []string{},
 		BSONFieldName:  "prismacloudpolicyid",
@@ -630,17 +630,6 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		Orderable:      true,
 		ReadOnly:       true,
 		Stored:         true,
-		Type:           "string",
-	},
-	"alertruleid": {
-		AllowedChoices: []string{},
-		BSONFieldName:  "alertruleid",
-		ConvertedName:  "AlertRuleID",
-		Description:    `Prisma Cloud Alert Rule ID.`,
-		Exposed:        true,
-		Name:           "alertRuleID",
-		Stored:         true,
-		SubType:        "string",
 		Type:           "string",
 	},
 	"cloudgraphresult": {
@@ -710,6 +699,17 @@ var CloudScheduledNetworkQueryLowerCaseAttributesMap = map[string]elemental.Attr
 		ReadOnly:       true,
 		Setter:         true,
 		Stored:         true,
+		Type:           "string",
+	},
+	"prismacloudalertruleid": {
+		AllowedChoices: []string{},
+		BSONFieldName:  "prismacloudalertruleid",
+		ConvertedName:  "PrismaCloudAlertRuleID",
+		Description:    `Prisma Cloud Alert Rule ID.`,
+		Exposed:        true,
+		Name:           "prismaCloudAlertRuleID",
+		Stored:         true,
+		SubType:        "string",
 		Type:           "string",
 	},
 	"prismacloudpolicyid": {
@@ -819,9 +819,6 @@ type SparseCloudScheduledNetworkQuery struct {
 	// Identifier of the object.
 	ID *string `json:"ID,omitempty" msgpack:"ID,omitempty" bson:"-" mapstructure:"ID,omitempty"`
 
-	// Prisma Cloud Alert Rule ID.
-	AlertRuleID *string `json:"alertRuleID,omitempty" msgpack:"alertRuleID,omitempty" bson:"alertruleid,omitempty" mapstructure:"alertRuleID,omitempty"`
-
 	// The result of the cloud network query.
 	CloudGraphResult *CloudGraph `json:"cloudGraphResult,omitempty" msgpack:"cloudGraphResult,omitempty" bson:"-" mapstructure:"cloudGraphResult,omitempty"`
 
@@ -839,6 +836,9 @@ type SparseCloudScheduledNetworkQuery struct {
 
 	// Namespace tag attached to an entity.
 	Namespace *string `json:"namespace,omitempty" msgpack:"namespace,omitempty" bson:"namespace,omitempty" mapstructure:"namespace,omitempty"`
+
+	// Prisma Cloud Alert Rule ID.
+	PrismaCloudAlertRuleID *string `json:"prismaCloudAlertRuleID,omitempty" msgpack:"prismaCloudAlertRuleID,omitempty" bson:"prismacloudalertruleid,omitempty" mapstructure:"prismaCloudAlertRuleID,omitempty"`
 
 	// Prisma Cloud Policy ID.
 	PrismaCloudPolicyID *string `json:"prismaCloudPolicyID,omitempty" msgpack:"prismaCloudPolicyID,omitempty" bson:"prismacloudpolicyid,omitempty" mapstructure:"prismaCloudPolicyID,omitempty"`
@@ -896,9 +896,6 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	if o.ID != nil {
 		s.ID = bson.ObjectIdHex(*o.ID)
 	}
-	if o.AlertRuleID != nil {
-		s.AlertRuleID = o.AlertRuleID
-	}
 	if o.CloudNetworkQuery != nil {
 		s.CloudNetworkQuery = o.CloudNetworkQuery
 	}
@@ -913,6 +910,9 @@ func (o *SparseCloudScheduledNetworkQuery) GetBSON() (interface{}, error) {
 	}
 	if o.Namespace != nil {
 		s.Namespace = o.Namespace
+	}
+	if o.PrismaCloudAlertRuleID != nil {
+		s.PrismaCloudAlertRuleID = o.PrismaCloudAlertRuleID
 	}
 	if o.PrismaCloudPolicyID != nil {
 		s.PrismaCloudPolicyID = o.PrismaCloudPolicyID
@@ -942,9 +942,6 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 
 	id := s.ID.Hex()
 	o.ID = &id
-	if s.AlertRuleID != nil {
-		o.AlertRuleID = s.AlertRuleID
-	}
 	if s.CloudNetworkQuery != nil {
 		o.CloudNetworkQuery = s.CloudNetworkQuery
 	}
@@ -959,6 +956,9 @@ func (o *SparseCloudScheduledNetworkQuery) SetBSON(raw bson.Raw) error {
 	}
 	if s.Namespace != nil {
 		o.Namespace = s.Namespace
+	}
+	if s.PrismaCloudAlertRuleID != nil {
+		o.PrismaCloudAlertRuleID = s.PrismaCloudAlertRuleID
 	}
 	if s.PrismaCloudPolicyID != nil {
 		o.PrismaCloudPolicyID = s.PrismaCloudPolicyID
@@ -986,9 +986,6 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	if o.ID != nil {
 		out.ID = *o.ID
 	}
-	if o.AlertRuleID != nil {
-		out.AlertRuleID = *o.AlertRuleID
-	}
 	if o.CloudGraphResult != nil {
 		out.CloudGraphResult = o.CloudGraphResult
 	}
@@ -1006,6 +1003,9 @@ func (o *SparseCloudScheduledNetworkQuery) ToPlain() elemental.PlainIdentifiable
 	}
 	if o.Namespace != nil {
 		out.Namespace = *o.Namespace
+	}
+	if o.PrismaCloudAlertRuleID != nil {
+		out.PrismaCloudAlertRuleID = *o.PrismaCloudAlertRuleID
 	}
 	if o.PrismaCloudPolicyID != nil {
 		out.PrismaCloudPolicyID = *o.PrismaCloudPolicyID
@@ -1110,24 +1110,24 @@ func (o *SparseCloudScheduledNetworkQuery) DeepCopyInto(out *SparseCloudSchedule
 
 type mongoAttributesCloudScheduledNetworkQuery struct {
 	ID                     bson.ObjectId      `bson:"_id,omitempty"`
-	AlertRuleID            string             `bson:"alertruleid"`
 	CloudNetworkQuery      *CloudNetworkQuery `bson:"cloudnetworkquery"`
 	Disabled               bool               `bson:"disabled"`
 	LastExecutionTimestamp time.Time          `bson:"lastexecutiontimestamp"`
 	MigrationsLog          map[string]string  `bson:"migrationslog,omitempty"`
 	Namespace              string             `bson:"namespace"`
+	PrismaCloudAlertRuleID string             `bson:"prismacloudalertruleid"`
 	PrismaCloudPolicyID    string             `bson:"prismacloudpolicyid"`
 	ZHash                  int                `bson:"zhash"`
 	Zone                   int                `bson:"zone"`
 }
 type mongoAttributesSparseCloudScheduledNetworkQuery struct {
 	ID                     bson.ObjectId      `bson:"_id,omitempty"`
-	AlertRuleID            *string            `bson:"alertruleid,omitempty"`
 	CloudNetworkQuery      *CloudNetworkQuery `bson:"cloudnetworkquery,omitempty"`
 	Disabled               *bool              `bson:"disabled,omitempty"`
 	LastExecutionTimestamp *time.Time         `bson:"lastexecutiontimestamp,omitempty"`
 	MigrationsLog          *map[string]string `bson:"migrationslog,omitempty"`
 	Namespace              *string            `bson:"namespace,omitempty"`
+	PrismaCloudAlertRuleID *string            `bson:"prismacloudalertruleid,omitempty"`
 	PrismaCloudPolicyID    *string            `bson:"prismacloudpolicyid,omitempty"`
 	ZHash                  *int               `bson:"zhash,omitempty"`
 	Zone                   *int               `bson:"zone,omitempty"`
