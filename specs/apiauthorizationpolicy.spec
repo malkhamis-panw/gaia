@@ -27,26 +27,30 @@ model:
   - '@namespaced'
   - '@described'
   - '@disabled'
-  - '@identifiable-not-stored'
+  - '@identifiable-stored'
   - '@metadatable'
   - '@named'
   - '@hidden'
   - '@fallback'
   - '@schedulable'
   - '@timeable'
-
-# Indexes
-indexes:
-- - :no-inherit
+  - '@zoned'
 
 # Attributes
 attributes:
   v1:
+  - name: allSubjectTags
+    description: This is a set of all subject tags for matching in the DB.
+    type: list
+    subtype: string
+    stored: true
+
   - name: authorizedIdentities
     description: A list of roles assigned to the user.
     type: list
     exposed: true
     subtype: string
+    stored: true
     required: true
     example_value:
     - '@auth:role=namespace.administrator'
@@ -55,6 +59,7 @@ attributes:
     description: Defines the namespace the user is authorized to access.
     type: string
     exposed: true
+    stored: true
     required: true
     example_value: /namespace
 
@@ -65,6 +70,7 @@ attributes:
     type: list
     exposed: true
     subtype: string
+    stored: true
     validations:
     - $optionalcidrs
 
@@ -82,6 +88,7 @@ attributes:
     type: external
     exposed: true
     subtype: '[][]string'
+    stored: true
     orderable: true
     validations:
     - $tagsExpression
