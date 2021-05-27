@@ -14804,6 +14804,12 @@ Type: `string`
 
 Namespace of the object at the other end of the flow.
 
+##### `remotePolicyID`
+
+Type: `string`
+
+ID of the network policy that accepted the flow at the remote endpoint.
+
 ##### `ruleName`
 
 Type: `string`
@@ -15491,6 +15497,12 @@ Protocol number.
 Type: `string`
 
 Namespace of the object at the other end of the flow.
+
+##### `remotePolicyID`
+
+Type: `string`
+
+ID of the network policy that accepted the flow at the remote endpoint.
 
 ##### `ruleName`
 
