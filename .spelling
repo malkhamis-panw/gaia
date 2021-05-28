@@ -53,6 +53,7 @@ ClaimMapping
 claims_supported
 ClaimsSupported
 ClauseMatch
+CNSConfig
 CNSSuggestion
 CNSSearch
 clientLocalID
