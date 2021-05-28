@@ -59,9 +59,7 @@ attributes:
     stored: true
     allowed_choices:
     - ReachableAndAllowed
-    - UnreachableOrRejected
     - ReachableOnly
-    - UnreachableOnly
     - All
     default_value: ReachableOnly
 
