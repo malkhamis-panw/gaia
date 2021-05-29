@@ -9781,7 +9781,7 @@ A filter for selecting destinations for the query.
 
 ##### `effectiveAction`
 
-Type: `enum(ReachableAndAllowed | UnreachableOrRejected | ReachableOnly | UnreachableOnly | All)`
+Type: `enum(ReachableAndAllowed | ReachableOnly | All)`
 
 Filters the results based on the effective action. 'ReachableAndAllowed' means
 that a destination is both reachable and allowed by security rules.

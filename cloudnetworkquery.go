@@ -20,12 +20,6 @@ const (
 
 	// CloudNetworkQueryEffectiveActionReachableOnly represents the value ReachableOnly.
 	CloudNetworkQueryEffectiveActionReachableOnly CloudNetworkQueryEffectiveActionValue = "ReachableOnly"
-
-	// CloudNetworkQueryEffectiveActionUnreachableOnly represents the value UnreachableOnly.
-	CloudNetworkQueryEffectiveActionUnreachableOnly CloudNetworkQueryEffectiveActionValue = "UnreachableOnly"
-
-	// CloudNetworkQueryEffectiveActionUnreachableOrRejected represents the value UnreachableOrRejected.
-	CloudNetworkQueryEffectiveActionUnreachableOrRejected CloudNetworkQueryEffectiveActionValue = "UnreachableOrRejected"
 )
 
 // CloudNetworkQueryTypeValue represents the possible values for attribute "type".
@@ -691,7 +685,7 @@ func (o *CloudNetworkQuery) Validate() error {
 		}
 	}
 
-	if err := elemental.ValidateStringInList("effectiveAction", string(o.EffectiveAction), []string{"ReachableAndAllowed", "UnreachableOrRejected", "ReachableOnly", "UnreachableOnly", "All"}, false); err != nil {
+	if err := elemental.ValidateStringInList("effectiveAction", string(o.EffectiveAction), []string{"ReachableAndAllowed", "ReachableOnly", "All"}, false); err != nil {
 		errors = errors.Append(err)
 	}
 
@@ -902,7 +896,7 @@ var CloudNetworkQueryAttributesMap = map[string]elemental.AttributeSpecification
 		Type:           "ref",
 	},
 	"EffectiveAction": {
-		AllowedChoices: []string{"ReachableAndAllowed", "UnreachableOrRejected", "ReachableOnly", "UnreachableOnly", "All"},
+		AllowedChoices: []string{"ReachableAndAllowed", "ReachableOnly", "All"},
 		BSONFieldName:  "effectiveaction",
 		ConvertedName:  "EffectiveAction",
 		DefaultValue:   CloudNetworkQueryEffectiveActionReachableOnly,
@@ -1191,7 +1185,7 @@ var CloudNetworkQueryLowerCaseAttributesMap = map[string]elemental.AttributeSpec
 		Type:           "ref",
 	},
 	"effectiveaction": {
-		AllowedChoices: []string{"ReachableAndAllowed", "UnreachableOrRejected", "ReachableOnly", "UnreachableOnly", "All"},
+		AllowedChoices: []string{"ReachableAndAllowed", "ReachableOnly", "All"},
 		BSONFieldName:  "effectiveaction",
 		ConvertedName:  "EffectiveAction",
 		DefaultValue:   CloudNetworkQueryEffectiveActionReachableOnly,
