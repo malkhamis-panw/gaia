@@ -202,6 +202,26 @@ $tagsExpression:
   elemental:
     name: ValidateTagsExpression
 
+$exactlyOneSubExpression:
+  elemental:
+    name: ValidateExpressionHasExactlyOneSubExpression
+
+$subExpressionsNotEmpty:
+  elemental:
+    name: ValidateSubExpressionsNotEmpty
+
+$noDuplicateTagsInEachSubExpression:
+  elemental:
+    name: ValidateEachSubExpressionHasNoDuplicateTags
+
+$noDuplicateSubExpressions:
+  elemental:
+    name: ValidateNoDuplicateSubExpressions
+
+$atLeastOneSubExpression:
+  elemental:
+    name: ValidateExpressionNotEmpty
+
 $tagsWithoutReservedPrefixes:
   elemental:
     name: ValidateTagsWithoutReservedPrefixes

@@ -73,6 +73,9 @@ attributes:
     exposed: true
     subtype: '[][]string'
     validations:
+    - $exactlyOneSubExpression
+    - $subExpressionsNotEmpty
+    - $noDuplicateTagsInEachSubExpression
     - $tagsExpression
 
 # Relations
