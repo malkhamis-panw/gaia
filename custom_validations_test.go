@@ -396,6 +396,13 @@ func TestValidateServicePorts(t *testing.T) {
 			},
 			false,
 		},
+		{
+			"duplicte ports",
+			args{
+				[]string{"tcp/443", "TCP/443"},
+			},
+			true,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

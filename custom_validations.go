@@ -713,7 +713,15 @@ func ValidateHostServicesNonOverlapPorts(svcs []string) error {
 // ValidateServicePorts validates a list of serviceports.
 func ValidateServicePorts(attribute string, servicePorts []string) error {
 
+	seen := make(map[string]struct{}, len(servicePorts))
+
 	for _, servicePort := range servicePorts {
+
+		sp := strings.ToLower(servicePort)
+		if _, ok := seen[sp]; ok {
+			return makeValidationError(attribute, fmt.Sprintf("duplicate port: '%s'", servicePort))
+		}
+		seen[sp] = struct{}{}
 
 		if strings.EqualFold(servicePort, protocols.ANY) {
 			if len(servicePorts) != 1 {
