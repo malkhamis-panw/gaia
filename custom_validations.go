@@ -961,7 +961,7 @@ func ValidateTagsWithoutReservedPrefixes(attribute string, tags []string) error 
 	return validateTagStrings(attribute, false, tags...)
 }
 
-// ValidateExpressionHasExactlyOneTerm valiSubExpressions that expression length == 1
+// ValidateExpressionHasExactlyOneSubExpression ensures that expression length == 1
 func ValidateExpressionHasExactlyOneSubExpression(attribute string, expression [][]string) error {
 	if len(expression) != 1 {
 		return makeValidationError(attribute, "expression must contain exactly one sub-expression")
