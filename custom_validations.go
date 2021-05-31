@@ -1022,8 +1022,8 @@ func ValidateNoDuplicateSubExpressions(attribute string, expression [][]string) 
 		sort.Strings(cpy)
 		hash := fnv.New32a()
 		for _, tag := range cpy {
-			hash.Write([]byte(tag))
-			hash.Write([]byte("/"))
+			_, _ = hash.Write([]byte(tag))
+			_, _ = hash.Write([]byte("/"))
 		}
 
 		if _, ok := seen[hash.Sum32()]; !ok {
