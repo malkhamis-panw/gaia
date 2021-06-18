@@ -50,6 +50,7 @@ var (
 
 		"cloudvpc": CloudVPCIdentity,
 
+		"cnsconfig":     CNSConfigIdentity,
 		"cnssearch":     CNSSearchIdentity,
 		"cnssuggestion": CNSSuggestionIdentity,
 
@@ -157,6 +158,7 @@ var (
 		"search":                  SearchIdentity,
 		"service":                 ServiceIdentity,
 		"servicedependencypolicy": ServiceDependencyPolicyIdentity,
+		"servicepublication":      ServicePublicationIdentity,
 		"servicetoken":            ServiceTokenIdentity,
 		"squalltag":               SquallTagIdentity,
 		"sshauthority":            SSHAuthorityIdentity,
@@ -234,6 +236,7 @@ var (
 
 		"cloudvpcs": CloudVPCIdentity,
 
+		"cnsconfigs":     CNSConfigIdentity,
 		"cnssearches":    CNSSearchIdentity,
 		"cnssuggestions": CNSSuggestionIdentity,
 
@@ -341,6 +344,7 @@ var (
 		"search":                    SearchIdentity,
 		"services":                  ServiceIdentity,
 		"servicedependencypolicies": ServiceDependencyPolicyIdentity,
+		"servicepublications":       ServicePublicationIdentity,
 		"servicetoken":              ServiceTokenIdentity,
 		"squalltags":                SquallTagIdentity,
 		"sshauthorities":            SSHAuthorityIdentity,
@@ -387,6 +391,7 @@ var (
 		"crules":          CloudNetworkRuleSetIdentity,
 		"vpc":             CloudVPCIdentity,
 		"vpcs":            CloudVPCIdentity,
+		"pcc":             CNSConfigIdentity,
 		"depmaps":         DependencyMapIdentity,
 		"depmap":          DependencyMapIdentity,
 		"defender":        EnforcerIdentity,
@@ -705,6 +710,15 @@ var (
 			{"namespace", "accountid"},
 			{"namespace", "vpcid"},
 			{"createIdempotencyKey"},
+		},
+		"cnsconfig": {
+			{"updateIdempotencyKey"},
+			{"prismaID"},
+			{"namespace", "prismaID"},
+			{"namespace"},
+			{"namespace", "normalizedTags"},
+			{"createIdempotencyKey"},
+			{":shard", ":unique", "zone", "zHash"},
 		},
 		"cnssearch":     nil,
 		"cnssuggestion": nil,
@@ -1096,6 +1110,7 @@ var (
 			{"allAPITags"},
 		},
 		"servicedependencypolicy": nil,
+		"servicepublication":      nil,
 		"servicetoken":            nil,
 		"squalltag":               nil,
 		"sshauthority": {
@@ -1270,6 +1285,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewCloudSubnet()
 	case CloudVPCIdentity:
 		return NewCloudVPC()
+	case CNSConfigIdentity:
+		return NewCNSConfig()
 	case CNSSearchIdentity:
 		return NewCNSSearch()
 	case CNSSuggestionIdentity:
@@ -1464,6 +1481,8 @@ func (f modelManager) Identifiable(identity elemental.Identity) elemental.Identi
 		return NewService()
 	case ServiceDependencyPolicyIdentity:
 		return NewServiceDependencyPolicy()
+	case ServicePublicationIdentity:
+		return NewServicePublication()
 	case ServiceTokenIdentity:
 		return NewServiceToken()
 	case SquallTagIdentity:
@@ -1597,6 +1616,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseCloudSubnet()
 	case CloudVPCIdentity:
 		return NewSparseCloudVPC()
+	case CNSConfigIdentity:
+		return NewSparseCNSConfig()
 	case CNSSearchIdentity:
 		return NewSparseCNSSearch()
 	case CNSSuggestionIdentity:
@@ -1789,6 +1810,8 @@ func (f modelManager) SparseIdentifiable(identity elemental.Identity) elemental.
 		return NewSparseService()
 	case ServiceDependencyPolicyIdentity:
 		return NewSparseServiceDependencyPolicy()
+	case ServicePublicationIdentity:
+		return NewSparseServicePublication()
 	case ServiceTokenIdentity:
 		return NewSparseServiceToken()
 	case SquallTagIdentity:
@@ -1932,6 +1955,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &CloudSubnetsList{}
 	case CloudVPCIdentity:
 		return &CloudVPCsList{}
+	case CNSConfigIdentity:
+		return &CNSConfigsList{}
 	case CNSSearchIdentity:
 		return &CNSSearchesList{}
 	case CNSSuggestionIdentity:
@@ -2124,6 +2149,8 @@ func (f modelManager) Identifiables(identity elemental.Identity) elemental.Ident
 		return &ServicesList{}
 	case ServiceDependencyPolicyIdentity:
 		return &ServiceDependencyPoliciesList{}
+	case ServicePublicationIdentity:
+		return &ServicePublicationsList{}
 	case ServiceTokenIdentity:
 		return &ServiceTokensList{}
 	case SquallTagIdentity:
@@ -2257,6 +2284,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseCloudSubnetsList{}
 	case CloudVPCIdentity:
 		return &SparseCloudVPCsList{}
+	case CNSConfigIdentity:
+		return &SparseCNSConfigsList{}
 	case CNSSearchIdentity:
 		return &SparseCNSSearchesList{}
 	case CNSSuggestionIdentity:
@@ -2449,6 +2478,8 @@ func (f modelManager) SparseIdentifiables(identity elemental.Identity) elemental
 		return &SparseServicesList{}
 	case ServiceDependencyPolicyIdentity:
 		return &SparseServiceDependencyPoliciesList{}
+	case ServicePublicationIdentity:
+		return &SparseServicePublicationsList{}
 	case ServiceTokenIdentity:
 		return &SparseServiceTokensList{}
 	case SquallTagIdentity:
@@ -2564,6 +2595,7 @@ func AllIdentities() []elemental.Identity {
 		CloudSnapshotAccountIdentity,
 		CloudSubnetIdentity,
 		CloudVPCIdentity,
+		CNSConfigIdentity,
 		CNSSearchIdentity,
 		CNSSuggestionIdentity,
 		ConnectionExceptionReportIdentity,
@@ -2661,6 +2693,7 @@ func AllIdentities() []elemental.Identity {
 		SearchIdentity,
 		ServiceIdentity,
 		ServiceDependencyPolicyIdentity,
+		ServicePublicationIdentity,
 		ServiceTokenIdentity,
 		SquallTagIdentity,
 		SSHAuthorityIdentity,
@@ -2791,6 +2824,10 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 		return []string{
 			"vpc",
 			"vpcs",
+		}
+	case CNSConfigIdentity:
+		return []string{
+			"pcc",
 		}
 	case CNSSearchIdentity:
 		return []string{}
@@ -3093,6 +3130,8 @@ func AliasesForIdentity(identity elemental.Identity) []string {
 			"srvdep",
 			"srvdeps",
 		}
+	case ServicePublicationIdentity:
+		return []string{}
 	case ServiceTokenIdentity:
 		return []string{}
 	case SquallTagIdentity:
